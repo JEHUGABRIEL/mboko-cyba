@@ -1,5 +1,6 @@
-import { lazy, Suspense } from "react";
+import { lazy, Suspense, useEffect } from "react";
 import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import { Loader2 } from "lucide-react";
 import ScrollToTop from "./components/ScrollToTop";
 import ErrorBoundary from "./components/ErrorBoundary";
@@ -26,6 +27,14 @@ function PageLoader() {
 }
 
 function Layout() {
+  const { t, i18n } = useTranslation();
+
+  // Synchronise le <title> et l'attribut lang="..." avec la langue active
+  useEffect(() => {
+    document.title = t("meta.siteTitle");
+    document.documentElement.lang = i18n.language;
+  }, [t, i18n.language]);
+
   return (
     <ErrorBoundary>
       <ScrollToTop />

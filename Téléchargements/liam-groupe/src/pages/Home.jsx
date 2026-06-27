@@ -300,12 +300,12 @@ export default function Home() {
               onInput={() => setContactDirty(true)}
             >
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                <Field label={t('home.contact.formName')} placeholder={t('home.contact.formNamePlaceholder')} />
-                <Field label={t('home.contact.formEmail')} placeholder={t('home.contact.formEmailPlaceholder')} type="email" />
+                <Field label={t('home.contact.formName')} placeholder={t('home.contact.formNamePlaceholder')} name="contact-name" />
+                <Field label={t('home.contact.formEmail')} placeholder={t('home.contact.formEmailPlaceholder')} type="email" name="contact-email" />
               </div>
               <div>
-                <label className="block text-sm font-medium mb-2">{t('home.contact.formSubject')}</label>
-                <select className="w-full border border-gray-200 rounded-xl px-4 py-3 outline-none focus:border-brand-400 text-gray-600">
+                <label htmlFor="home-subject" className="block text-sm font-medium mb-2">{t('home.contact.formSubject')}</label>
+                <select id="home-subject" name="subject" className="w-full border border-gray-200 rounded-xl px-4 py-3 outline-none focus:border-brand-400 text-gray-600">
                   <option>{t('home.contact.formSubjectPlaceholder')}</option>
                   <option>{t('home.contact.formSubjectOption1')}</option>
                   <option>{t('home.contact.formSubjectOption2')}</option>
@@ -314,8 +314,10 @@ export default function Home() {
                 </select>
               </div>
               <div>
-                <label className="block text-sm font-medium mb-2">{t('home.contact.formMessage')}</label>
+                <label htmlFor="home-message" className="block text-sm font-medium mb-2">{t('home.contact.formMessage')}</label>
                 <textarea
+                  id="home-message"
+                  name="message"
                   rows={5}
                   placeholder={t('home.contact.formMessagePlaceholder')}
                   className="w-full border border-gray-200 rounded-xl px-4 py-3 outline-none focus:border-brand-400 resize-none"
@@ -387,11 +389,14 @@ function ContactItem({ icon: Icon, label, lines = [] }) {
   );
 }
 
-function Field({ label, placeholder, type = "text" }) {
+function Field({ label, placeholder, type = "text", name }) {
+  const fieldId = name || `field-${label?.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '')}`;
   return (
     <div>
-      <label className="block text-sm font-medium mb-2">{label}</label>
+      <label htmlFor={fieldId} className="block text-sm font-medium mb-2">{label}</label>
       <input
+        id={fieldId}
+        name={fieldId}
         type={type}
         placeholder={placeholder}
         className="w-full border border-gray-200 rounded-xl px-4 py-3 outline-none focus:border-brand-400"

@@ -26,7 +26,10 @@ export default function Footer() {
               onSubmit={(e) => e.preventDefault()}
               className="mt-6 flex max-w-sm rounded-full overflow-hidden bg-white/10 border border-white/15"
             >
+              <label htmlFor="footer-newsletter" className="sr-only">{t('footer.newsletterPlaceholder')}</label>
               <input
+                id="footer-newsletter"
+                name="email"
                 type="email"
                 placeholder={t('footer.newsletterPlaceholder')}
                 className="flex-1 bg-transparent px-5 py-3 text-sm placeholder:text-white/40 outline-none"

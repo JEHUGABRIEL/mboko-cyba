@@ -166,12 +166,14 @@ export default function AdminLogin({ onLogin }) {
           className="bg-white rounded-2xl p-8 shadow-xl space-y-5"
         >
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
+            <label className="block text-sm font-semibold text-gray-700 mb-2" htmlFor="admin-email">
               {t("admin.login.email")}
             </label>
             <div className="relative">
               <Mail className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
               <input
+                id="admin-email"
+                name="email"
                 type="email"
                 value={email}
                 onChange={(e) => { setEmail(e.target.value); setError(""); }}
@@ -183,12 +185,14 @@ export default function AdminLogin({ onLogin }) {
           </div>
 
           <div>
-            <label className="block text-sm font-semibold text-gray-700 mb-2">
+            <label className="block text-sm font-semibold text-gray-700 mb-2" htmlFor="admin-password">
               {t("admin.login.password")}
             </label>
             <div className="relative">
               <Lock className="absolute left-3.5 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
               <input
+                id="admin-password"
+                name="password"
                 type={show ? "text" : "password"}
                 value={password}
                 onChange={(e) => { setPassword(e.target.value); setError(""); }}

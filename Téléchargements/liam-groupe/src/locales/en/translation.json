@@ -428,6 +428,9 @@
     "collaboration": "Collaboration",
     "visitWebsite": "Visit website"
   },
+  "meta": {
+    "siteTitle": "LIAM Groupe — Let's build together the Central Africa of tomorrow"
+  },
   "carousel": {
     "previous": "Previous",
     "next": "Next",

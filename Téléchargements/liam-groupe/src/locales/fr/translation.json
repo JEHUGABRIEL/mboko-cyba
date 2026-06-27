@@ -426,6 +426,9 @@
     "collaboration": "Collaboration",
     "visitWebsite": "Visiter le site"
   },
+  "meta": {
+    "siteTitle": "LIAM Groupe — Construisons ensemble la Centrafrique de demain"
+  },
   "carousel": {
     "previous": "Précédent",
     "next": "Suivant",
