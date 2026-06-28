@@ -125,7 +125,7 @@ function DeleteConfirm({
 // ==============================================================
 function ProductsSection() {
   const { products, addProduct, updateProduct, deleteProduct } = useProducts();
-  const { showToast } = useToast();
+  const { showToast, showUndoToast } = useToast();
   const [search, setSearch] = useState("");
   const [showForm, setShowForm] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | undefined>();
@@ -272,11 +272,9 @@ function ProductsSection() {
             const savedName = deletingProduct.name;
             setDeletingProduct(undefined);
             if (undoRef.current) clearTimeout(undoRef.current);
-            showToast(
-              `Produit supprimé : ${savedName}`,
-              "success",
-              { label: "Annuler", onClick: () => { if (undoRef.current) { clearTimeout(undoRef.current); undoRef.current = null; } } }
-            );
+            showUndoToast(`Produit supprimé : ${savedName}`, () => {
+              if (undoRef.current) { clearTimeout(undoRef.current); undoRef.current = null; }
+            });
             undoRef.current = setTimeout(() => { deleteProduct(savedId); undoRef.current = null; }, 6000);
           }}
           onCancel={() => setDeletingProduct(undefined)}
@@ -291,7 +289,7 @@ function ProductsSection() {
 // ==============================================================
 function SlidesSection() {
   const { heroSlides, updateHeroSlide, addHeroSlide, removeHeroSlide } = useSite();
-  const { showToast } = useToast();
+  const { showToast, showUndoToast } = useToast();
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const undoRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -318,9 +316,8 @@ function SlidesSection() {
     if (heroSlides.length <= 1) return;
     if (editingIndex === index) setEditingIndex(null);
     if (undoRef.current) clearTimeout(undoRef.current);
-    showToast("Slide supprimé", "success", {
-      label: "Annuler",
-      onClick: () => { if (undoRef.current) { clearTimeout(undoRef.current); undoRef.current = null; } },
+    showUndoToast("Slide supprimé", () => {
+      if (undoRef.current) { clearTimeout(undoRef.current); undoRef.current = null; }
     });
     undoRef.current = setTimeout(() => { removeHeroSlide(index); undoRef.current = null; }, 6000);
   };
@@ -430,7 +427,7 @@ function SlidesSection() {
 // ==============================================================
 function TestimonialsSection() {
   const { testimonials, addTestimonial, updateTestimonial, removeTestimonial } = useSite();
-  const { showToast } = useToast();
+  const { showToast, showUndoToast } = useToast();
   const [editingIndex, setEditingIndex] = useState<number | null>(null);
   const undoRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -474,9 +471,8 @@ function TestimonialsSection() {
   const handleRemove = (idx: number) => {
     if (editingIndex === idx) setEditingIndex(null);
     if (undoRef.current) clearTimeout(undoRef.current);
-    showToast("Témoignage supprimé", "success", {
-      label: "Annuler",
-      onClick: () => { if (undoRef.current) { clearTimeout(undoRef.current); undoRef.current = null; } },
+    showUndoToast("Témoignage supprimé", () => {
+      if (undoRef.current) { clearTimeout(undoRef.current); undoRef.current = null; }
     });
     undoRef.current = setTimeout(() => { removeTestimonial(idx); undoRef.current = null; }, 6000);
   };
@@ -583,7 +579,7 @@ function TestimonialsSection() {
 // ==============================================================
 function PartnersSection() {
   const { partners, addPartner, updatePartner, removePartner } = useSite();
-  const { showToast } = useToast();
+  const { showToast, showUndoToast } = useToast();
   const undoRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   useEffect(() => {
@@ -618,9 +614,8 @@ function PartnersSection() {
   const handleRemove = (idx: number) => {
     if (editingIdx === idx) setEditingIdx(null);
     if (undoRef.current) clearTimeout(undoRef.current);
-    showToast("Partenaire supprimé", "success", {
-      label: "Annuler",
-      onClick: () => { if (undoRef.current) { clearTimeout(undoRef.current); undoRef.current = null; } },
+    showUndoToast("Partenaire supprimé", () => {
+      if (undoRef.current) { clearTimeout(undoRef.current); undoRef.current = null; }
     });
     undoRef.current = setTimeout(() => { removePartner(idx); undoRef.current = null; }, 6000);
   };
@@ -686,7 +681,7 @@ function PartnersSection() {
 // ==============================================================
 function QuotesSection() {
   const { quoteRequests, updateQuoteStatus, deleteQuoteRequest } = useSite();
-  const { showToast } = useToast();
+  const { showUndoToast } = useToast();
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
   const [expandedId, setExpandedId] = useState<number | null>(null);
@@ -941,9 +936,8 @@ function QuotesSection() {
             const savedId = confirmDelete;
             setConfirmDelete(null);
             if (undoRef.current) clearTimeout(undoRef.current);
-            showToast("Demande supprimée", "success", {
-              label: "Annuler",
-              onClick: () => { if (undoRef.current) { clearTimeout(undoRef.current); undoRef.current = null; } },
+            showUndoToast("Demande supprimée", () => {
+              if (undoRef.current) { clearTimeout(undoRef.current); undoRef.current = null; }
             });
             undoRef.current = setTimeout(() => { deleteQuoteRequest(savedId); undoRef.current = null; }, 6000);
           }}
