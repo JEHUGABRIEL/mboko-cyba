@@ -4,4 +4,3 @@ services:
     runtime: static
     buildCommand: npm run build
     staticPublishPath: dist
-    rootDir: Téléchargements/la-cant
