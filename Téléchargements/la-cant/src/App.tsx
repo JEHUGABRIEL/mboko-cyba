@@ -28,59 +28,11 @@ import { useSite } from "./SiteContext";
 
 function CantLogo({ className = "h-12" }: { className?: string }) {
   return (
-    <svg
-      className={className}
-      viewBox="0 0 200 50"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <defs>
-        <linearGradient id="logoGrad" x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0%" stopColor="#2563EB" />
-          <stop offset="100%" stopColor="#1D4ED8" />
-        </linearGradient>
-      </defs>
-
-      {/* Icon: rounded square with stylized C */}
-      <rect x="2" y="8" width="34" height="34" rx="8" fill="url(#logoGrad)" />
-      <text
-        x="19"
-        y="32"
-        fontFamily="'Inter', system-ui, sans-serif"
-        fontWeight="800"
-        fontSize="18"
-        fill="white"
-        textAnchor="middle"
-      >
-        C
-      </text>
-
-      {/* Brand name */}
-      <text
-        x="46"
-        y="26"
-        fontFamily="'Inter', system-ui, sans-serif"
-        fontWeight="800"
-        fontSize="20"
-        fill="#0F172A"
-        letterSpacing="1"
-      >
-        CANT
-      </text>
-
-      {/* Tagline */}
-      <text
-        x="46"
-        y="38"
-        fontFamily="'Inter', system-ui, sans-serif"
-        fontWeight="600"
-        fontSize="5.5"
-        fill="#64748B"
-        letterSpacing="0.5"
-      >
-        LA CENTRAFICAINE DES NTIC
-      </text>
-    </svg>
+    <img
+      src="/image.png"
+      alt="LA CANT"
+      className={`${className} object-contain`}
+    />
   );
 }
 
@@ -92,9 +44,6 @@ function NavBar({ onOpenContact }: { onOpenContact: () => void }) {
   const isAdmin = location.pathname.startsWith("/admin");
   const isHome = location.pathname === "/";
   const isBoutique = location.pathname.startsWith("/boutique");
-
-  if (isAdmin) return null;
-
 
   useEffect(() => {
     const handleScroll = () => {
@@ -114,6 +63,8 @@ function NavBar({ onOpenContact }: { onOpenContact: () => void }) {
     document.body.style.overflow = mobileMenuOpen ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
   }, [mobileMenuOpen]);
+
+  if (isAdmin) return null;
 
   const scrollToSection = (id: string) => {
     setMobileMenuOpen(false);
