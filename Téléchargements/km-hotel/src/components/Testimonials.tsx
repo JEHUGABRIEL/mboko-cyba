@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { Star, ChevronLeft, ChevronRight, Quote } from 'lucide-react';
@@ -51,6 +51,78 @@ const testimonialsData = [
     avatar: 'FN',
     rating: 5,
     text: 'Un hôtel qui mérite amplement sa réputation. Dès l\'arrivée, on se sent accueilli comme un invité de marque. Les chambres sont impeccables, la nourriture est savoureuse et l\'emplacement en centre-ville est idéal pour les déplacements professionnels.'
+  },
+  {
+    name: 'David K.',
+    location: 'Lomé, Togo',
+    role: 'Conférencier',
+    avatar: 'DK',
+    rating: 5,
+    text: 'Je suis intervenu lors d\'une conférence au KM Hotel. L\'équipement audiovisuel est de qualité, le personnel très professionnel. La salle de conférence était parfaite et l\'hébergement irréprochable. Un cadre idéal pour les événements professionnels à Bangui.'
+  },
+  {
+    name: 'Amina D.',
+    location: 'Yaoundé, Cameroun',
+    role: 'Voyage d\'affaires',
+    avatar: 'AD',
+    rating: 4,
+    text: 'Hôtel très agréable avec un personnel attentif. Les chambres sont propres et bien équipées. Le petit-déjeuner est copieux et varié. Seul bémol : le restaurant était complet le premier soir, mais le bar lounge nous a accueillis avec des excellents cocktails.'
+  },
+  {
+    name: 'Pierre-Louis B.',
+    location: 'Bordeaux, France',
+    role: 'Touriste',
+    avatar: 'PB',
+    rating: 5,
+    text: 'Un véritable havre de paix au cœur de Bangui. L\'autonomie électrique est un vrai plus dans cette ville. Les jardins sont magnifiques, la piscine est superbe. Nous avons passé un séjour merveilleux en famille. Les enfants ont adoré. Merci à toute l\'équipe !'
+  },
+  {
+    name: 'Grace N.',
+    location: 'Kinshasa, RDC',
+    role: 'Journaliste',
+    avatar: 'GN',
+    rating: 5,
+    text: 'Le KM Hotel est devenu mon pied-à-terre lors de mes reportages à Bangui. La connexion Wi-Fi est fiable, ce qui est essentiel pour mon travail. Le calme des chambres permet de travailler en toute sérénité. Le personnel est toujours souriant et serviable.'
+  },
+  {
+    name: 'Mamadou T.',
+    location: 'Bamako, Mali',
+    role: 'Mission diplomatique',
+    avatar: 'MT',
+    rating: 5,
+    text: 'Dans le cadre d\'une mission diplomatique, j\'ai séjourné une semaine au KM Hotel. Le professionnalisme de l\'accueil, la qualité des prestations et la discrétion du personnel m\'ont particulièrement impressionné. Le restaurant est excellent. Je recommande vivement.'
+  },
+  {
+    name: 'Hélène R.',
+    location: 'Genève, Suisse',
+    role: 'ONG humanitaire',
+    avatar: 'HR',
+    rating: 4,
+    text: 'Un excellent point de chute à Bangui. Les chambres sont confortables, la literie est de qualité. Le personnel parle anglais et français, ce qui facilite les échanges. Le room service est rapide et efficace. Le rapport qualité-prix est très bon pour Bangui.'
+  },
+  {
+    name: 'Thierry M.',
+    location: 'Dakar, Sénégal',
+    role: 'Homme d\'affaires',
+    avatar: 'TM',
+    rating: 5,
+    text: 'Je fréquente régulièrement les hôtels d\'affaires en Afrique centrale. Le KM Hotel se distingue par son design raffiné et son service attentionné. Les salles de réunion sont modernes et bien équipées. Un sans-faute du début à la fin.'
+  },
+  {
+    name: 'Esther W.',
+    location: 'Nairobi, Kenya',
+    role: 'Voyage de noces',
+    avatar: 'EW',
+    rating: 5,
+    text: 'Nous avons choisi le KM Hotel pour notre voyage de noces et ce fut un choix parfait. L\'ambiance romantique du restaurant, le confort de la suite exécutive et la gentillesse du personnel ont rendu notre séjour inoubliable. Le dîner aux chandelles était magique.'
+  },
+  {
+    name: 'Robert Z.',
+    location: 'Brazzaville, Congo',
+    role: 'Consultant',
+    avatar: 'RZ',
+    rating: 5,
+    text: 'Je recommande vivement le KM Hotel pour les professionnels en déplacement. Le service de conciergerie est efficace, le transfert aéroport est ponctuel et la connexion Wi-Fi permet de travailler sans interruption. Un hôtel qui tient toutes ses promesses.'
   }
 ];
 
@@ -71,24 +143,51 @@ function Stars({ rating }: { rating: number }) {
   );
 }
 
+const getItemsPerPage = () => window.innerWidth < 768 ? 1 : window.innerWidth < 1024 ? 2 : 3;
+
 export function Testimonials() {
   const { t } = useTranslation();
   const [currentPage, setCurrentPage] = useState(0);
+  const [itemsPerPage, setItemsPerPage] = useState(getItemsPerPage);
+  const [isPaused, setIsPaused] = useState(false);
   const testimonials = testimonialsData;
-  const itemsPerPage = 3;
+
+  useEffect(() => {
+    const handleResize = () => {
+      const width = window.innerWidth;
+      const newItemsPerPage = width < 768 ? 1 : width < 1024 ? 2 : 3;
+      setItemsPerPage((prev) => {
+        if (prev !== newItemsPerPage) setCurrentPage(0);
+        return newItemsPerPage;
+      });
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   const totalPages = Math.ceil(testimonials.length / itemsPerPage);
+  const validatedPage = Math.min(currentPage, totalPages - 1);
   const currentItems = testimonials.slice(
-    currentPage * itemsPerPage,
-    (currentPage + 1) * itemsPerPage
+    validatedPage * itemsPerPage,
+    (validatedPage + 1) * itemsPerPage
   );
 
-  const nextPage = () => {
+  const nextPage = useCallback(() => {
     setCurrentPage((prev) => (prev + 1) % totalPages);
-  };
+  }, [totalPages]);
 
-  const prevPage = () => {
+  const prevPage = useCallback(() => {
     setCurrentPage((prev) => (prev - 1 + totalPages) % totalPages);
-  };
+  }, [totalPages]);
+
+  // Auto-scroll every 4 seconds
+  useEffect(() => {
+    if (isPaused || totalPages <= 1) return;
+    const timer = setInterval(nextPage, 4000);
+    return () => clearInterval(timer);
+  }, [isPaused, totalPages, nextPage]);
 
   return (
     <section id="testimonials" className="py-24 bg-white relative overflow-hidden">
@@ -104,7 +203,11 @@ export function Testimonials() {
         />
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      <div
+        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10"
+        onMouseEnter={() => setIsPaused(true)}
+        onMouseLeave={() => setIsPaused(false)}
+      >
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -185,7 +288,7 @@ export function Testimonials() {
           {totalPages > 1 && (
             <div className="flex items-center justify-center gap-4 mt-10">
               <button
-                onClick={prevPage}
+                onClick={() => { prevPage(); setIsPaused(true); setTimeout(() => setIsPaused(false), 6000); }}
                 className="w-10 h-10 flex items-center justify-center border border-slate-200 text-slate-500 hover:border-brand-500 hover:text-brand-600 hover:bg-brand-50 transition-all duration-200 rounded-sm"
                 aria-label={t('testimonials.ariaPrev')}
               >
@@ -197,7 +300,7 @@ export function Testimonials() {
                 {Array.from({ length: totalPages }).map((_, i) => (
                   <button
                     key={i}
-                    onClick={() => setCurrentPage(i)}
+                    onClick={() => { setCurrentPage(i); setIsPaused(true); setTimeout(() => setIsPaused(false), 6000); }}
                     className={`w-2 h-2 rounded-full transition-all duration-300 ${
                       i === currentPage
                         ? 'bg-brand-600 w-6'
@@ -209,7 +312,7 @@ export function Testimonials() {
               </div>
 
               <button
-                onClick={nextPage}
+                onClick={() => { nextPage(); setIsPaused(true); setTimeout(() => setIsPaused(false), 6000); }}
                 className="w-10 h-10 flex items-center justify-center border border-slate-200 text-slate-500 hover:border-brand-500 hover:text-brand-600 hover:bg-brand-50 transition-all duration-200 rounded-sm"
                 aria-label={t('testimonials.ariaNext')}
               >
@@ -219,12 +322,6 @@ export function Testimonials() {
           )}
         </div>
 
-        {/* Auto-scroll indicator */}
-        <div className="mt-6 text-center">
-          <span className="text-xs text-slate-400 font-medium">
-            {currentPage + 1} / {totalPages}
-          </span>
-        </div>
       </div>
     </section>
   );

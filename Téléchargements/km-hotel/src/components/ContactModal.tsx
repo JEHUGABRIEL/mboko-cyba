@@ -28,7 +28,7 @@ const modalVariants = {
 };
 
 export function ContactModal() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { isOpen, closeModal } = useContactModal();
   const [selectedRoom, setSelectedRoom] = useState<string>('comfort');
   const [adults, setAdults] = useState(2);
@@ -49,6 +49,8 @@ export function ContactModal() {
       if (successTimerRef.current) clearTimeout(successTimerRef.current);
     };
   }, [isOpen]);
+
+  const isFrench = i18n.language?.startsWith('fr');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
