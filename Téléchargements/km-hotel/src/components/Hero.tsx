@@ -74,16 +74,16 @@ export function Hero() {
           transition={{ duration: 0.8, ease: 'easeOut' }}
         >
           <span className="text-brand-300 font-medium tracking-[0.2em] uppercase text-sm md:text-base mb-4 block">
-            {t('hero.badge')}
+            {t(`hero.slides.${current}.badge`)}
           </span>
           <h1 className="text-4xl md:text-6xl lg:text-7xl font-serif text-white font-bold mb-6 leading-tight">
-            {t('hero.title')} <br className="hidden md:block" />
+            {t(`hero.slides.${current}.title`)} <br className="hidden md:block" />
             <span className="italic font-light text-brand-100">
-              {t('hero.titleAccent')}
+              {t(`hero.slides.${current}.titleAccent`)}
             </span>
           </h1>
           <p className="text-lg md:text-xl text-slate-200 mb-10 max-w-2xl mx-auto font-light">
-            {t('hero.subtitle')}
+            {t(`hero.slides.${current}.subtitle`)}
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4">

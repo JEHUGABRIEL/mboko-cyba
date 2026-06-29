@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import {
   ChevronDown,
@@ -28,30 +29,8 @@ const heroSlides = [
   }
 ];
 
-const signatureCocktails = [
-  {
-    name: 'KM Sunset',
-    desc: 'Rhum, jus de fruits de la passion, sirop de gingembre, menthe fraîche',
-    price: '5 000 XAF'
-  },
-  {
-    name: 'Bangui Mule',
-    desc: 'Vodka, ginger beer locale, citron vert, angostura',
-    price: '4 500 XAF'
-  },
-  {
-    name: 'Sangria Tropicale',
-    desc: 'Vin rouge, fruits exotiques, cannelle, eau gazeuse',
-    price: '4 000 XAF'
-  },
-  {
-    name: 'Mocktail Hibiscus',
-    desc: "Infusion d'hibiscus, citronnelle, sirop de miel, eau pétillante (sans alcool)",
-    price: '3 000 XAF'
-  }
-];
-
 export function BarPage() {
+  const { t } = useTranslation();
   const { openModal } = useContactModal();
   const [current, setCurrent] = useState(0);
 
@@ -63,6 +42,10 @@ export function BarPage() {
     const timer = setInterval(next, 5000);
     return () => clearInterval(timer);
   }, [next]);
+
+  const signatureCocktails = t('bar.cocktails', { returnObjects: true }) as {
+    name: string; desc: string; price: string;
+  }[];
 
   return (
     <div className="min-h-screen bg-slate-900">
@@ -92,13 +75,13 @@ export function BarPage() {
             transition={{ duration: 0.8, ease: 'easeOut' }}
           >
             <span className="text-brand-300 font-medium tracking-[0.2em] uppercase text-sm md:text-base mb-4 block">
-              Détente & Ambiance
+              {t('bar.hero.badge')}
             </span>
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-serif text-white font-bold mb-6 leading-tight">
-              Bar Lounge
+              {t('bar.hero.title')}
             </h1>
             <p className="text-lg md:text-xl text-slate-200 max-w-2xl mx-auto font-light">
-              Un cadre feutré et cosy pour vos moments de détente, avec une sélection pointue de cocktails, vins et spiritueux.
+              {t('bar.hero.subtitle')}
             </p>
           </motion.div>
         </div>
@@ -131,26 +114,23 @@ export function BarPage() {
               <div className="flex items-center gap-3 mb-4">
                 <Wine className="w-6 h-6 text-brand-400" />
                 <span className="text-brand-400 font-medium tracking-widest uppercase text-sm">
-                  Bar Lounge
+                  {t('bar.lounge.label')}
                 </span>
               </div>
               <h3 className="text-4xl font-serif mb-6 leading-tight">
-                L'Art de la Détente
+                {t('bar.lounge.title')}
               </h3>
               <p className="text-slate-300 font-light leading-relaxed mb-6">
-                En fin de journée, notre Bar Lounge vous accueille dans une
-                atmosphère feutrée et cosy. Canapés profonds, éclairage tamisé,
-                musique d'ambiance : l'endroit idéal pour se détendre après une
-                journée de travail ou de découverte.
+                {t('bar.lounge.text')}
               </p>
               <div className="flex items-center gap-6 text-sm">
                 <div className="flex items-center gap-2 text-slate-400">
                   <Clock className="w-4 h-4 text-brand-400" />
-                  <span>17:00 - 00:00</span>
+                  <span>{t('bar.lounge.hours')}</span>
                 </div>
                 <div className="flex items-center gap-2 text-slate-400">
                   <MapPin className="w-4 h-4 text-brand-400" />
-                  <span>Rez-de-chaussée</span>
+                  <span>{t('bar.lounge.location')}</span>
                 </div>
               </div>
             </motion.div>
@@ -183,7 +163,7 @@ export function BarPage() {
             transition={{ duration: 0.6 }}
           >
             <h4 className="text-2xl font-serif text-center mb-10">
-              Notre Carte de Cocktails
+              {t('bar.lounge.cocktailTitle')}
             </h4>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {signatureCocktails.map((cocktail) => (
@@ -218,18 +198,17 @@ export function BarPage() {
             transition={{ duration: 0.6 }}
           >
             <h2 className="text-3xl md:text-5xl font-serif text-white mb-6 leading-tight">
-              Vivez l'Ambiance du Bar
+              {t('bar.cta.title')}
             </h2>
             <p className="text-slate-400 font-light text-lg mb-10 max-w-2xl mx-auto">
-              Que ce soit pour un afterwork entre collègues, un rendez-vous en amoureux
-              ou une soirée entre amis, venez découvrir notre sélection de cocktails signatures.
+              {t('bar.cta.text')}
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <button
                 onClick={openModal}
                 className="px-8 py-4 bg-brand-600 text-white font-medium tracking-wide hover:bg-brand-700 transition-colors"
               >
-                Réserver une table
+                {t('bar.cta.button')}
               </button>
               <a
                 href="tel:+23675494969"

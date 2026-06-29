@@ -40,7 +40,6 @@ export function Navbar() {
     }, DROPDOWN_DELAY);
   };
   const location = useLocation();
-  const isHomePage = location.pathname === '/';
 
   useEffect(() => {
     const handleScroll = () => {
@@ -62,7 +61,6 @@ export function Navbar() {
   const navLinks = [
     { name: t('nav.home'), href: '/' },
     { name: t('nav.bienEtre'), href: '/bien-etre' },
-    { name: t('nav.services'), href: isHomePage ? '#services' : '/#services' },
     { name: t('nav.evenements'), href: '/evenements' }
   ];
 
@@ -101,7 +99,33 @@ export function Navbar() {
 
           {/* Desktop Menu */}
           <div className="hidden md:flex items-center space-x-8">
-            {/* Séjour Dropdown */}
+            {/* Accueil (first navLink) */}
+            {(() => {
+              const link = navLinks[0];
+              return link.href.startsWith('/') && !link.href.startsWith('/#') ? (
+                <Link
+                  key={link.name}
+                  to={link.href}
+                  className={`text-sm font-medium uppercase tracking-wider hover:text-brand-500 transition-colors ${
+                    isScrolled ? 'text-slate-600' : 'text-white/90'
+                  }`}
+                >
+                  {link.name}
+                </Link>
+              ) : (
+                <a
+                  key={link.name}
+                  href={link.href}
+                  className={`text-sm font-medium uppercase tracking-wider hover:text-brand-500 transition-colors ${
+                    isScrolled ? 'text-slate-600' : 'text-white/90'
+                  }`}
+                >
+                  {link.name}
+                </a>
+              );
+            })()}
+
+            {/* Séjour Dropdown (after Accueil) */}
             <div
               className="relative"
               onMouseEnter={openSejour}
@@ -135,7 +159,8 @@ export function Navbar() {
               )}
             </div>
 
-            {navLinks.map((link) =>
+            {/* Reste des navLinks (Bien-être, Événements) */}
+            {navLinks.slice(1).map((link) =>
               link.href.startsWith('/') && !link.href.startsWith('/#') ? (
                 <Link
                   key={link.name}
@@ -315,7 +340,31 @@ export function Navbar() {
             className="md:hidden bg-white absolute top-full left-0 w-full shadow-lg border-t border-slate-100"
           >
           <div className="px-4 pt-2 pb-6 space-y-1">
-            {/* Séjour section in mobile */}
+            {/* Accueil in mobile (first navLink) */}
+            {(() => {
+              const link = navLinks[0];
+              return link.href.startsWith('/') && !link.href.startsWith('/#') ? (
+                <Link
+                  key={link.name}
+                  to={link.href}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="block px-3 py-3 text-base font-medium text-slate-800 hover:text-brand-600 hover:bg-slate-50"
+                >
+                  {link.name}
+                </Link>
+              ) : (
+                <a
+                  key={link.name}
+                  href={link.href}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="block px-3 py-3 text-base font-medium text-slate-800 hover:text-brand-600 hover:bg-slate-50"
+                >
+                  {link.name}
+                </a>
+              );
+            })()}
+
+            {/* Séjour section in mobile (after Accueil) */}
             <div className="px-3 py-2">
               <span className={`text-xs font-bold uppercase tracking-wider text-slate-400 block mb-1`}>
                 {t('nav.rooms')}
@@ -334,7 +383,8 @@ export function Navbar() {
               </div>
             </div>
 
-            {navLinks.map((link) =>
+            {/* Reste des navLinks in mobile (Bien-être, Événements) */}
+            {navLinks.slice(1).map((link) =>
               link.href.startsWith('/') && !link.href.startsWith('/#') ? (
                 <Link
                   key={link.name}

@@ -15,11 +15,7 @@
     "bookPhone": "Réserver au +236 75 49 49 69"
   },
   "hero": {
-    "badge": "Nouvelle pépite de l'hôtellerie à Bangui",
-    "title": "L'Élégance & Le Confort",
-    "titleAccent": "au cœur de la capitale",
-    "subtitle": "Découvrez un boutique hôtel 3 étoiles au design raffiné, offrant un accueil chaleureux et des services de standing international.",
-    "ctaBook": "Réserver votre séjour",
+        "ctaBook": "Réserver votre séjour",
     "ctaDiscover": "Découvrir l'hôtel",
     "slideAlt1": "Façade du KM Hotel",
     "slideAlt2": "Hall d'entrée luxueux",
@@ -27,7 +23,33 @@
     "slideAlt4": "Vue aérienne de l'établissement",
     "ariaPrev": "Image précédente",
     "ariaNext": "Image suivante",
-    "ariaDot": "Aller à l'image {{n}}"
+    "ariaDot": "Aller à l'image {{n}}",
+    "slides": [
+      {
+        "badge": "Nouvelle pépite de l'hôtellerie à Bangui",
+        "title": "L'Élégance & Le Confort",
+        "titleAccent": "au cœur de la capitale",
+        "subtitle": "Découvrez un boutique hôtel 3 étoiles au design raffiné, offrant un accueil chaleureux et des services de standing international."
+      },
+      {
+        "badge": "Un Accueil d'Exception",
+        "title": "Luxe & Raffinement",
+        "titleAccent": "dès votre arrivée",
+        "subtitle": "Poussez les portes de notre hall élégant et laissez-vous séduire par une atmosphère unique où chaque détail a été pensé pour votre confort."
+      },
+      {
+        "badge": "Design & Sérénité",
+        "title": "Une Élégance Contemporaine",
+        "titleAccent": "pour un séjour inoubliable",
+        "subtitle": "Plongez dans des intérieurs raffinés alliant design contemporain, matériaux nobles et palette de couleurs apaisantes pour un bien-être absolu."
+      },
+      {
+        "badge": "Prestige en Afrique Centrale",
+        "title": "Une Adresse Iconique",
+        "titleAccent": "au cœur de Bangui",
+        "subtitle": "Découvrez le KM Hotel sous un nouveau jour — une destination de référence au centre de la capitale, offrant une expérience hôtelière inégalée."
+      }
+    ]
   },
   "about": {
     "badge": "Notre Histoire",
@@ -417,6 +439,113 @@
       "title": "Prêt à Organiser Votre Événement ?",
       "text": "Contactez notre équipe événementielle pour discuter de votre projet et recevoir un devis personnalisé.",
       "button": "Demander un devis"
+    }
+  },
+  "restaurant": {
+    "hero": {
+      "badge": "Gastronomie & Détente",
+      "title": "Notre Restaurant",
+      "subtitle": "Une expérience culinaire raffinée au cœur de Bangui, où les saveurs locales rencontrent la gastronomie internationale."
+    },
+    "intro": {
+      "badge": "Une Table d'Exception",
+      "title": "Voyage Culinaire au Cœur de l'Afrique",
+      "p1": "Le restaurant du KM Hotel vous invite à un voyage gustatif unique. Notre chef talentueux sublime les produits locaux les plus nobles — poisson frais du fleuve Oubangui, viandes de qualité, fruits et légumes gorgés de soleil — en leur apportant une touche de modernité et de raffinement.",
+      "p2": "Dans un cadre élégant aux tons chauds et naturels, chaque repas devient une expérience mémorable. Que ce soit pour un petit-déjeuner d'affaires, un déjeuner entre collègues ou un dîner romantique, notre équipe est aux petits soins pour vous."
+    },
+    "highlights": {
+      "badge": "Nos Services",
+      "title": "Restauration sur Place",
+      "subtitle": "Que vous soyez hôte de l'hôtel ou visiteur extérieur, nos espaces de restauration vous sont ouverts.",
+      "items": [
+        {
+          "title": "Petit-Déjeuner Buffet",
+          "hours": "06:30 - 10:00",
+          "desc": "Un buffet généreux mêlant viennoiseries artisanales, fruits frais, spécialités locales et boissons chaudes. De quoi bien démarrer la journée."
+        },
+        {
+          "title": "Déjeuner & Dîner",
+          "hours": "12:00 - 14:00 / 19:00 - 22:30",
+          "desc": "Une carte raffinée qui sublime les produits locaux : poisson du fleuve Oubangui, viande grillée, légumes frais du marché, le tout relevé de saveurs internationales."
+        }
+      ]
+    },
+    "menu": {
+      "badge": "À la Carte",
+      "title": "Suggestions du Chef",
+      "subtitle": "Notre chef sélectionne les meilleurs produits de saison pour vous offrir une carte renouvelée régulièrement."
+    },
+    "dishes": [
+      {
+        "name": "Brochettes de Capitaine",
+        "desc": "Poisson du fleuve Oubangui mariné aux épices locales, servi avec riz parfumé et légumes sautés",
+        "price": "À partir de 8 500 XAF",
+        "highlights": ["Poisson frais du fleuve Oubangui", "Mariné aux épices locales", "Accompagné de riz parfumé", "Légumes de saison sautés"],
+        "ingredients": ["Capitaine (poisson)", "Épices locales", "Riz parfumé", "Légumes frais", "Huile de palme", "Ail", "Citron"]
+      },
+      {
+        "name": "Filet de Bœuf au Poivre",
+        "desc": "Filet tendre grillé, sauce au poivre vert, gratin dauphinois et haricots verts",
+        "price": "À partir de 12 000 XAF",
+        "highlights": ["Filet de bœuf tendre grillé", "Sauce au poivre vert maison", "Gratin dauphinois crémeux", "Haricots verts frais"],
+        "ingredients": ["Filet de bœuf", "Poivre vert", "Crème fraîche", "Pommes de terre", "Haricots verts", "Beurre", "Thym"]
+      },
+      {
+        "name": "Poulet Yassa revisité",
+        "desc": "Cuisses de poulet confites dans une marinade oignons-citron, purée de patate douce",
+        "price": "À partir de 9 500 XAF",
+        "highlights": ["Cuisses de poulet confites", "Marinade oignons-citron", "Purée de patate douce onctueuse", "Recette traditionnelle revisitée"],
+        "ingredients": ["Cuisses de poulet", "Oignons", "Citron", "Patate douce", "Moutarde", "Huile d'olive", "Persil"]
+      },
+      {
+        "name": "Assiette Végétarienne",
+        "desc": "Légumes de saison rôtis, quinoa aux herbes, sauce vierge et croustillant de parmesan",
+        "price": "À partir de 7 000 XAF",
+        "highlights": ["Légumes de saison rôtis", "Quinoa aux herbes fraîches", "Sauce vierge maison", "Croustillant de parmesan"],
+        "ingredients": ["Légumes de saison", "Quinoa", "Herbes fraîches", "Parmesan", "Tomates cerises", "Huile d'olive", "Basilic"]
+      },
+      {
+        "name": "Panna Cotta Tropicale",
+        "desc": "Panna cotta vanille maison, assortiment de fruits tropicaux frais, coulis d'hibiscus et tuile croustillante",
+        "price": "À partir de 6 500 XAF",
+        "highlights": ["Panna cotta vanille maison", "Sélection de fruits tropicaux frais", "Coulis d'hibiscus", "Tuile aux amandes croustillante"],
+        "ingredients": ["Crème fraîche", "Gousse de vanille", "Mangue", "Ananas", "Fruit de la passion", "Hibiscus", "Amandes", "Blancs d'œufs"]
+      }
+    ],
+    "dishCard": {
+      "badge": "Signature",
+      "viewDetails": "Voir les détails"
+    },
+    "cta": {
+      "title": "Réservez Votre Table",
+      "text": "Que ce soit pour un dîner romantique, un déjeuner d'affaires ou une soirée entre amis, notre équipe vous réserve un accueil chaleureux.",
+      "button": "Réserver une table"
+    }
+  },
+  "bar": {
+    "hero": {
+      "badge": "Détente & Ambiance",
+      "title": "Bar Lounge",
+      "subtitle": "Un cadre feutré et cosy pour vos moments de détente, avec une sélection pointue de cocktails, vins et spiritueux."
+    },
+    "lounge": {
+      "label": "Bar Lounge",
+      "title": "L'Art de la Détente",
+      "text": "En fin de journée, notre Bar Lounge vous accueille dans une atmosphère feutrée et cosy. Canapés profonds, éclairage tamisé, musique d'ambiance : l'endroit idéal pour se détendre après une journée de travail ou de découverte.",
+      "hours": "17:00 - 00:00",
+      "location": "Rez-de-chaussée",
+      "cocktailTitle": "Notre Carte de Cocktails"
+    },
+    "cocktails": [
+      { "name": "KM Sunset", "desc": "Rhum, jus de fruits de la passion, sirop de gingembre, menthe fraîche", "price": "5 000 XAF" },
+      { "name": "Bangui Mule", "desc": "Vodka, ginger beer locale, citron vert, angostura", "price": "4 500 XAF" },
+      { "name": "Sangria Tropicale", "desc": "Vin rouge, fruits exotiques, cannelle, eau gazeuse", "price": "4 000 XAF" },
+      { "name": "Mocktail Hibiscus", "desc": "Infusion d'hibiscus, citronnelle, sirop de miel, eau pétillante (sans alcool)", "price": "3 000 XAF" }
+    ],
+    "cta": {
+      "title": "Vivez l'Ambiance du Bar",
+      "text": "Que ce soit pour un afterwork entre collègues, un rendez-vous en amoureux ou une soirée entre amis, venez découvrir notre sélection de cocktails signatures.",
+      "button": "Réserver une table"
     }
   },
   "restaurantBar": {

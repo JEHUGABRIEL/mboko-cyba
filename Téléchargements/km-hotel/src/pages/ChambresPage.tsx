@@ -14,15 +14,13 @@ import {
   Zap,
   Droplets,
   Phone,
-  Eye,
-  Home
+  Eye
 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useDataBuilder } from '../hooks/useDataBuilder';
 import { DetailModal, type RoomDetail } from '../components/DetailModal';
 import { useContactModal } from '../context/ContactModalContext';
 
-const ROOM_COUNT = 2;
 const FEATURE_COUNTS = [8, 9]; // features per room
 
 const roomImages = [
@@ -66,8 +64,6 @@ const fadeUp = {
   transition: { duration: 0.6 }
 };
 
-const sectionIds = Array.from({ length: ROOM_COUNT }, (_, i) => `room-${i}`);
-
 function buildRoomsData(t: (key: string) => string): RoomDetail[] {
   return [0, 1].map((i) => ({
     type: 'room' as const,
@@ -92,18 +88,104 @@ function buildAmenities(t: (key: string) => string) {
   }));
 }
 
-function RoomDetailButton({ room, label }: { room: RoomDetail; label: string }) {
+function RoomCard({ room, index, onBook }: { room: RoomDetail; index: number; onBook: () => void }) {
+  const { t } = useTranslation();
   const [selectedRoom, setSelectedRoom] = useState<RoomDetail | null>(null);
 
   return (
     <>
-      <button
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5, delay: index * 0.1 }}
         onClick={() => setSelectedRoom(room)}
-        className="flex items-center gap-1.5 px-5 py-3 border border-brand-600 text-brand-600 font-medium text-sm uppercase tracking-wider hover:bg-brand-50 transition-colors"
+        className="group cursor-pointer bg-white rounded-sm overflow-hidden border border-slate-100 hover:shadow-xl transition-all duration-500"
       >
-        <Eye className="w-4 h-4" />
-        {label}
-      </button>
+        {/* Image */}
+        <div className="relative h-56 sm:h-64 overflow-hidden">
+          <img
+            src={room.image}
+            alt={room.name}
+            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+
+          {/* Badge */}
+          <div className="absolute top-3 left-3">
+            <span className="px-2.5 py-1 bg-brand-600 text-white text-[10px] font-bold uppercase tracking-wider rounded-sm shadow-sm">
+              {room.badge}
+            </span>
+          </div>
+
+          {/* Hover overlay */}
+          <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+            <div className="flex items-center gap-2 px-5 py-2.5 bg-white/90 backdrop-blur-sm rounded-sm text-slate-800 text-sm font-medium translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+              <Eye className="w-4 h-4" />
+              {t('chambres.detailButton')}
+            </div>
+          </div>
+        </div>
+
+        {/* Content */}
+        <div className="p-5 sm:p-6">
+          <h4 className="text-lg font-serif text-slate-900 group-hover:text-brand-600 transition-colors duration-300 mb-1">
+            {room.name}
+          </h4>
+
+          {/* Meta */}
+          <div className="flex flex-wrap gap-x-3 gap-y-1 mt-2 mb-3 text-xs text-slate-500">
+            <span className="flex items-center gap-1">
+              <Square className="w-3.5 h-3.5 text-brand-500 shrink-0" />
+              {room.size}
+            </span>
+            <span className="flex items-center gap-1">
+              <Users className="w-3.5 h-3.5 text-brand-500 shrink-0" />
+              {room.capacity}
+            </span>
+            <span className="flex items-center gap-1">
+              <Bed className="w-3.5 h-3.5 text-brand-500 shrink-0" />
+              {room.bed}
+            </span>
+          </div>
+
+          {/* Description */}
+          <p className="text-sm text-slate-500 font-light leading-relaxed line-clamp-2 mb-3">
+            {room.description}
+          </p>
+
+          {/* Features (first 3) */}
+          <div className="space-y-1.5 mb-4">
+            {room.features.slice(0, 3).map((feature) => (
+              <div key={feature} className="flex items-center gap-2 text-xs text-slate-600">
+                <span className="w-1 h-1 rounded-full bg-brand-500 shrink-0" />
+                <span className="font-light truncate">{feature}</span>
+              </div>
+            ))}
+          </div>
+
+          {/* Price + Buttons */}
+          <div className="border-t border-slate-100 pt-4 flex items-center justify-between gap-2">
+            <span className="text-lg font-serif text-brand-600 whitespace-nowrap">
+              {room.price}
+            </span>
+            <div className="flex items-center gap-1.5">
+              <button
+                onClick={(e) => { e.stopPropagation(); setSelectedRoom(room); }}
+                className="px-3 py-2 border border-brand-600 text-brand-600 text-[11px] font-medium uppercase tracking-wider hover:bg-brand-50 transition-colors whitespace-nowrap"
+              >
+                {t('chambres.detailButton')}
+              </button>
+              <button
+                onClick={(e) => { e.stopPropagation(); onBook(); }}
+                className="px-3 py-2 bg-brand-600 text-white text-[11px] font-medium uppercase tracking-wider hover:bg-brand-700 transition-colors whitespace-nowrap"
+              >
+                {t('chambres.bookButton')}
+              </button>
+            </div>
+          </div>
+        </div>
+      </motion.div>
       <DetailModal item={selectedRoom} onClose={() => setSelectedRoom(null)} />
     </>
   );
@@ -113,7 +195,6 @@ export function ChambresPage() {
   const { t } = useTranslation();
   const { openModal } = useContactModal();
   const [current, setCurrent] = useState(0);
-  const [activeSection, setActiveSection] = useState('');
 
   const rooms = useDataBuilder(buildRoomsData, t);
   const amenities = useDataBuilder(buildAmenities, t);
@@ -126,28 +207,6 @@ export function ChambresPage() {
     const timer = setInterval(next, 5000);
     return () => clearInterval(timer);
   }, [next]);
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const visible = entries.filter((e) => e.isIntersecting);
-        if (visible.length > 0) {
-          const topmost = visible.reduce((best, curr) =>
-            curr.boundingClientRect.top < best.boundingClientRect.top ? curr : best
-          );
-          setActiveSection(topmost.target.id);
-        }
-      },
-      { threshold: 0.2, rootMargin: '-72px 0px -10% 0px' }
-    );
-
-    sectionIds.forEach((id) => {
-      const el = document.getElementById(id);
-      if (el) observer.observe(el);
-    });
-
-    return () => observer.disconnect();
-  }, []);
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -238,133 +297,12 @@ export function ChambresPage() {
         </div>
       </section>
 
-      {/* ===== ANCHOR NAVIGATION ===== */}
-      <div className="sticky top-[72px] z-30 bg-white/95 backdrop-blur-sm border-b border-slate-100 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-center gap-1 py-3">
-            {rooms.map((room, i) => {
-              const id = `room-${i}`;
-              return (
-                <a
-                  key={room.name}
-                  href={`#${id}`}
-                  className={`flex items-center gap-2 px-5 py-2.5 text-sm font-medium uppercase tracking-wider rounded-sm transition-all duration-200 ${
-                    activeSection === id
-                      ? 'text-brand-600 bg-brand-50'
-                      : 'text-slate-600 hover:text-brand-600 hover:bg-brand-50'
-                  }`}
-                >
-                  <Home className="w-4 h-4" />
-                  {room.name}
-                </a>
-              );
-            })}
-          </div>
-        </div>
-      </div>
-
       {/* ===== ROOMS GRID ===== */}
       <section className="py-24 bg-slate-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="space-y-24">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
             {rooms.map((room, index) => (
-              <motion.div
-                id={`room-${index}`}
-                key={room.name}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.7 }}
-                className={`scroll-mt-24 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center ${
-                  index % 2 === 1 ? 'lg:direction-rtl' : ''
-                }`}
-              >
-                {/* Image */}
-                <div
-                  className={`relative ${
-                    index % 2 === 1 ? 'lg:order-2' : 'lg:order-1'
-                  }`}
-                >
-                  <div className="aspect-[4/3] overflow-hidden rounded-sm shadow-xl">
-                    <img
-                      src={room.image}
-                      alt={room.name}
-                      className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
-                    />
-                    <div className="absolute inset-0 bg-black/10" />
-                  </div>
-
-                  {/* Badge */}
-                  <span className="absolute top-4 left-4 px-4 py-1.5 text-xs font-bold uppercase tracking-wider rounded-sm bg-brand-600 text-white">
-                    {room.badge}
-                  </span>
-                </div>
-
-                {/* Content */}
-                <div
-                  className={`${
-                    index % 2 === 1 ? 'lg:order-1 lg:text-right' : 'lg:order-2'
-                  }`}
-                >
-                  <h3 className="text-3xl md:text-4xl font-serif text-slate-900 mb-2">
-                    {room.name}
-                  </h3>
-
-                  <div className="flex flex-wrap gap-4 mt-4 mb-6 text-sm text-slate-500">
-                    <span className="flex items-center gap-1.5">
-                      <Square className="w-4 h-4 text-brand-500" />
-                      {room.size}
-                    </span>
-                    <span className="flex items-center gap-1.5">
-                      <Users className="w-4 h-4 text-brand-500" />
-                      {room.capacity}
-                    </span>
-                    <span className="flex items-center gap-1.5">
-                      <Bed className="w-4 h-4 text-brand-500" />
-                      {room.bed}
-                    </span>
-                  </div>
-
-                  <p
-                    className={`text-slate-600 font-light leading-relaxed mb-6 ${
-                      index % 2 === 1 ? 'lg:ml-auto' : ''
-                    }`}
-                  >
-                    {room.description}
-                  </p>
-
-                  <ul
-                    className={`space-y-2.5 mb-8 ${
-                      index % 2 === 1 ? 'lg:flex lg:flex-col lg:items-end' : ''
-                    }`}
-                  >
-                    {room.features.slice(0, 6).map((feature) => (
-                      <li
-                        key={feature}
-                        className="flex items-center gap-3 text-sm text-slate-700"
-                      >
-                        <span className="w-1.5 h-1.5 rounded-full bg-brand-500 shrink-0" />
-                        <span className="font-light">{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-
-                  <div className="flex items-center gap-3 flex-wrap">
-                    <span className="text-2xl font-serif text-brand-600">
-                      {room.price}
-                    </span>
-                    <div className="flex items-center gap-2">
-                      <RoomDetailButton room={room} label={t('chambres.detailButton')} />
-                      <button
-                        onClick={openModal}
-                        className="px-6 py-3 bg-brand-600 text-white font-medium text-sm uppercase tracking-wider hover:bg-brand-700 transition-colors"
-                      >
-                        {t('chambres.bookButton')}
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </motion.div>
+              <RoomCard key={room.name} room={room} index={index} onBook={openModal} />
             ))}
           </div>
         </div>

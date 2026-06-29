@@ -15,11 +15,7 @@
     "bookPhone": "Book at +236 75 49 49 69"
   },
   "hero": {
-    "badge": "Bangui's New Hospitality Gem",
-    "title": "Elegance & Comfort",
-    "titleAccent": "in the heart of the capital",
-    "subtitle": "Discover a 3-star boutique hotel with refined design, offering warm hospitality and international-class services.",
-    "ctaBook": "Book Your Stay",
+        "ctaBook": "Book Your Stay",
     "ctaDiscover": "Discover the Hotel",
     "slideAlt1": "KM Hotel Facade",
     "slideAlt2": "Luxurious Entrance Hall",
@@ -27,7 +23,33 @@
     "slideAlt4": "Aerial View of the Property",
     "ariaPrev": "Previous image",
     "ariaNext": "Next image",
-    "ariaDot": "Go to image {{n}}"
+    "ariaDot": "Go to image {{n}}",
+    "slides": [
+      {
+        "badge": "Bangui's New Hospitality Gem",
+        "title": "Elegance & Comfort",
+        "titleAccent": "in the heart of the capital",
+        "subtitle": "Discover a 3-star boutique hotel with refined design, offering warm hospitality and international-class services."
+      },
+      {
+        "badge": "An Exceptional Welcome",
+        "title": "Luxury & Refinement",
+        "titleAccent": "from the moment you arrive",
+        "subtitle": "Step into our elegant lobby and let yourself be enchanted by a unique atmosphere where every detail has been designed for your comfort."
+      },
+      {
+        "badge": "Design & Serenity",
+        "title": "Contemporary Elegance",
+        "titleAccent": "for an unforgettable stay",
+        "subtitle": "Immerse yourself in refined interiors that blend contemporary design, noble materials, and a soothing color palette for absolute well-being."
+      },
+      {
+        "badge": "Prestige in Central Africa",
+        "title": "A Landmark Address",
+        "titleAccent": "in the heart of Bangui",
+        "subtitle": "Discover KM Hotel from a new perspective — a landmark destination in the heart of the capital, offering an unmatched hospitality experience."
+      }
+    ]
   },
   "about": {
     "badge": "Our Story",
@@ -417,6 +439,113 @@
       "title": "Ready to Organize Your Event?",
       "text": "Contact our events team to discuss your project and receive a personalized quote.",
       "button": "Request a quote"
+    }
+  },
+  "restaurant": {
+    "hero": {
+      "badge": "Gastronomy & Relaxation",
+      "title": "Our Restaurant",
+      "subtitle": "A refined culinary experience in the heart of Bangui, where local flavors meet international gastronomy."
+    },
+    "intro": {
+      "badge": "An Exceptional Table",
+      "title": "Culinary Journey in the Heart of Africa",
+      "p1": "The KM Hotel restaurant invites you on a unique culinary journey. Our talented chef enhances the finest local produce — fresh fish from the Oubangui River, quality meats, sun-drenched fruits and vegetables — adding a touch of modernity and refinement.",
+      "p2": "In an elegant setting with warm, natural tones, every meal becomes a memorable experience. Whether for a business breakfast, a lunch with colleagues, or a romantic dinner, our team takes great care of you."
+    },
+    "highlights": {
+      "badge": "Our Services",
+      "title": "On-site Dining",
+      "subtitle": "Whether you are a hotel guest or an outside visitor, our dining spaces are open to you.",
+      "items": [
+        {
+          "title": "Breakfast Buffet",
+          "hours": "06:30 - 10:00",
+          "desc": "A generous buffet featuring artisan pastries, fresh fruit, local specialties and hot drinks. A great way to start the day."
+        },
+        {
+          "title": "Lunch & Dinner",
+          "hours": "12:00 - 14:00 / 19:00 - 22:30",
+          "desc": "A refined menu that celebrates local produce: Oubangui River fish, grilled meat, fresh market vegetables, all enhanced with international flavors."
+        }
+      ]
+    },
+    "menu": {
+      "badge": "À la Carte",
+      "title": "Chef's Suggestions",
+      "subtitle": "Our chef selects the best seasonal produce to offer a regularly renewed menu."
+    },
+    "dishes": [
+      {
+        "name": "Captain Fish Skewers",
+        "desc": "Oubangui River fish marinated in local spices, served with fragrant rice and sautéed vegetables",
+        "price": "From 8,500 XAF",
+        "highlights": ["Fresh Oubangui River fish", "Marinated in local spices", "Served with fragrant rice", "Seasonal sautéed vegetables"],
+        "ingredients": ["Captain fish", "Local spices", "Fragrant rice", "Fresh vegetables", "Palm oil", "Garlic", "Lemon"]
+      },
+      {
+        "name": "Pepper-Crusted Beef Tenderloin",
+        "desc": "Tender grilled fillet, green peppercorn sauce, dauphinoise gratin and green beans",
+        "price": "From 12,000 XAF",
+        "highlights": ["Tender grilled beef fillet", "Homemade green peppercorn sauce", "Creamy dauphinoise gratin", "Fresh green beans"],
+        "ingredients": ["Beef tenderloin", "Green peppercorns", "Fresh cream", "Potatoes", "Green beans", "Butter", "Thyme"]
+      },
+      {
+        "name": "Revisited Yassa Chicken",
+        "desc": "Confit chicken thighs in onion-lemon marinade, sweet potato mash",
+        "price": "From 9,500 XAF",
+        "highlights": ["Confit chicken thighs", "Onion-lemon marinade", "Creamy sweet potato mash", "Revisited traditional recipe"],
+        "ingredients": ["Chicken thighs", "Onions", "Lemon", "Sweet potato", "Mustard", "Olive oil", "Parsley"]
+      },
+      {
+        "name": "Vegetarian Plate",
+        "desc": "Seasonal roasted vegetables, herb quinoa, vinaigrette sauce and parmesan crisp",
+        "price": "From 7,000 XAF",
+        "highlights": ["Seasonal roasted vegetables", "Herb quinoa", "Homemade vinaigrette sauce", "Parmesan crisp"],
+        "ingredients": ["Seasonal vegetables", "Quinoa", "Fresh herbs", "Parmesan", "Cherry tomatoes", "Olive oil", "Basil"]
+      },
+      {
+        "name": "Tropical Panna Cotta",
+        "desc": "Homemade vanilla panna cotta, fresh tropical fruit medley, hibiscus coulis and crispy tuile",
+        "price": "From 6,500 XAF",
+        "highlights": ["Homemade vanilla panna cotta", "Fresh tropical fruit selection", "Hibiscus coulis", "Crispy almond tuile"],
+        "ingredients": ["Fresh cream", "Vanilla pod", "Mango", "Pineapple", "Passion fruit", "Hibiscus", "Almonds", "Egg whites"]
+      }
+    ],
+    "dishCard": {
+      "badge": "Signature",
+      "viewDetails": "View Details"
+    },
+    "cta": {
+      "title": "Reserve Your Table",
+      "text": "Whether for a romantic dinner, a business lunch or an evening with friends, our team offers you a warm welcome.",
+      "button": "Reserve a Table"
+    }
+  },
+  "bar": {
+    "hero": {
+      "badge": "Relaxation & Atmosphere",
+      "title": "Bar Lounge",
+      "subtitle": "A cozy, intimate setting for your relaxation moments, with a curated selection of cocktails, wines and spirits."
+    },
+    "lounge": {
+      "label": "Bar Lounge",
+      "title": "The Art of Relaxation",
+      "text": "At the end of the day, our Bar Lounge welcomes you in a warm and cozy atmosphere. Deep sofas, dim lighting, background music: the perfect place to unwind after a day of work or exploration.",
+      "hours": "17:00 - 00:00",
+      "location": "Ground floor",
+      "cocktailTitle": "Our Cocktail Menu"
+    },
+    "cocktails": [
+      { "name": "KM Sunset", "desc": "Rum, passion fruit juice, ginger syrup, fresh mint", "price": "5,000 XAF" },
+      { "name": "Bangui Mule", "desc": "Vodka, local ginger beer, lime, angostura", "price": "4,500 XAF" },
+      { "name": "Tropical Sangria", "desc": "Red wine, exotic fruits, cinnamon, sparkling water", "price": "4,000 XAF" },
+      { "name": "Hibiscus Mocktail", "desc": "Hibiscus infusion, lemongrass, honey syrup, sparkling water (non-alcoholic)", "price": "3,000 XAF" }
+    ],
+    "cta": {
+      "title": "Experience the Bar Ambiance",
+      "text": "Whether for an afterwork with colleagues, a romantic date or an evening with friends, come discover our selection of signature cocktails.",
+      "button": "Reserve a Table"
     }
   },
   "restaurantBar": {

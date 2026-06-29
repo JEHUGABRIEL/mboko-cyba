@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import {
   ChevronDown,
@@ -30,88 +31,17 @@ const heroSlides = [
   }
 ];
 
-const restaurantHighlights = [
-  {
-    title: 'Petit-Déjeuner Buffet',
-    icon: <Coffee className="w-6 h-6" />,
-    hours: '06:30 - 10:00',
-    description:
-      'Un buffet généreux mêlant viennoiseries artisanales, fruits frais, spécialités locales et boissons chaudes. De quoi bien démarrer la journée.',
-    image:
-      'https://images.unsplash.com/photo-1551218808-94e220e084d2?auto=format&fit=crop&q=80'
-  },
-  {
-    title: 'Déjeuner & Dîner',
-    icon: <UtensilsCrossed className="w-6 h-6" />,
-    hours: '12:00 - 14:00 / 19:00 - 22:30',
-    description:
-      'Une carte raffinée qui sublime les produits locaux : poisson du fleuve Oubangui, viande grillée, légumes frais du marché, le tout relevé de saveurs internationales.',
-    image:
-      'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&q=80'
-  }
+const dishImages = [
+  'https://images.unsplash.com/photo-1563379926898-05f4575a45d8?auto=format&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1558030006-450675393462?auto=format&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1598103442097-8b74394b95c6?auto=format&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1488477181946-6428a0291777?auto=format&fit=crop&q=80'
 ];
 
-const signatureDishes: DishDetail[] = [
-  {
-    type: 'dish',
-    name: 'Brochettes de Capitaine',
-    desc: 'Poisson du fleuve Oubangui mariné aux épices locales, servi avec riz parfumé et légumes sautés',
-    price: 'À partir de 8 500 XAF',
-    image:
-      'https://images.unsplash.com/photo-1563379926898-05f4575a45d8?auto=format&fit=crop&q=80',
-    highlights: [
-      'Poisson frais du fleuve Oubangui',
-      'Mariné aux épices locales',
-      'Accompagné de riz parfumé',
-      'Légumes de saison sautés'
-    ],
-    ingredients: ['Capitaine (poisson)', 'Épices locales', 'Riz parfumé', 'Légumes frais', 'Huile de palme', 'Ail', 'Citron']
-  },
-  {
-    type: 'dish',
-    name: 'Filet de Bœuf au Poivre',
-    desc: 'Filet tendre grillé, sauce au poivre vert, gratin dauphinois et haricots verts',
-    price: 'À partir de 12 000 XAF',
-    image:
-      'https://images.unsplash.com/photo-1558030006-450675393462?auto=format&fit=crop&q=80',
-    highlights: [
-      'Filet de bœuf tendre grillé',
-      'Sauce au poivre vert maison',
-      'Gratin dauphinois crémeux',
-      'Haricots verts frais'
-    ],
-    ingredients: ['Filet de bœuf', 'Poivre vert', 'Crème fraîche', 'Pommes de terre', 'Haricots verts', 'Beurre', 'Thym']
-  },
-  {
-    type: 'dish',
-    name: 'Poulet Yassa revisité',
-    desc: 'Cuisses de poulet confites dans une marinade oignons-citron, purée de patate douce',
-    price: 'À partir de 9 500 XAF',
-    image:
-      'https://images.unsplash.com/photo-1598103442097-8b74394b95c6?auto=format&fit=crop&q=80',
-    highlights: [
-      'Cuisses de poulet confites',
-      'Marinade oignons-citron',
-      'Purée de patate douce onctueuse',
-      'Recette traditionnelle revisitée'
-    ],
-    ingredients: ['Cuisses de poulet', 'Oignons', 'Citron', 'Patate douce', 'Moutarde', "Huile d'olive", 'Persil']
-  },
-  {
-    type: 'dish',
-    name: 'Assiette Végétarienne',
-    desc: 'Légumes de saison rôtis, quinoa aux herbes, sauce vierge et croustillant de parmesan',
-    price: 'À partir de 7 000 XAF',
-    image:
-      'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&q=80',
-    highlights: [
-      'Légumes de saison rôtis',
-      'Quinoa aux herbes fraîches',
-      'Sauce vierge maison',
-      'Croustillant de parmesan'
-    ],
-    ingredients: ['Légumes de saison', 'Quinoa', 'Herbes fraîches', 'Parmesan', 'Tomates cerises', "Huile d'olive", 'Basilic']
-  }
+const highlightImages = [
+  'https://images.unsplash.com/photo-1551218808-94e220e084d2?auto=format&fit=crop&q=80',
+  'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&q=80'
 ];
 
 const fadeUp = {
@@ -122,7 +52,23 @@ const fadeUp = {
 };
 
 function DishCard({ dish, index }: { dish: DishDetail; index: number }) {
+  const { t } = useTranslation();
   const [selectedDish, setSelectedDish] = useState<DishDetail | null>(null);
+  const [slideIndex, setSlideIndex] = useState(0);
+
+  // Alternate between 2 dish images on a timer
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setSlideIndex((prev) => (prev + 1) % 2);
+    }, 4000);
+    return () => clearInterval(timer);
+  }, []);
+
+  // Use dish image + a complementary food image for each card
+  const dishSlideImages = [
+    dish.image,
+    dishImages[(index + 2) % dishImages.length]
+  ];
 
   return (
     <>
@@ -135,15 +81,19 @@ function DishCard({ dish, index }: { dish: DishDetail; index: number }) {
         className="group cursor-pointer bg-white rounded-sm overflow-hidden border border-slate-100 hover:shadow-xl transition-all duration-500"
       >
         <div className="relative h-48 sm:h-56 overflow-hidden">
-          <img
-            src={dish.image}
-            alt={dish.name}
-            className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-          />
+          {dishSlideImages.map((src, i) => (
+            <img
+              key={src}
+              src={src}
+              alt={dish.name}
+              className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000 ease-in-out"
+              style={{ opacity: i === slideIndex ? 1 : 0 }}
+            />
+          ))}
           <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
           <div className="absolute top-3 left-3">
             <span className="px-2.5 py-1 bg-brand-600 text-white text-[10px] font-bold uppercase tracking-wider rounded-sm shadow-sm">
-              Signature
+              {t('restaurant.dishCard.badge')}
             </span>
           </div>
           <div className="absolute top-3 right-3">
@@ -154,8 +104,23 @@ function DishCard({ dish, index }: { dish: DishDetail; index: number }) {
           <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
             <div className="flex items-center gap-2 px-5 py-2.5 bg-white/90 backdrop-blur-sm rounded-sm text-slate-800 text-sm font-medium translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
               <Eye className="w-4 h-4" />
-              Voir les détails
+              {t('restaurant.dishCard.viewDetails')}
             </div>
+          </div>
+          {/* Dots */}
+          <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex items-center gap-1.5">
+            {dishSlideImages.map((_, i) => (
+              <button
+                key={i}
+                onClick={(e) => { e.stopPropagation(); setSlideIndex(i); }}
+                className={`rounded-full transition-all duration-300 ${
+                  i === slideIndex
+                    ? 'w-5 h-1.5 bg-white'
+                    : 'w-1.5 h-1.5 bg-white/50 hover:bg-white/80'
+                }`}
+                aria-label={`Image ${i + 1}`}
+              />
+            ))}
           </div>
         </div>
         <div className="p-5 sm:p-6">
@@ -185,6 +150,7 @@ function DishCard({ dish, index }: { dish: DishDetail; index: number }) {
 }
 
 export function RestaurantPage() {
+  const { t } = useTranslation();
   const { openModal } = useContactModal();
   const [current, setCurrent] = useState(0);
 
@@ -196,6 +162,32 @@ export function RestaurantPage() {
     const timer = setInterval(next, 5000);
     return () => clearInterval(timer);
   }, [next]);
+
+  const highlightData = t('restaurant.highlights.items', { returnObjects: true }) as {
+    title: string; hours: string; desc: string;
+  }[];
+
+  const restaurantHighlights = highlightData.map((item, i) => ({
+    title: item.title,
+    hours: item.hours,
+    description: item.desc,
+    icon: i === 0 ? <Coffee className="w-6 h-6" /> : <UtensilsCrossed className="w-6 h-6" />,
+    image: highlightImages[i]
+  }));
+
+  const dishData = t('restaurant.dishes', { returnObjects: true }) as {
+    name: string; desc: string; price: string; highlights: string[]; ingredients: string[];
+  }[];
+
+  const signatureDishes: DishDetail[] = dishData.map((dish, i) => ({
+    type: 'dish',
+    name: dish.name,
+    desc: dish.desc,
+    price: dish.price,
+    image: dishImages[i],
+    highlights: dish.highlights,
+    ingredients: dish.ingredients
+  }));
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -225,13 +217,13 @@ export function RestaurantPage() {
             transition={{ duration: 0.8, ease: 'easeOut' }}
           >
             <span className="text-brand-300 font-medium tracking-[0.2em] uppercase text-sm md:text-base mb-4 block">
-              Gastronomie & Détente
+              {t('restaurant.hero.badge')}
             </span>
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-serif text-white font-bold mb-6 leading-tight">
-              Notre Restaurant
+              {t('restaurant.hero.title')}
             </h1>
             <p className="text-lg md:text-xl text-slate-200 max-w-2xl mx-auto font-light">
-              Une expérience culinaire raffinée au cœur de Bangui, où les saveurs locales rencontrent la gastronomie internationale.
+              {t('restaurant.hero.subtitle')}
             </p>
           </motion.div>
         </div>
@@ -256,25 +248,14 @@ export function RestaurantPage() {
               transition={{ duration: 0.7 }}
             >
               <h2 className="text-brand-600 font-medium tracking-widest uppercase text-sm mb-3">
-                Une Table d'Exception
+                {t('restaurant.intro.badge')}
               </h2>
               <h3 className="text-4xl font-serif text-slate-900 mb-6 leading-tight">
-                Voyage Culinaire au Cœur de l'Afrique
+                {t('restaurant.intro.title')}
               </h3>
               <div className="space-y-4 text-slate-600 font-light leading-relaxed">
-                <p>
-                  Le restaurant du KM Hotel vous invite à un voyage gustatif
-                  unique. Notre chef talentueux sublime les produits locaux les
-                  plus nobles — poisson frais du fleuve Oubangui, viandes de
-                  qualité, fruits et légumes gorgés de soleil — en leur apportant
-                  une touche de modernité et de raffinement.
-                </p>
-                <p>
-                  Dans un cadre élégant aux tons chauds et naturels, chaque repas
-                  devient une expérience mémorable. Que ce soit pour un petit-déjeuner
-                  d'affaires, un déjeuner entre collègues ou un dîner romantique,
-                  notre équipe est aux petits soins pour vous.
-                </p>
+                <p>{t('restaurant.intro.p1')}</p>
+                <p>{t('restaurant.intro.p2')}</p>
               </div>
             </motion.div>
 
@@ -288,7 +269,7 @@ export function RestaurantPage() {
               <div className="aspect-[4/3] overflow-hidden rounded-sm shadow-xl">
                 <img
                   src="https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?auto=format&fit=crop&q=80"
-                  alt="Restaurant KM Hotel"
+                  alt={t('restaurant.intro.badge')}
                   className="w-full h-full object-cover"
                 />
               </div>
@@ -309,14 +290,13 @@ export function RestaurantPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div {...fadeUp} className="text-center max-w-3xl mx-auto mb-16">
             <h2 className="text-brand-600 font-medium tracking-widest uppercase text-sm mb-3">
-              Nos Services
+              {t('restaurant.highlights.badge')}
             </h2>
             <h3 className="text-4xl font-serif text-slate-900 mb-6">
-              Restauration sur Place
+              {t('restaurant.highlights.title')}
             </h3>
             <p className="text-slate-600 font-light">
-              Que vous soyez hôte de l'hôtel ou visiteur extérieur, nos espaces
-              de restauration vous sont ouverts.
+              {t('restaurant.highlights.subtitle')}
             </p>
           </motion.div>
 
@@ -365,18 +345,17 @@ export function RestaurantPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div {...fadeUp} className="text-center max-w-3xl mx-auto mb-16">
             <h2 className="text-brand-600 font-medium tracking-widest uppercase text-sm mb-3">
-              À la Carte
+              {t('restaurant.menu.badge')}
             </h2>
             <h3 className="text-4xl font-serif text-slate-900 mb-6">
-              Suggestions du Chef
+              {t('restaurant.menu.title')}
             </h3>
             <p className="text-slate-600 font-light">
-              Notre chef sélectionne les meilleurs produits de saison pour vous
-              offrir une carte renouvelée régulièrement.
+              {t('restaurant.menu.subtitle')}
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-8 mb-16">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
             {signatureDishes.map((dish, index) => (
               <DishCard key={dish.name} dish={dish} index={index} />
             ))}
@@ -404,19 +383,17 @@ export function RestaurantPage() {
             transition={{ duration: 0.6 }}
           >
             <h2 className="text-3xl md:text-5xl font-serif mb-6 leading-tight">
-              Réservez Votre Table
+              {t('restaurant.cta.title')}
             </h2>
             <p className="text-slate-300 font-light text-lg mb-10 max-w-2xl mx-auto">
-              Que ce soit pour un dîner romantique, un déjeuner d'affaires ou
-              une soirée entre amis, notre équipe vous réserve un accueil
-              chaleureux.
+              {t('restaurant.cta.text')}
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
               <button
                 onClick={openModal}
                 className="px-8 py-4 bg-brand-600 text-white font-medium tracking-wide hover:bg-brand-700 transition-colors"
               >
-                Réserver une table
+                {t('restaurant.cta.button')}
               </button>
               <a
                 href="tel:+23675494969"
