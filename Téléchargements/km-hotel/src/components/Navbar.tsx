@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X, Phone, Globe, ChevronDown } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -71,8 +72,8 @@ export function Navbar() {
   ];
 
   const restoSubLinks = [
-    { name: t('nav.restaurantSub'), href: '/restaurant-bar#restaurant' },
-    { name: t('nav.barSub'), href: '/restaurant-bar#bar' }
+    { name: t('nav.restaurantSub'), href: '/restaurant' },
+    { name: t('nav.barSub'), href: '/bar' }
   ];
 
   const currentLang = i18n.language?.startsWith('fr') ? 'FR' : 'EN';
@@ -257,30 +258,38 @@ export function Navbar() {
               <Globe className="w-3 h-3" />
               {currentLang}
             </button>
-            {isLangMenuOpen && (
-              <div className="absolute top-full right-16 mt-1 w-28 bg-white shadow-lg border border-slate-100 rounded-sm overflow-hidden z-50">
-                <button
-                  onClick={() => changeLanguage('fr')}
-                  className={`w-full text-left px-4 py-2.5 text-sm font-medium transition-colors hover:bg-brand-50 ${
-                    currentLang === 'FR'
-                      ? 'text-brand-600 bg-brand-50'
-                      : 'text-slate-700'
-                  }`}
+            <AnimatePresence>
+              {isLangMenuOpen && (
+                <motion.div
+                  initial={{ opacity: 0, y: -8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -8 }}
+                  transition={{ duration: 0.15, ease: 'easeInOut' }}
+                  className="absolute top-full right-16 mt-1 w-28 bg-white shadow-lg border border-slate-100 rounded-sm overflow-hidden z-50"
                 >
-                  Français
-                </button>
-                <button
-                  onClick={() => changeLanguage('en')}
-                  className={`w-full text-left px-4 py-2.5 text-sm font-medium transition-colors hover:bg-brand-50 ${
-                    currentLang === 'EN'
-                      ? 'text-brand-600 bg-brand-50'
-                      : 'text-slate-700'
-                  }`}
-                >
-                  English
-                </button>
-              </div>
-            )}
+                  <button
+                    onClick={() => changeLanguage('fr')}
+                    className={`w-full text-left px-4 py-2.5 text-sm font-medium transition-colors hover:bg-brand-50 ${
+                      currentLang === 'FR'
+                        ? 'text-brand-600 bg-brand-50'
+                        : 'text-slate-700'
+                    }`}
+                  >
+                    Français
+                  </button>
+                  <button
+                    onClick={() => changeLanguage('en')}
+                    className={`w-full text-left px-4 py-2.5 text-sm font-medium transition-colors hover:bg-brand-50 ${
+                      currentLang === 'EN'
+                        ? 'text-brand-600 bg-brand-50'
+                        : 'text-slate-700'
+                    }`}
+                  >
+                    English
+                  </button>
+                </motion.div>
+              )}
+            </AnimatePresence>
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className={`${isScrolled ? 'text-slate-900' : 'text-white'}`}
@@ -296,8 +305,15 @@ export function Navbar() {
       </div>
 
       {/* Mobile Menu */}
-      {isMobileMenuOpen && (
-        <div className="md:hidden bg-white absolute top-full left-0 w-full shadow-lg border-t border-slate-100">
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.2, ease: 'easeInOut' }}
+            className="md:hidden bg-white absolute top-full left-0 w-full shadow-lg border-t border-slate-100"
+          >
           <div className="px-4 pt-2 pb-6 space-y-1">
             {/* Séjour section in mobile */}
             <div className="px-3 py-2">
@@ -367,8 +383,9 @@ export function Navbar() {
               {t('nav.bookPhone')}
             </button>
           </div>
-        </div>
+        </motion.div>
       )}
+      </AnimatePresence>
     </nav>
   );
 }

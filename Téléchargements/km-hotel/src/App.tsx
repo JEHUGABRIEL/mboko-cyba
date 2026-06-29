@@ -10,7 +10,8 @@ import { Dining } from './components/Dining';
 import { Testimonials } from './components/Testimonials';
 import { Contact } from './components/Contact';
 import { ChambresPage } from './pages/ChambresPage';
-import { RestaurantBarPage } from './pages/RestaurantBarPage';
+import { RestaurantPage } from './pages/RestaurantPage';
+import { BarPage } from './pages/BarPage';
 import { BienEtrePage } from './pages/BienEtrePage';
 import { SuitesPage } from './pages/SuitesPage';
 import { EvenementsPage } from './pages/EvenementsPage';
@@ -41,7 +42,8 @@ export function App() {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/chambres" element={<ChambresPage />} />
-            <Route path="/restaurant-bar" element={<RestaurantBarPage />} />
+            <Route path="/restaurant" element={<RestaurantPage />} />
+            <Route path="/bar" element={<BarPage />} />
             <Route path="/bien-etre" element={<BienEtrePage />} />
             <Route path="/suites" element={<SuitesPage />} />
             <Route path="/evenements" element={<EvenementsPage />} />

@@ -4,16 +4,31 @@ import {
   ChevronDown,
   Clock,
   UtensilsCrossed,
-  Wine,
   Coffee,
   Star,
   Phone,
-  MapPin,
-  Sparkles,
   Eye
 } from 'lucide-react';
 import { DetailModal, type DishDetail } from '../components/DetailModal';
 import { useContactModal } from '../context/ContactModalContext';
+
+const heroSlides = [
+  {
+    image:
+      'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&q=80',
+    alt: 'Restaurant KM Hotel'
+  },
+  {
+    image:
+      'https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?auto=format&fit=crop&q=80',
+    alt: 'Salle à manger KM Hotel'
+  },
+  {
+    image:
+      'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&q=80',
+    alt: 'Plat gastronomique KM Hotel'
+  }
+];
 
 const restaurantHighlights = [
   {
@@ -33,15 +48,6 @@ const restaurantHighlights = [
       'Une carte raffinée qui sublime les produits locaux : poisson du fleuve Oubangui, viande grillée, légumes frais du marché, le tout relevé de saveurs internationales.',
     image:
       'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&q=80'
-  },
-  {
-    title: 'Bar Lounge & Cocktails',
-    icon: <Wine className="w-6 h-6" />,
-    hours: '17:00 - 00:00',
-    description:
-      'Une sélection pointue de vins, champagnes et spiritueux, des cocktails signatures créés par notre barman, le tout dans une ambiance feutrée et élégante.',
-    image:
-      'https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&q=80'
   }
 ];
 
@@ -89,7 +95,7 @@ const signatureDishes: DishDetail[] = [
       'Purée de patate douce onctueuse',
       'Recette traditionnelle revisitée'
     ],
-    ingredients: ['Cuisses de poulet', 'Oignons', 'Citron', 'Patate douce', 'Moutarde', 'Huile d\'olive', 'Persil']
+    ingredients: ['Cuisses de poulet', 'Oignons', 'Citron', 'Patate douce', 'Moutarde', "Huile d'olive", 'Persil']
   },
   {
     type: 'dish',
@@ -104,53 +110,7 @@ const signatureDishes: DishDetail[] = [
       'Sauce vierge maison',
       'Croustillant de parmesan'
     ],
-    ingredients: ['Légumes de saison', 'Quinoa', 'Herbes fraîches', 'Parmesan', 'Tomates cerises', 'Huile d\'olive', 'Basilic']
-  }
-];
-
-const signatureCocktails = [
-  {
-    name: 'KM Sunset',
-    desc: 'Rhum, jus de fruits de la passion, sirop de gingembre, menthe fraîche',
-    price: '5 000 XAF'
-  },
-  {
-    name: 'Bangui Mule',
-    desc: 'Vodka, ginger beer locale, citron vert, angostura',
-    price: '4 500 XAF'
-  },
-  {
-    name: 'Sangria Tropicale',
-    desc: 'Vin rouge, fruits exotiques, cannelle, eau gazeuse',
-    price: '4 000 XAF'
-  },
-  {
-    name: 'Mocktail Hibiscus',
-    desc: 'Infusion d\'hibiscus, citronnelle, sirop de miel, eau pétillante (sans alcool)',
-    price: '3 000 XAF'
-  }
-];
-
-const heroSlides = [
-  {
-    image:
-      'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&q=80',
-    alt: 'Restaurant KM Hotel'
-  },
-  {
-    image:
-      'https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?auto=format&fit=crop&q=80',
-    alt: 'Salle à manger KM Hotel'
-  },
-  {
-    image:
-      'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&q=80',
-    alt: 'Plat gastronomique KM Hotel'
-  },
-  {
-    image:
-      'https://images.unsplash.com/photo-1470337458703-46ad1756a187?auto=format&fit=crop&q=80',
-    alt: 'Bar lounge KM Hotel'
+    ingredients: ['Légumes de saison', 'Quinoa', 'Herbes fraîches', 'Parmesan', 'Tomates cerises', "Huile d'olive", 'Basilic']
   }
 ];
 
@@ -174,7 +134,6 @@ function DishCard({ dish, index }: { dish: DishDetail; index: number }) {
         onClick={() => setSelectedDish(dish)}
         className="group cursor-pointer bg-white rounded-sm overflow-hidden border border-slate-100 hover:shadow-xl transition-all duration-500"
       >
-        {/* Image */}
         <div className="relative h-48 sm:h-56 overflow-hidden">
           <img
             src={dish.image}
@@ -182,22 +141,16 @@ function DishCard({ dish, index }: { dish: DishDetail; index: number }) {
             className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
-          {/* Badge */}
           <div className="absolute top-3 left-3">
             <span className="px-2.5 py-1 bg-brand-600 text-white text-[10px] font-bold uppercase tracking-wider rounded-sm shadow-sm">
               Signature
             </span>
           </div>
-
-          {/* Price badge */}
           <div className="absolute top-3 right-3">
             <span className="px-2.5 py-1 bg-white/90 backdrop-blur-sm text-brand-700 text-xs font-bold rounded-sm shadow-sm">
               {dish.price}
             </span>
           </div>
-
-          {/* Hover overlay */}
           <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-500">
             <div className="flex items-center gap-2 px-5 py-2.5 bg-white/90 backdrop-blur-sm rounded-sm text-slate-800 text-sm font-medium translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
               <Eye className="w-4 h-4" />
@@ -205,8 +158,6 @@ function DishCard({ dish, index }: { dish: DishDetail; index: number }) {
             </div>
           </div>
         </div>
-
-        {/* Content */}
         <div className="p-5 sm:p-6">
           <div className="flex items-start justify-between gap-3 mb-2">
             <h4 className="text-lg font-serif text-slate-900 group-hover:text-brand-600 transition-colors duration-300">
@@ -219,8 +170,6 @@ function DishCard({ dish, index }: { dish: DishDetail; index: number }) {
           <p className="text-sm text-slate-500 font-light leading-relaxed line-clamp-2">
             {dish.desc}
           </p>
-
-          {/* Stars */}
           <div className="flex items-center gap-0.5 mt-3">
             <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
             <Star className="w-3.5 h-3.5 fill-amber-400 text-amber-400" />
@@ -230,13 +179,12 @@ function DishCard({ dish, index }: { dish: DishDetail; index: number }) {
           </div>
         </div>
       </motion.div>
-
       <DetailModal item={selectedDish} onClose={() => setSelectedDish(null)} />
     </>
   );
 }
 
-export function RestaurantBarPage() {
+export function RestaurantPage() {
   const { openModal } = useContactModal();
   const [current, setCurrent] = useState(0);
 
@@ -253,7 +201,6 @@ export function RestaurantBarPage() {
     <div className="min-h-screen bg-slate-50">
       {/* ===== HERO ===== */}
       <section className="relative h-[60vh] md:h-[70vh] flex items-center justify-center overflow-hidden">
-        {/* Background Slides */}
         {heroSlides.map((slide, index) => (
           <div
             key={slide.image}
@@ -281,11 +228,10 @@ export function RestaurantBarPage() {
               Gastronomie & Détente
             </span>
             <h1 className="text-4xl md:text-6xl lg:text-7xl font-serif text-white font-bold mb-6 leading-tight">
-              Restaurant & Bar Lounge
+              Notre Restaurant
             </h1>
             <p className="text-lg md:text-xl text-slate-200 max-w-2xl mx-auto font-light">
-              Une expérience culinaire raffinée et un bar lounge cosy pour vos
-              moments de détente au KM Hotel.
+              Une expérience culinaire raffinée au cœur de Bangui, où les saveurs locales rencontrent la gastronomie internationale.
             </p>
           </motion.div>
         </div>
@@ -359,7 +305,7 @@ export function RestaurantBarPage() {
       </section>
 
       {/* ===== RESTAURANT HIGHLIGHTS ===== */}
-      <section id="restaurant" className="py-24 bg-slate-50 scroll-mt-24">
+      <section className="py-24 bg-slate-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div {...fadeUp} className="text-center max-w-3xl mx-auto mb-16">
             <h2 className="text-brand-600 font-medium tracking-widest uppercase text-sm mb-3">
@@ -386,11 +332,7 @@ export function RestaurantBarPage() {
                   index % 2 === 1 ? 'lg:direction-rtl' : ''
                 }`}
               >
-                <div
-                  className={`${
-                    index % 2 === 1 ? 'lg:order-2' : 'lg:order-1'
-                  }`}
-                >
+                <div className={`${index % 2 === 1 ? 'lg:order-2' : 'lg:order-1'}`}>
                   <div className="aspect-[4/3] overflow-hidden rounded-sm shadow-lg">
                     <img
                       src={item.image}
@@ -399,30 +341,18 @@ export function RestaurantBarPage() {
                     />
                   </div>
                 </div>
-                <div
-                  className={`${
-                    index % 2 === 1 ? 'lg:order-1 lg:text-right' : 'lg:order-2'
-                  }`}
-                >
-                  <div
-                    className={`flex items-center gap-3 mb-4 ${
-                      index % 2 === 1 ? 'lg:justify-end' : ''
-                    }`}
-                  >
+                <div className={`${index % 2 === 1 ? 'lg:order-1 lg:text-right' : 'lg:order-2'}`}>
+                  <div className={`flex items-center gap-3 mb-4 ${index % 2 === 1 ? 'lg:justify-end' : ''}`}>
                     <div className="w-12 h-12 bg-brand-50 text-brand-600 rounded-full flex items-center justify-center">
                       {item.icon}
                     </div>
                   </div>
-                  <h3 className="text-3xl font-serif text-slate-900 mb-3">
-                    {item.title}
-                  </h3>
+                  <h3 className="text-3xl font-serif text-slate-900 mb-3">{item.title}</h3>
                   <div className="flex items-center gap-2 text-sm text-brand-600 font-medium mb-4">
                     <Clock className="w-4 h-4" />
                     <span>{item.hours}</span>
                   </div>
-                  <p className="text-slate-600 font-light leading-relaxed">
-                    {item.description}
-                  </p>
+                  <p className="text-slate-600 font-light leading-relaxed">{item.description}</p>
                 </div>
               </motion.div>
             ))}
@@ -454,119 +384,29 @@ export function RestaurantBarPage() {
         </div>
       </section>
 
-      {/* ===== BAR LOUNGE SECTION ===== */}
-      <section id="bar" className="py-24 bg-slate-900 text-white relative overflow-hidden scroll-mt-24">
+      {/* ===== RESERVATION CTA ===== */}
+      <section className="py-20 bg-slate-900 text-white relative overflow-hidden">
         <div
-          className="absolute inset-0 opacity-15"
+          className="absolute inset-0 opacity-10"
           style={{
             backgroundImage:
-              'url("https://images.unsplash.com/photo-1470337458703-46ad1756a187?auto=format&fit=crop&q=80")',
+              'url("https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?auto=format&fit=crop&q=80")',
             backgroundPosition: 'center',
             backgroundSize: 'cover',
             backgroundAttachment: 'fixed'
           }}
         />
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center mb-16">
-            <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.7 }}
-            >
-              <div className="flex items-center gap-3 mb-4">
-                <Wine className="w-6 h-6 text-brand-400" />
-                <span className="text-brand-400 font-medium tracking-widest uppercase text-sm">
-                  Bar Lounge
-                </span>
-              </div>
-              <h3 className="text-4xl font-serif mb-6 leading-tight">
-                L'Art de la Détente
-              </h3>
-              <p className="text-slate-300 font-light leading-relaxed mb-6">
-                En fin de journée, notre Bar Lounge vous accueille dans une
-                atmosphère feutrée et cosy. Canapés profonds, éclairage tamisé,
-                musique d'ambiance : l'endroit idéal pour se détendre après une
-                journée de travail ou de découverte.
-              </p>
-              <div className="flex items-center gap-6 text-sm">
-                <div className="flex items-center gap-2 text-slate-400">
-                  <Clock className="w-4 h-4 text-brand-400" />
-                  <span>17:00 - 00:00</span>
-                </div>
-                <div className="flex items-center gap-2 text-slate-400">
-                  <MapPin className="w-4 h-4 text-brand-400" />
-                  <span>Rez-de-chaussée</span>
-                </div>
-              </div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.7 }}
-              className="grid grid-cols-2 gap-4"
-            >
-              <img
-                src="https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&q=80"
-                alt="Cocktail bar"
-                className="w-full h-56 object-cover rounded-sm mt-6"
-              />
-              <img
-                src="https://images.unsplash.com/photo-1470337458703-46ad1756a187?auto=format&fit=crop&q=80"
-                alt="Bar ambiance"
-                className="w-full h-56 object-cover rounded-sm"
-              />
-            </motion.div>
-          </div>
-
-          {/* Cocktails */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <h4 className="text-2xl font-serif text-center mb-10">
-              Notre Carte de Cocktails
-            </h4>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {signatureCocktails.map((cocktail) => (
-                <div
-                  key={cocktail.name}
-                  className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-sm p-6 hover:bg-white/10 transition-colors duration-300"
-                >
-                  <Sparkles className="w-5 h-5 text-brand-400 mb-3" />
-                  <h5 className="text-lg font-serif text-white mb-2">
-                    {cocktail.name}
-                  </h5>
-                  <p className="text-sm text-slate-400 font-light mb-3">
-                    {cocktail.desc}
-                  </p>
-                  <span className="text-brand-400 font-medium text-sm">
-                    {cocktail.price}
-                  </span>
-                </div>
-              ))}
-            </div>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* ===== RESERVATION CTA ===== */}
-      <section className="py-20 bg-white">
-        <div className="max-w-4xl mx-auto px-4 text-center">
+        <div className="relative z-10 max-w-4xl mx-auto px-4 text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
           >
-            <h2 className="text-3xl md:text-5xl font-serif text-slate-900 mb-6 leading-tight">
+            <h2 className="text-3xl md:text-5xl font-serif mb-6 leading-tight">
               Réservez Votre Table
             </h2>
-            <p className="text-slate-600 font-light text-lg mb-10 max-w-2xl mx-auto">
+            <p className="text-slate-300 font-light text-lg mb-10 max-w-2xl mx-auto">
               Que ce soit pour un dîner romantique, un déjeuner d'affaires ou
               une soirée entre amis, notre équipe vous réserve un accueil
               chaleureux.
@@ -580,7 +420,7 @@ export function RestaurantBarPage() {
               </button>
               <a
                 href="tel:+23675494969"
-                className="flex items-center gap-2 px-8 py-4 border border-brand-600 text-brand-600 hover:bg-brand-50 transition-colors"
+                className="flex items-center gap-2 px-8 py-4 bg-white/10 backdrop-blur-sm text-white border border-white/30 hover:bg-white/20 transition-colors"
               >
                 <Phone className="w-4 h-4" />
                 +236 75 49 49 69
