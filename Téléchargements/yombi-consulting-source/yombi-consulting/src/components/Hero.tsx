@@ -2,7 +2,6 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowRight } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import heroPhoto from '../assets/hero-photo-only.png';
 import heroCard from '../assets/hero-card.png';
 import founderRobe from '../assets/founder-robe.png';
 import founderOfficeLarge from '../assets/founder-office-large.png';
@@ -11,7 +10,6 @@ import founderOfficeSmall from '../assets/founder-office-small.png';
 // Photos du cabinet utilisées comme arrière-plan du carrousel Hero
 const bgSlides = [
   heroCard,
-  heroPhoto,
   founderRobe,
   founderOfficeLarge,
   founderOfficeSmall,
@@ -112,7 +110,7 @@ export function Hero() {
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
+        <div className="max-w-3xl mx-auto text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -146,49 +144,10 @@ export function Hero() {
               </a>
             </div>
 
-            <div className="flex flex-wrap gap-10 pt-8 border-t border-white/10">
-              <div>
-                <div className="text-3xl font-bold text-white font-serif">500+</div>
-                <div className="text-sm text-slate-400">{t('hero.stats.clients')}</div>
-              </div>
-              <div>
-                <div className="text-3xl font-bold text-white font-serif">15+</div>
-                <div className="text-sm text-slate-400">{t('hero.stats.experience')}</div>
-              </div>
-              <div>
-                <div className="text-3xl font-bold text-white font-serif">30+</div>
-                <div className="text-sm text-slate-400">{t('hero.stats.domains')}</div>
-              </div>
-            </div>
+
           </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.7, delay: 0.15 }}
-            className="relative mx-auto max-w-md w-full"
-          >
-            <div className="absolute -inset-3 border border-amber-500/30 rounded-2xl" />
-            <div className="relative bg-blue-900/60 border border-white/10 rounded-2xl overflow-hidden shadow-2xl">
-              <div className="px-6 py-4 border-b border-white/10 text-center">
-                <p className="text-slate-200 italic text-sm">
-                  &ldquo;{t('hero.quote')}&rdquo;
-                </p>
-                <p className="text-amber-400 text-xs font-semibold tracking-wide mt-2 uppercase">
-                  — {t('hero.quoteAuthor')}
-                </p>
-              </div>
-              <img
-                src={heroPhoto}
-                alt={t('hero.founderName')}
-                className="w-full h-80 object-cover"
-              />
-              <div className="px-6 py-4 bg-blue-950/70">
-                <p className="text-white font-semibold">{t('hero.founderName')}</p>
-                <p className="text-amber-400 text-xs tracking-wide">{t('hero.founderRole')}</p>
-              </div>
-            </div>
-          </motion.div>
+
         </div>
       </div>
     </section>

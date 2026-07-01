@@ -151,13 +151,29 @@
         "name": "Dr. Yombi Rothence Parfait",
         "role": "FOUNDER & PRINCIPAL LEGAL CONSULTANT",
         "bio": "Doctor of Law, specialized in international business law, arbitration, strategic counsel, conflict management, border governance and migration. Extensive multidisciplinary experience with companies, institutions and international organizations. Office located in Libreville, Malibé 2.",
-        "tags": ["International Law", "Arbitration", "M&A", "Compliance", "Business Law", "Conflict Management", "Border Governance", "Migration"]
+        "tags": ["International Law", "Arbitration", "M&A", "Compliance", "Business Law", "Conflict Management", "Border Governance", "Migration"],
+        "socials": [
+          { "platform": "linkedin", "url": "" },
+          { "platform": "twitter", "url": "" },
+          { "platform": "facebook", "url": "" },
+          { "platform": "instagram", "url": "" },
+          { "platform": "youtube", "url": "" },
+          { "platform": "website", "url": "" },
+          { "platform": "email", "url": "" }
+        ]
       },
       {
         "name": "Ovono Zouga Stella Marlyse",
         "role": "DEPUTY DIRECTOR & ENGLISH-FRENCH INTERPRETER",
         "bio": "Deputy Director of Yombi Consulting, Ovono Zouga Stella Marlyse ensures the operational and strategic coordination of the firm.",
-        "tags": []
+        "tags": [],
+        "socials": [
+          { "platform": "linkedin", "url": "" },
+          { "platform": "twitter", "url": "" },
+          { "platform": "facebook", "url": "" },
+          { "platform": "instagram", "url": "" },
+          { "platform": "email", "url": "" }
+        ]
       }
     ]
   },
@@ -165,31 +181,43 @@
     "badge": "PUBLICATIONS",
     "title": "Books & Publications",
     "description": "Explore the works of Dr. Yombi Rothence Parfait — spanning law, politics, culture and human development.",
+    "badges": {
+      "new": "New",
+      "bestseller": "Best Seller"
+    },
     "books": [
       {
         "title": "The Throne and Madness",
         "category": "POLITICS & GOVERNANCE",
-        "subtitle": "Anatomy of Power in Africa"
+        "subtitle": "Anatomy of Power in Africa",
+        "link": "https://www.amazon.com/tr%C3%B4ne-folie-Anatomie-pouvoir-Afrique-ebook/dp/B0GH3Q1FQQ?ref_=ast_author_dp&th=1&psc=1",
+        "badge": "bestseller"
       },
       {
         "title": "The Tumultuous Life of Rodrigue",
         "category": "NOVEL & TESTIMONY",
-        "subtitle": "A story of hope, forgiveness and rebirth"
+        "subtitle": "A story of hope, forgiveness and rebirth",
+        "link": "https://www.amazon.com/Une-vie-tumultueuse-Rodrigue-French-ebook/dp/B0FF3MPGWW?ref_=ast_author_dp&th=1&psc=1",
+        "badge": "new"
       },
       {
         "title": "Iboga, A Revealing Spirit",
         "category": "CULTURE & TRADITIONS",
-        "subtitle": "Sacred plant of the Gabonese forests"
+        "subtitle": "Sacred plant of the Gabonese forests",
+        "link": "https://www.amazon.com/ESPRIT-REVELATEUR-French-Rothence-Parfait/dp/B0F442FTSS?ref_=ast_author_dp&th=1&psc=1"
       },
       {
         "title": "A Gabon Facing Tomorrow",
         "category": "GEOPOLITICS & DEVELOPMENT",
-        "subtitle": "History, challenges and reconstruction perspectives"
+        "subtitle": "History, challenges and reconstruction perspectives",
+        "link": "https://www.amazon.com/Gabon-tourn%C3%A9-vers-demain-French/dp/B0F3JFJ9CV?ref_=ast_author_dp&th=1&psc=1",
+        "badge": "new"
       },
       {
         "title": "Become a Good Leader",
         "category": "LEADERSHIP & MANAGEMENT",
-        "subtitle": "Keys to transformational leadership"
+        "subtitle": "Keys to transformational leadership",
+        "link": "https://www.amazon.com/Become-leader-Rothence-Parfait-Yombi/dp/B0F3HTVSL4?ref_=ast_author_dp&th=1&psc=1"
       }
     ]
   },
@@ -222,6 +250,31 @@
         "name": "Jean-Michel K.",
         "role": "Entrepreneur",
         "quote": "Yombi Consulting supported me in setting up my business with remarkable professionalism. I highly recommend their services."
+      },
+      {
+        "name": "Sarah B.",
+        "role": "Legal Director, International NGO",
+        "quote": "Dr. Yombi helped us structure our regulatory compliance across three different countries. His expertise in comparative law was instrumental in securing our operations."
+      },
+      {
+        "name": "Paul E.",
+        "role": "Investor",
+        "quote": "Thanks to Yombi Consulting, I was able to finalize the acquisition of a stake in a Central African company with complete peace of mind. The due diligence and contract drafting were flawless."
+      },
+      {
+        "name": "Dr. Aminata T.",
+        "role": "Conflict Management Consultant",
+        "quote": "I sought Yombi Consulting for a complex cross-border mediation. Their approach, combining legal rigor with negotiation skills, led to a favorable outcome in record time."
+      },
+      {
+        "name": "Marc L.",
+        "role": "SME Director",
+        "quote": "We entrusted Yombi Consulting with drafting our international contracts. Since then, our partnerships are clearer and we've had no disputes. A worthwhile investment."
+      },
+      {
+        "name": "Fatima N.",
+        "role": "Lawyer, Partner Firm",
+        "quote": "I regularly collaborate with Yombi Consulting on international arbitration cases. Their knowledge of both African and European legal systems is a rare and valuable asset."
       }
     ],
     "cta": {

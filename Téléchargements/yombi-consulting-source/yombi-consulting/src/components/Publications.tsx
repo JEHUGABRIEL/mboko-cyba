@@ -12,9 +12,15 @@ interface Book {
   title: string;
   category: string;
   subtitle: string;
-  // Lien Amazon — l'utilisateur fournira les URLs plus tard
   link?: string;
+  badge?: string;
 }
+
+// Couleurs des badges selon le type — les labels viennent des traductions i18n
+const badgeStyles: Record<string, { bg: string; text: string }> = {
+  new: { bg: 'bg-emerald-500', text: 'text-white' },
+  bestseller: { bg: 'bg-amber-500', text: 'text-white' },
+};
 
 export function Publications() {
   const { t } = useTranslation();
@@ -43,7 +49,12 @@ export function Publications() {
               transition={{ duration: 0.5, delay: index * 0.08 }}
               className="group flex flex-col"
             >
-              <div className="rounded-xl overflow-hidden shadow-md group-hover:shadow-xl transition-shadow duration-300 mb-4 aspect-[3/4]">
+              <div className="rounded-xl overflow-hidden shadow-md group-hover:shadow-xl transition-shadow duration-300 mb-4 aspect-[3/4] relative">
+                {book.badge && badgeStyles[book.badge] && (
+                  <div className={`absolute top-3 left-3 z-10 px-2.5 py-1 rounded-md text-[0.65rem] font-bold uppercase tracking-wider shadow-lg ${badgeStyles[book.badge].bg} ${badgeStyles[book.badge].text}`}>
+                    {t(`publications.badges.${book.badge}`)}
+                  </div>
+                )}
                 <img
                   src={covers[index]}
                   alt={book.title}

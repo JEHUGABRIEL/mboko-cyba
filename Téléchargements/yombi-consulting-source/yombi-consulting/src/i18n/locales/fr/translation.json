@@ -151,13 +151,29 @@
         "name": "Dr. Yombi Rothence Parfait",
         "role": "FONDATEUR & CONSULTANT JURIDIQUE PRINCIPAL",
         "bio": "Docteur en droit, spécialisé en droit des affaires international, arbitrage, conseil stratégique, gestion des conflits, gouvernance des frontières et migration. Vaste expérience pluridisciplinaire auprès d'entreprises, d'institutions et d'organisations internationales. Bureau situé à Libreville, Malibé 2.",
-        "tags": ["Droit International", "Arbitrage", "M&A", "Compliance", "Droit des Affaires", "Gestion des Conflits", "Gouvernance des Frontières", "Migration"]
+        "tags": ["Droit International", "Arbitrage", "M&A", "Compliance", "Droit des Affaires", "Gestion des Conflits", "Gouvernance des Frontières", "Migration"],
+        "socials": [
+          { "platform": "linkedin", "url": "" },
+          { "platform": "twitter", "url": "" },
+          { "platform": "facebook", "url": "" },
+          { "platform": "instagram", "url": "" },
+          { "platform": "youtube", "url": "" },
+          { "platform": "website", "url": "" },
+          { "platform": "email", "url": "" }
+        ]
       },
       {
         "name": "Ovono Zouga Stella Marlyse",
         "role": "DIRECTRICE ADJOINTE & INTERPRÈTE ANGLAIS-FRANÇAIS",
         "bio": "Directrice adjointe de Yombi Consulting, Ovono Zouga Stella Marlyse assure la coordination opérationnelle et stratégique du cabinet.",
-        "tags": []
+        "tags": [],
+        "socials": [
+          { "platform": "linkedin", "url": "" },
+          { "platform": "twitter", "url": "" },
+          { "platform": "facebook", "url": "" },
+          { "platform": "instagram", "url": "" },
+          { "platform": "email", "url": "" }
+        ]
       }
     ]
   },
@@ -165,31 +181,43 @@
     "badge": "PUBLICATIONS",
     "title": "Livres & Publications",
     "description": "Découvrez les ouvrages du Dr Yombi Rothence Parfait — droit, politique, culture et développement humain.",
+    "badges": {
+      "new": "Nouveauté",
+      "bestseller": "Meilleure vente"
+    },
     "books": [
       {
         "title": "Le Trône et la Folie",
         "category": "POLITIQUE & GOUVERNANCE",
-        "subtitle": "Anatomie du pouvoir en Afrique"
+        "subtitle": "Anatomie du pouvoir en Afrique",
+        "link": "https://www.amazon.com/tr%C3%B4ne-folie-Anatomie-pouvoir-Afrique-ebook/dp/B0GH3Q1FQQ?ref_=ast_author_dp&th=1&psc=1",
+        "badge": "bestseller"
       },
       {
         "title": "La Vie Tumultueuse de Rodrigue",
         "category": "ROMAN & TÉMOIGNAGE",
-        "subtitle": "Une histoire d'espoir, de pardon et de renaissance"
+        "subtitle": "Une histoire d'espoir, de pardon et de renaissance",
+        "link": "https://www.amazon.com/Une-vie-tumultueuse-Rodrigue-French-ebook/dp/B0FF3MPGWW?ref_=ast_author_dp&th=1&psc=1",
+        "badge": "new"
       },
       {
         "title": "Iboga, Un Esprit Révélateur",
         "category": "CULTURE & TRADITIONS",
-        "subtitle": "Plante sacrée des forêts gabonaises"
+        "subtitle": "Plante sacrée des forêts gabonaises",
+        "link": "https://www.amazon.com/ESPRIT-REVELATEUR-French-Rothence-Parfait/dp/B0F442FTSS?ref_=ast_author_dp&th=1&psc=1"
       },
       {
         "title": "Un Gabon Tourné vers Demain",
         "category": "GÉOPOLITIQUE & DÉVELOPPEMENT",
-        "subtitle": "Histoire, défis et perspectives de reconstruction"
+        "subtitle": "Histoire, défis et perspectives de reconstruction",
+        "link": "https://www.amazon.com/Gabon-tourn%C3%A9-vers-demain-French/dp/B0F3JFJ9CV?ref_=ast_author_dp&th=1&psc=1",
+        "badge": "new"
       },
       {
         "title": "Deviens un Bon Leader",
         "category": "LEADERSHIP & MANAGEMENT",
-        "subtitle": "Les clés du leadership transformationnel"
+        "subtitle": "Les clés du leadership transformationnel",
+        "link": "https://www.amazon.com/deviens-leader-French-Rothence-Parfait/dp/B0F37P8D2R?ref_=ast_author_dp&th=1&psc=1"
       }
     ]
   },
@@ -222,6 +250,31 @@
         "name": "Jean-Michel K.",
         "role": "Entrepreneur",
         "quote": "Yombi Consulting m'a accompagné dans la création de mon entreprise avec un professionnalisme remarquable. Je recommande vivement leurs services."
+      },
+      {
+        "name": "Sarah B.",
+        "role": "Directrice juridique, ONG Internationale",
+        "quote": "Le Dr Yombi nous a aidés à structurer notre conformité réglementaire dans trois pays différents. Son expertise en droit comparé a été déterminante pour sécuriser nos opérations."
+      },
+      {
+        "name": "Paul E.",
+        "role": "Investisseur",
+        "quote": "Grâce à Yombi Consulting, j'ai pu finaliser l'acquisition d'une participation dans une société centrafricaine en toute sérénité. La due diligence et la rédaction des contrats ont été irréprochables."
+      },
+      {
+        "name": "Dr. Aminata T.",
+        "role": "Consultante en gestion de conflits",
+        "quote": "J'ai sollicité Yombi Consulting pour une médiation transfrontalière complexe. Leur approche, alliant rigueur juridique et sens de la négociation, a permis de trouver une issue favorable en un temps record."
+      },
+      {
+        "name": "Marc L.",
+        "role": "Dirigeant de PME",
+        "quote": "Nous avons confié la rédaction de nos contrats internationaux à Yombi Consulting. Depuis, nos partenariats sont plus clairs et nous n'avons eu aucun litige. Un investissement rentable."
+      },
+      {
+        "name": "Fatima N.",
+        "role": "Avocate, Cabinet Partenaire",
+        "quote": "Je collabore régulièrement avec Yombi Consulting pour des dossiers d'arbitrage international. Leur connaissance des systèmes juridiques africains et européens est un atout rare et précieux."
       }
     ],
     "cta": {

@@ -1,14 +1,34 @@
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
+import { Linkedin, Twitter, Globe, Instagram, Facebook, Youtube, Mail } from 'lucide-react';
 import founderOfficeLarge from '../assets/founder-office-large.png';
 import stellaMarlyse from '../assets/stella-marlyse.png';
+
+interface Social {
+  platform: string;
+  url?: string;
+}
 
 interface Member {
   name: string;
   role: string;
   bio: string;
   tags: string[];
+  socials?: Social[];
 }
+
+// Mapping des plateformes sociales vers les icônes lucide-react
+const socialIconMap: Record<string, React.ElementType> = {
+  linkedin: Linkedin,
+  twitter: Twitter,
+  x: Twitter,
+  instagram: Instagram,
+  facebook: Facebook,
+  youtube: Youtube,
+  globe: Globe,
+  website: Globe,
+  email: Mail,
+};
 
 // Section Équipe : affiche les membres sous forme de cartes en grille 2 colonnes
 // Chaque carte contient une photo (avec zoom au survol), le nom, le rôle, la bio et des tags
@@ -64,7 +84,7 @@ export function Team() {
                 </p>
                 <p className="text-blue-200 leading-relaxed mb-5 flex-1">{member.bio}</p>
                 {member.tags.length > 0 && (
-                  <div className="flex flex-wrap gap-2">
+                  <div className="flex flex-wrap gap-2 mb-5">
                     {member.tags.map((tag, i) => (
                       <span
                         key={i}
@@ -73,6 +93,31 @@ export function Team() {
                         {tag}
                       </span>
                     ))}
+                  </div>
+                )}
+
+                {member.socials && member.socials.length > 0 && (
+                  <div className="flex items-center gap-3 pt-4 border-t border-blue-800">
+                    {member.socials.map((social, i) => {
+                      const Icon = socialIconMap[social.platform.toLowerCase()] || Globe;
+                      const hasUrl = Boolean(social.url);
+                      return (
+                        <a
+                          key={i}
+                          href={social.url || '#'}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          aria-label={social.platform}
+                          className={`w-9 h-9 rounded-full flex items-center justify-center transition-all duration-200 ${
+                            hasUrl
+                              ? 'bg-blue-800/50 text-blue-300 hover:bg-amber-500 hover:text-blue-900 hover:scale-110'
+                              : 'bg-blue-800/30 text-blue-400/30 cursor-not-allowed pointer-events-none'
+                          }`}
+                        >
+                          <Icon className="w-4 h-4" />
+                        </a>
+                      );
+                    })}
                   </div>
                 )}
               </div>
