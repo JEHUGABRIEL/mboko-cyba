@@ -19,7 +19,11 @@ export default function News_() {
         <img
           src={img("actualites-hero", 1920, 700)}
           alt={t('news.heroAlt')}
+          width={1920}
+          height={700}
           className="absolute inset-0 w-full h-full object-cover"
+          fetchpriority="high"
+          decoding="async"
         />
       </section>
 

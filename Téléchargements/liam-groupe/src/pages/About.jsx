@@ -26,7 +26,11 @@ export default function About() {
         <img
           src={img("apropos-hero", 1920, 700)}
           alt={t('about.heroAlt')}
+          width={1920}
+          height={700}
           className="absolute inset-0 w-full h-full object-cover"
+          fetchpriority="high"
+          decoding="async"
         />
       </section>
 
@@ -87,14 +91,20 @@ export default function About() {
               <img
                 src={img("apropos-1", 600, 700)}
                 alt={t('about.images.alt1')}
+                width={600}
+                height={700}
                 className="rounded-2xl object-cover w-full h-[340px] mt-8"
                 loading="lazy"
+                decoding="async"
               />
               <img
                 src={img("apropos-2", 600, 700)}
                 alt={t('about.images.alt2')}
+                width={600}
+                height={700}
                 className="rounded-2xl object-cover w-full h-[340px]"
                 loading="lazy"
+                decoding="async"
               />
             </div>
           </div>

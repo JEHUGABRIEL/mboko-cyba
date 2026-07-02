@@ -6,7 +6,8 @@ const BASE_URL = `https://res.cloudinary.com/${CLOUD_NAME}/image/upload`
 
 /**
  * Génère une URL Cloudinary optimisée pour une image.
- * Utilise f_auto (meilleur format) et q_auto (qualité optimale).
+ * Utilise f_auto (meilleur format), q_auto (qualité optimale)
+ * et dpr_auto (adaptation aux écrans retina).
  * @param {string} seed  Identifiant unique de l'image (ex: "home-hero")
  * @param {number} w     Largeur souhaitée
  * @param {number} h     Hauteur souhaitée
@@ -14,19 +15,47 @@ const BASE_URL = `https://res.cloudinary.com/${CLOUD_NAME}/image/upload`
  * @param {string} quality Qualité Cloudinary (auto, eco, best, good, low)
  */
 export const img = (seed, w = 800, h = 600, fit = 'fill', quality = 'auto') =>
-  `${BASE_URL}/f_auto,q_${quality},w_${w},h_${h},c_${fit}/v1/liam-groupe/${seed}`
+  `${BASE_URL}/f_auto,q_${quality},w_${w},h_${h},c_${fit},dpr_auto/v1/liam-groupe/${seed}`
 
 /**
  * Génère une URL de blur placeholder Cloudinary (très petite, qualité basse)
  * pour l'effet de chargement progressif (LQIP).
  */
 export const imgBlur = (seed) =>
-  `${BASE_URL}/f_auto,q_10,w_200,h_112,c_fill,e_blur:500/v1/liam-groupe/${seed}`
+  `${BASE_URL}/f_auto,q_10,w_200,h_112,c_fill,e_blur:500,dpr_auto/v1/liam-groupe/${seed}`
 
 /**
  * Version optimisée pour les images hero — plus légère et éco.
  */
 export const imgHero = (seed) => img(seed, 1600, 900, 'fill', 'eco')
+
+/**
+ * Génère les URLs srcSet pour le chargement responsive d'images.
+ * Produit des URLs à différentes largeurs pour que le navigateur
+ * choisisse la meilleure taille selon l'écran.
+ * @param {string} seed  Identifiant unique de l'image
+ * @param {number[]} widths  Largeurs à générer (par défaut: 480, 768, 1024, 1280, 1600)
+ * @param {number} h    Hauteur
+ * @param {string} fit  Mode de redimensionnement
+ */
+export const imgSrcSet = (seed, widths = [480, 768, 1024, 1280, 1600], h = 600, fit = 'fill') =>
+  widths
+    .map(w => `${BASE_URL}/f_auto,q_auto,w_${w},h_${h},c_${fit},dpr_auto/v1/liam-groupe/${seed} ${w}w`)
+    .join(', ')
+
+/**
+ * Attribut sizes pour accompagner srcSet, indiquant la largeur
+de rendu de l'image selon la largeur de la fenêtre.
+ * @param {string} type  'full' (100vw) | 'half' (50vw) | 'third' (33vw)
+ */
+export const imgSizes = (type = 'full') => {
+  const sizes = {
+    full: '(max-width: 640px) 100vw, (max-width: 1024px) 100vw, 100vw',
+    half: '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 50vw',
+    third: '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw',
+  }
+  return sizes[type] || sizes.full
+}
 
 export const siteInfo = {
   name: "LIAM",

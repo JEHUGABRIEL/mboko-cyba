@@ -2,8 +2,11 @@ import { useState } from "react";
 import { ImageOff } from "lucide-react";
 
 /**
- * SafeImg — Affiche une image Cloudinary avec un fallback élégant
- * en cas d'erreur de chargement (image inexistante sur Cloudinary).
+ * SafeImg — Affiche une image Cloudinary avec :
+ * - Chargement paresseux (lazy loading) par défaut
+ * - Décodage asynchrone pour ne pas bloquer le rendu
+ * - Fallback élégant en cas d'erreur
+ * - Shimmer de chargement pendant le téléchargement
  */
 export default function SafeImg({ src, alt, className = "", icon: Icon, ...props }) {
   const [failed, setFailed] = useState(false);
@@ -28,6 +31,8 @@ export default function SafeImg({ src, alt, className = "", icon: Icon, ...props
       alt={alt}
       className={className}
       onError={() => setFailed(true)}
+      loading="lazy"
+      decoding="async"
       {...props}
     />
   );

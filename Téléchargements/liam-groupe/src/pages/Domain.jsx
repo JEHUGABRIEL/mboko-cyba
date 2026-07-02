@@ -32,7 +32,11 @@ export default function Domain() {
         <img
           src={domain.heroImage}
           alt={domain.name}
+          width={1920}
+          height={700}
           className="absolute inset-0 w-full h-full object-cover"
+          fetchpriority="high"
+          decoding="async"
         />
       </section>
 
@@ -89,8 +93,11 @@ export default function Domain() {
                     <img
                       src={src}
                       alt={`${domain.name} ${i + 1}`}
+                      width={700}
+                      height={500}
                       className="object-cover w-full h-[380px] transition-all duration-500 group-hover:scale-105 group-hover:shadow-xl"
                       loading="lazy"
+                      decoding="async"
                     />
                     {/* Hover overlay */}
                     <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 flex items-center justify-center">

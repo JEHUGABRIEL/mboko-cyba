@@ -30,6 +30,8 @@ export default function Contact() {
           alt={t('contact.heroAlt')}
           className="absolute inset-0 w-full h-full object-cover"
           icon={ImageOff}
+          fetchpriority="high"
+          loading="eager"
         />
       </section>
 
@@ -149,6 +151,7 @@ export default function Contact() {
               title="Localisation Bangui"
               className="w-full h-full"
               loading="lazy"
+              decoding="async"
               src="https://www.openstreetmap.org/export/embed.html?bbox=18.50%2C4.30%2C18.65%2C4.42&layer=mapnik&marker=4.3614%2C18.5550"
             />
           </div>

@@ -22,7 +22,7 @@ import StatsBand from "../components/StatsBand";
 import TestimonialCarousel from "../components/TestimonialCarousel";
 import { JoinCTA } from "../components/CTASection";
 import { useDomains, useEvents, useHomeStats, usePartners, useSiteInfo, useHomeHeroImages } from "../hooks/useSiteData";
-import { imgHero, imgBlur } from "../data/siteData";
+import { imgHero, imgBlur, imgSrcSet, imgSizes } from "../data/siteData";
 import useScrollReveal from "../hooks/useScrollReveal";
 import useUnsavedChanges from "../hooks/useUnsavedChanges";
 
@@ -38,8 +38,10 @@ export default function Home() {
   const [heroIdx, setHeroIdx] = useState(0);
 
   const nextHero = useCallback(() => {
-    setHeroIdx((prev) => (prev + 1) % (homeHeroImages?.length ?? 1));
-  }, []);
+    const len = homeHeroImages?.length;
+    if (!len) return;
+    setHeroIdx((prev) => (prev + 1) % len);
+  }, [homeHeroImages?.length]);
 
   useEffect(() => {
     const timer = setInterval(nextHero, 7000);
@@ -59,8 +61,8 @@ export default function Home() {
 
   return (
     <div className="font-body">
-      {/* Preload de la première image hero */}
-      <link rel="preload" as="image" href={imgHero("home-hero")} fetchPriority="high" />
+      {/* Preload de la première image hero — versions responsive */}
+      <link rel="preload" as="image" href={imgHero("home-hero")} fetchPriority="high" imagesrcset={imgSrcSet("home-hero", [480, 768, 1024, 1280, 1600], 900, 'fill')} />
       <link rel="preload" as="image" href={imgBlur("home-hero")} />
 
       <Navbar />
@@ -80,12 +82,17 @@ export default function Home() {
             <img
               key={i}
               src={isFirst ? imgHero("home-hero") : src}
+              srcSet={isFirst ? imgSrcSet("home-hero", [480, 768, 1024, 1280, 1600], 900, 'fill') : undefined}
+              sizes={isFirst ? imgSizes('full') : undefined}
               alt={`Communauté centrafricaine ${i + 1}`}
+              width={1600}
+              height={900}
               className={`absolute inset-0 w-full h-full object-cover transition-all duration-1000 ${
                 isActive ? "opacity-100 scale-100" : "opacity-0 scale-105"
               }`}
               loading={isFirst ? "eager" : "lazy"}
               fetchPriority={isFirst ? "high" : "low"}
+              decoding={isFirst ? "sync" : "async"}
               onError={(e) => { e.target.style.display = "none"; }}
               onLoad={(e) => {
                 if (isFirst) {

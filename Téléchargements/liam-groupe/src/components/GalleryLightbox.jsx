@@ -117,7 +117,10 @@ export default function GalleryLightbox({ images, initialIndex = 0, onClose }) {
           <img
             src={images[index]}
             alt={`Image ${index + 1}`}
+            width={1200}
+            height={800}
             onLoad={() => setLoaded((prev) => ({ ...prev, [index]: true }))}
+            decoding="async"
             className={`w-full h-full transition-all duration-300 ${
               loaded[index]
                 ? "opacity-100 scale-100"
@@ -163,6 +166,7 @@ export default function GalleryLightbox({ images, initialIndex = 0, onClose }) {
                   alt=""
                   className="w-full h-full object-cover"
                   loading="lazy"
+                  decoding="async"
                 />
               </button>
             ))}

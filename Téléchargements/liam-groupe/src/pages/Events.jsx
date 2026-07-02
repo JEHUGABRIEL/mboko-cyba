@@ -28,7 +28,11 @@ export default function Events() {
         <img
           src={img("evenements-hero", 1920, 700)}
           alt={t('events.heroAlt')}
+          width={1920}
+          height={700}
           className="absolute inset-0 w-full h-full object-cover"
+          fetchpriority="high"
+          decoding="async"
         />
       </section>
 
