@@ -351,7 +351,7 @@
         <div id="modalFeatures" class="flex flex-wrap gap-2.5 mb-6"></div>
 
         <div class="flex gap-3">
-          <a id="modalContactBtn" href="index.html#contact" class="flex-1 block text-center bg-navy text-white py-3 rounded font-bold text-[0.95rem] no-underline hover:bg-navy-clair transition-colors duration-200">
+          <a id="modalContactBtn" href="javascript:void(0)" class="flex-1 block text-center bg-navy text-white py-3 rounded font-bold text-[0.95rem] no-underline hover:bg-navy-clair transition-colors duration-200">
             <i class="fa-solid fa-calendar-check mr-2"></i> Visite
           </a>
           <a id="modalWhatsAppBtn" href="#" target="_blank" class="flex-1 block text-center bg-[#25D366] text-white py-3 rounded font-bold text-[0.95rem] no-underline hover:bg-[#1ebe5a] transition-colors duration-200">
@@ -366,6 +366,39 @@
           </h4>
           <div id="modalSimilarList" class="flex gap-3 overflow-x-auto pb-2 -mx-1 px-1"></div>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== CONTACT MODAL (Visite) ===== -->
+  <div class="modal-overlay" id="contactModalOverlay">
+    <div class="modal-content contact-modal-content">
+      <button class="modal-close" onclick="closeContactModal()"><i class="fa-solid fa-xmark"></i></button>
+      <div class="p-8 max-md:p-5">
+        <h3 class="text-[1.3rem] font-extrabold text-navy mb-1"><i class="fa-solid fa-calendar-check text-gold mr-2"></i> Demande de visite</h3>
+        <p id="contactModalProperty" class="text-[0.9rem] text-[#888] mb-6"></p>
+
+        <form id="contactModalForm">
+          <input type="hidden" name="access_key" value="b37e403a-126b-4b48-b826-c60c8449cdd2">
+          <input type="hidden" name="subject" id="contactModalSubject" value="">
+          <input type="checkbox" name="botcheck" class="hidden" style="display:none" tabindex="-1" autocomplete="off">
+
+          <div class="flex flex-wrap gap-3.5 mb-3.5">
+            <input type="text" name="name" placeholder="Prénom et nom" required class="flex-1 min-w-[140px] px-3.5 py-[11px] border border-gris-moyen rounded text-[0.9rem] font-sans text-[#222] outline-none focus:border-navy transition-colors duration-200">
+            <input type="tel" name="phone" placeholder="Téléphone" required class="flex-1 min-w-[140px] px-3.5 py-[11px] border border-gris-moyen rounded text-[0.9rem] font-sans text-[#222] outline-none focus:border-navy transition-colors duration-200">
+          </div>
+          <input type="email" name="email" placeholder="Adresse email" class="w-full px-3.5 py-[11px] border border-gris-moyen rounded text-[0.9rem] font-sans text-[#222] outline-none focus:border-navy transition-colors duration-200 mb-3.5">
+          <textarea name="message" id="contactModalMessage" required class="w-full px-3.5 py-[11px] border border-gris-moyen rounded text-[0.9rem] font-sans text-[#222] outline-none focus:border-navy transition-colors duration-200 resize-y min-h-[100px] mb-4" placeholder="Votre message..."></textarea>
+
+          <button type="submit" id="contactModalSubmitBtn" class="w-full bg-navy text-white border-none py-3 rounded font-bold text-[0.95rem] cursor-pointer flex items-center justify-center gap-2 hover:bg-navy-clair transition-colors duration-200">
+            <i class="fa-solid fa-paper-plane" id="contactModalBtnIcon"></i>
+            <span id="contactModalBtnText">Envoyer la demande</span>
+            <svg id="contactModalBtnSpinner" class="hidden animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+          </button>
+        </form>
       </div>
     </div>
   </div>
@@ -510,7 +543,7 @@
           '</div>' +
           '<div class="flex gap-2 mx-5 mb-[18px]">' +
             '<button onclick="openModal(' + b.id + ')" class="flex-1 bg-navy text-white py-2.5 font-semibold text-[0.88rem] rounded cursor-pointer border-none hover:bg-navy-clair transition-colors duration-200 flex items-center justify-center gap-1.5"><i class="fa-solid fa-eye"></i> Détails</button>' +
-            '<a href="index.html#contact" class="flex-1 block text-center border border-gris-moyen text-navy py-2.5 font-semibold text-[0.88rem] no-underline rounded hover:border-navy hover:bg-navy/5 transition-all duration-200">Visite</a>' +
+            '<button onclick="openContactModal(' + b.id + ')" class="flex-1 block text-center border border-gris-moyen text-navy py-2.5 font-semibold text-[0.88rem] no-underline rounded cursor-pointer hover:border-navy hover:bg-navy/5 transition-all duration-200">Visite</button>' +
           '</div>' +
         '</div>';
       }).join('');
@@ -543,11 +576,14 @@
     document.getElementById('filterQuartier').addEventListener('change', filterBiens);
     document.getElementById('clearFiltersBtn').addEventListener('click', resetFilters);
 
-    // Chargement asynchrone depuis le fichier partagé
-    loadBiensData(function(data) {
-      biensData = data;
-      renderBiens(data);
-    });
+    function loadAndRenderBiens() {
+      loadBiensData(function(data) {
+        biensData = data;
+        renderBiens(data);
+      });
+    }
+    loadAndRenderBiens();
+    window._onBiensData = loadAndRenderBiens;
   </script>
 </body>
 </html>

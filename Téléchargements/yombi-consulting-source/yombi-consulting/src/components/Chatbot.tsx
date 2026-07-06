@@ -292,7 +292,7 @@ export function Chatbot() {
     <>
       <button
         onClick={handleOpen}
-        className="fixed bottom-6 right-6 z-40 w-14 h-14 rounded-full bg-blue-900 text-white shadow-lg hover:bg-blue-800 hover:scale-105 active:scale-95 transition-all duration-200 flex items-center justify-center"
+        className="fixed bottom-6 right-6 z-[60] w-14 h-14 rounded-full bg-blue-900 text-white shadow-lg hover:bg-blue-800 hover:scale-105 active:scale-95 transition-all duration-200 flex items-center justify-center"
         aria-label="Ouvrir le chatbot"
       >
         <MessageCircle className="w-6 h-6" />
@@ -310,7 +310,7 @@ export function Chatbot() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
             transition={{ duration: 0.2, ease: 'easeOut' }}
-            className="fixed bottom-24 right-6 z-40 w-[360px] max-[400px]:right-3 max-[400px]:w-[calc(100%-24px)] bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden"
+            className="fixed bottom-24 right-6 z-[60] w-[360px] max-[400px]:right-3 max-[400px]:w-[calc(100%-24px)] bg-white rounded-2xl shadow-2xl border border-slate-200 overflow-hidden"
           >
             <div className="bg-blue-900 p-4 flex items-center justify-between">
               <div className="flex items-center gap-3">

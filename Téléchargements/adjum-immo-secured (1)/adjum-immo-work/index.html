@@ -242,7 +242,57 @@
       <h2 class="text-[1.9rem] font-extrabold text-navy mb-2.5 reveal" data-reveal="up" data-reveal-delay="100">Biens en vedette</h2>
       <p class="text-[#666] text-base max-w-[560px] reveal" data-reveal="up" data-reveal-delay="200">Une sélection de propriétés disponibles à Bangui dès maintenant</p>
 
-      <div class="grid grid-cols-3 max-lg:grid-cols-2 max-sm:grid-cols-1 gap-6 mt-10" id="biensGrid"></div>
+      <div class="grid grid-cols-3 max-lg:grid-cols-2 max-sm:grid-cols-1 gap-6 mt-10" id="biensGrid">
+        <!-- Squelettes de chargement (remplacés par les biens après chargement Firestore) -->
+        <div class="skeleton-card rounded-lg overflow-hidden border border-gris-moyen bg-white">
+          <div class="skeleton-img h-[200px]"></div>
+          <div class="p-[18px_20px]">
+            <div class="skeleton-line w-3/4 h-4 mb-2"></div>
+            <div class="skeleton-line w-1/2 h-3 mb-3"></div>
+            <div class="skeleton-line w-2/3 h-5 mb-3"></div>
+            <div class="flex gap-4 pt-3 border-t border-gris-moyen">
+              <div class="skeleton-line w-1/3 h-3"></div>
+              <div class="skeleton-line w-1/4 h-3"></div>
+            </div>
+          </div>
+          <div class="flex gap-2 mx-5 mb-[18px]">
+            <div class="skeleton-line flex-1 h-[38px] rounded"></div>
+            <div class="skeleton-line flex-1 h-[38px] rounded"></div>
+          </div>
+        </div>
+        <div class="skeleton-card rounded-lg overflow-hidden border border-gris-moyen bg-white">
+          <div class="skeleton-img h-[200px]"></div>
+          <div class="p-[18px_20px]">
+            <div class="skeleton-line w-2/3 h-4 mb-2"></div>
+            <div class="skeleton-line w-1/2 h-3 mb-3"></div>
+            <div class="skeleton-line w-3/4 h-5 mb-3"></div>
+            <div class="flex gap-4 pt-3 border-t border-gris-moyen">
+              <div class="skeleton-line w-1/4 h-3"></div>
+              <div class="skeleton-line w-1/3 h-3"></div>
+            </div>
+          </div>
+          <div class="flex gap-2 mx-5 mb-[18px]">
+            <div class="skeleton-line flex-1 h-[38px] rounded"></div>
+            <div class="skeleton-line flex-1 h-[38px] rounded"></div>
+          </div>
+        </div>
+        <div class="skeleton-card rounded-lg overflow-hidden border border-gris-moyen bg-white">
+          <div class="skeleton-img h-[200px]"></div>
+          <div class="p-[18px_20px]">
+            <div class="skeleton-line w-1/2 h-4 mb-2"></div>
+            <div class="skeleton-line w-2/3 h-3 mb-3"></div>
+            <div class="skeleton-line w-3/5 h-5 mb-3"></div>
+            <div class="flex gap-4 pt-3 border-t border-gris-moyen">
+              <div class="skeleton-line w-1/3 h-3"></div>
+              <div class="skeleton-line w-1/4 h-3"></div>
+            </div>
+          </div>
+          <div class="flex gap-2 mx-5 mb-[18px]">
+            <div class="skeleton-line flex-1 h-[38px] rounded"></div>
+            <div class="skeleton-line flex-1 h-[38px] rounded"></div>
+          </div>
+        </div>
+      </div>
 
       </div>
 
@@ -360,7 +410,7 @@
             <p class="text-base text-[#444] leading-relaxed italic mb-6">Adjun Immo m'a trouvé un appartement meublé en moins d'une semaine alors que j'étais encore en France. Tout s'est passé à distance, avec des photos claires et une communication irréprochable. À mon arrivée à Bangui, j'ai emménagé directement.</p>
             <div class="flex items-center gap-3.5">
               <div class="w-[50px] h-[50px] rounded-full bg-navy flex items-center justify-center text-white font-bold text-base shrink-0">CM</div>
-              <div>
+              <div class="min-w-0 break-words">
                 <strong class="block text-[0.95rem] text-navy">Christiane M.</strong>
                 <span class="text-[0.83rem] text-[#888]">Cadre de retour à Bangui depuis Paris</span>
                 <div class="text-gold text-[0.82rem] mt-0.5"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
@@ -374,7 +424,7 @@
             <p class="text-base text-[#444] leading-relaxed italic mb-6">J'ai vendu mon immeuble avec Adjun Immo en deux mois. Le prix obtenu a dépassé mes attentes. L'équipe a géré toutes les démarches administratives, je n'ai eu qu'à signer. Un service vraiment professionnel et honnête.</p>
             <div class="flex items-center gap-3.5">
               <div class="w-[50px] h-[50px] rounded-full bg-navy flex items-center justify-center text-white font-bold text-base shrink-0">AB</div>
-              <div>
+              <div class="min-w-0 break-words">
                 <strong class="block text-[0.95rem] text-navy">Arsène B.</strong>
                 <span class="text-[0.83rem] text-[#888]">Propriétaire, Bangui</span>
                 <div class="text-gold text-[0.82rem] mt-0.5"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
@@ -388,7 +438,7 @@
             <p class="text-base text-[#444] leading-relaxed italic mb-6">Nous avons confié la gestion locative de nos deux maisons à Adjun Immo. Les loyers tombent régulièrement, les locataires sont bien sélectionnés, et nous sommes tenus informés de tout. C'est un vrai soulagement.</p>
             <div class="flex items-center gap-3.5">
               <div class="w-[50px] h-[50px] rounded-full bg-navy flex items-center justify-center text-white font-bold text-base shrink-0">FN</div>
-              <div>
+              <div class="min-w-0 break-words">
                 <strong class="block text-[0.95rem] text-navy">Famille Nguéssé</strong>
                 <span class="text-[0.83rem] text-[#888]">Propriétaires bailleurs, Bangui</span>
                 <div class="text-gold text-[0.82rem] mt-0.5"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-regular fa-star"></i></div>
@@ -402,7 +452,7 @@
             <p class="text-base text-[#444] leading-relaxed italic mb-6">Premier achat immobilier pour moi à Bangui. J'avais peur des arnaques et des complications juridiques. Adjun Immo a sécurisé chaque étape, expliqué chaque document. Je recommande à tous ceux qui veulent acheter sereinement.</p>
             <div class="flex items-center gap-3.5">
               <div class="w-[50px] h-[50px] rounded-full bg-navy flex items-center justify-center text-white font-bold text-base shrink-0">OM</div>
-              <div>
+              <div class="min-w-0 break-words">
                 <strong class="block text-[0.95rem] text-navy">Olivier M.</strong>
                 <span class="text-[0.83rem] text-[#888]">Primo-accédant, Bangui</span>
                 <div class="text-gold text-[0.82rem] mt-0.5"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
@@ -443,16 +493,16 @@
           <p class="text-[0.78rem] font-bold uppercase tracking-[2px] text-gold">Parlons de votre projet</p>
         </div>
 
-        <div class="bg-white/10 backdrop-blur-sm rounded-lg p-8 border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.12)] reveal" data-reveal="up" data-reveal-delay="100">
+        <div class="bg-white/10 backdrop-blur-sm rounded-lg p-5 sm:p-8 border border-white/10 shadow-[0_8px_32px_rgba(0,0,0,0.12)] reveal" data-reveal="up" data-reveal-delay="100">
           <h2 class="text-[1.9rem] font-extrabold text-white mb-2.5">Contactez-nous</h2>
           <p class="text-white/70 text-[0.95rem] mb-8">
             Que vous souhaitiez acheter, vendre, louer ou confier votre bien en gestion, notre équipe est disponible pour vous accompagner.
           </p>
 
-          <div class="grid grid-cols-2 gap-3">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div class="group flex items-start gap-3.5 py-2.5 px-3.5 -mx-3.5 rounded-lg cursor-default hover:bg-white/10 hover:-translate-y-[2px] transition-all duration-200 reveal" data-reveal="up" data-reveal-delay="250">
               <div class="w-[42px] h-[42px] bg-white/8 rounded-lg flex items-center justify-center text-gold text-base shrink-0 group-hover:bg-gold group-hover:text-navy-fonce transition-all duration-200"><i class="fa-solid fa-location-dot"></i></div>
-              <div>
+              <div class="min-w-0 break-words">
                 <p class="text-[0.75rem] font-bold uppercase tracking-[1px] text-gold/60 group-hover:text-gold transition-colors duration-200">Adresse</p>
                 <p class="text-[0.9rem] text-white/80 group-hover:text-white transition-colors duration-200">Bangui, République Centrafricaine</p>
               </div>
@@ -460,7 +510,7 @@
 
             <div class="group flex items-start gap-3.5 py-2.5 px-3.5 -mx-3.5 rounded-lg cursor-default hover:bg-white/10 hover:-translate-y-[2px] transition-all duration-200 reveal" data-reveal="up" data-reveal-delay="300">
               <div class="w-[42px] h-[42px] bg-white/8 rounded-lg flex items-center justify-center text-gold text-base shrink-0 group-hover:bg-gold group-hover:text-navy-fonce transition-all duration-200"><i class="fa-solid fa-phone"></i></div>
-              <div>
+              <div class="min-w-0 break-words">
                 <p class="text-[0.75rem] font-bold uppercase tracking-[1px] text-gold/60 group-hover:text-gold transition-colors duration-200">Téléphone</p>
                 <p class="text-[0.9rem] text-white/80 group-hover:text-white transition-colors duration-200">(+236) 75 29 89 84 / 72 35 66 76</p>
               </div>
@@ -468,7 +518,7 @@
 
             <div class="group flex items-start gap-3.5 py-2.5 px-3.5 -mx-3.5 rounded-lg cursor-default hover:bg-white/10 hover:-translate-y-[2px] transition-all duration-200 reveal" data-reveal="up" data-reveal-delay="350">
               <div class="w-[42px] h-[42px] bg-white/8 rounded-lg flex items-center justify-center text-gold text-base shrink-0 group-hover:bg-gold group-hover:text-navy-fonce transition-all duration-200"><i class="fa-brands fa-whatsapp"></i></div>
-              <div>
+              <div class="min-w-0 break-words">
                 <p class="text-[0.75rem] font-bold uppercase tracking-[1px] text-gold/60 group-hover:text-gold transition-colors duration-200">WhatsApp</p>
                 <p class="text-[0.9rem] text-white/80"><a href="https://wa.me/23675298984" target="_blank" class="text-white/80 no-underline group-hover:text-white transition-colors">+236 75 29 89 84</a></p>
               </div>
@@ -476,7 +526,7 @@
 
             <div class="group flex items-start gap-3.5 py-2.5 px-3.5 -mx-3.5 rounded-lg cursor-default hover:bg-white/10 hover:-translate-y-[2px] transition-all duration-200 reveal" data-reveal="up" data-reveal-delay="400">
               <div class="w-[42px] h-[42px] bg-white/8 rounded-lg flex items-center justify-center text-gold text-base shrink-0 group-hover:bg-gold group-hover:text-navy-fonce transition-all duration-200"><i class="fa-solid fa-envelope"></i></div>
-              <div>
+              <div class="min-w-0 break-words">
                 <p class="text-[0.75rem] font-bold uppercase tracking-[1px] text-gold/60 group-hover:text-gold transition-colors duration-200">Email</p>
                 <p class="text-[0.9rem] text-white/80"><a href="mailto:contact@adjunimmo.com" class="text-white/80 no-underline group-hover:text-white transition-colors">contact@adjunimmo.com</a></p>
               </div>
@@ -484,7 +534,7 @@
 
             <div class="group flex items-start gap-3.5 py-2.5 px-3.5 -mx-3.5 rounded-lg cursor-default hover:bg-white/10 hover:-translate-y-[2px] transition-all duration-200 reveal" data-reveal="up" data-reveal-delay="450">
               <div class="w-[42px] h-[42px] bg-white/8 rounded-lg flex items-center justify-center text-gold text-base shrink-0 group-hover:bg-gold group-hover:text-navy-fonce transition-all duration-200"><i class="fa-brands fa-instagram"></i></div>
-              <div>
+              <div class="min-w-0 break-words">
                 <p class="text-[0.75rem] font-bold uppercase tracking-[1px] text-gold/60 group-hover:text-gold transition-colors duration-200">Instagram</p>
                 <p class="text-[0.9rem] text-white/80"><a href="https://www.instagram.com/p/DVI3j_YiJk_/" target="_blank" class="text-white/80 no-underline group-hover:text-white transition-colors">@AdjunImmo</a></p>
               </div>
@@ -530,8 +580,8 @@
             <input type="checkbox" name="botcheck" class="hidden" style="display:none" tabindex="-1" autocomplete="off">
 
             <div class="flex flex-wrap gap-3.5">
-              <input type="text" name="name" placeholder="Prénom et nom" required class="flex-1 min-w-[200px] px-3.5 py-[11px] border border-gris-moyen rounded text-[0.9rem] font-sans text-[#222] outline-none focus:border-navy transition-colors duration-200">
-              <input type="tel" name="phone" placeholder="Téléphone" required class="flex-1 min-w-[200px] px-3.5 py-[11px] border border-gris-moyen rounded text-[0.9rem] font-sans text-[#222] outline-none focus:border-navy transition-colors duration-200">
+              <input type="text" name="name" placeholder="Prénom et nom" required class="flex-1 min-w-[140px] px-3.5 py-[11px] border border-gris-moyen rounded text-[0.9rem] font-sans text-[#222] outline-none focus:border-navy transition-colors duration-200">
+              <input type="tel" name="phone" placeholder="Téléphone" required class="flex-1 min-w-[140px] px-3.5 py-[11px] border border-gris-moyen rounded text-[0.9rem] font-sans text-[#222] outline-none focus:border-navy transition-colors duration-200">
             </div>
             <input type="email" name="email" placeholder="Adresse email" class="w-full px-3.5 py-[11px] border border-gris-moyen rounded text-[0.9rem] font-sans text-[#222] outline-none focus:border-navy transition-colors duration-200">
             <select name="objet" required class="w-full px-3.5 py-[11px] border border-gris-moyen rounded text-[0.9rem] font-sans text-[#222] outline-none focus:border-navy transition-colors duration-200 bg-white">
@@ -592,7 +642,7 @@
         <div id="modalFeatures" class="flex flex-wrap gap-2.5 mb-6"></div>
 
         <div class="flex gap-3">
-          <a id="modalContactBtn" href="#contact" class="flex-1 block text-center bg-navy text-white py-3 rounded font-bold text-[0.95rem] no-underline hover:bg-navy-clair transition-colors duration-200">
+          <a id="modalContactBtn" href="javascript:void(0)" class="flex-1 block text-center bg-navy text-white py-3 rounded font-bold text-[0.95rem] no-underline hover:bg-navy-clair transition-colors duration-200">
             <i class="fa-solid fa-calendar-check mr-2"></i> Visite
           </a>
           <a id="modalWhatsAppBtn" href="#" target="_blank" class="flex-1 block text-center bg-[#25D366] text-white py-3 rounded font-bold text-[0.95rem] no-underline hover:bg-[#1ebe5a] transition-colors duration-200">
@@ -607,6 +657,39 @@
           </h4>
           <div id="modalSimilarList" class="flex gap-3 overflow-x-auto pb-2 -mx-1 px-1"></div>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== CONTACT MODAL (Visite) ===== -->
+  <div class="modal-overlay" id="contactModalOverlay">
+    <div class="modal-content contact-modal-content">
+      <button class="modal-close" onclick="closeContactModal()"><i class="fa-solid fa-xmark"></i></button>
+      <div class="p-8 max-md:p-5">
+        <h3 class="text-[1.3rem] font-extrabold text-navy mb-1"><i class="fa-solid fa-calendar-check text-gold mr-2"></i> Demande de visite</h3>
+        <p id="contactModalProperty" class="text-[0.9rem] text-[#888] mb-6"></p>
+
+        <form id="contactModalForm">
+          <input type="hidden" name="access_key" value="b37e403a-126b-4b48-b826-c60c8449cdd2">
+          <input type="hidden" name="subject" id="contactModalSubject" value="">
+          <input type="checkbox" name="botcheck" class="hidden" style="display:none" tabindex="-1" autocomplete="off">
+
+          <div class="flex flex-wrap gap-3.5 mb-3.5">
+            <input type="text" name="name" placeholder="Prénom et nom" required class="flex-1 min-w-[140px] px-3.5 py-[11px] border border-gris-moyen rounded text-[0.9rem] font-sans text-[#222] outline-none focus:border-navy transition-colors duration-200">
+            <input type="tel" name="phone" placeholder="Téléphone" required class="flex-1 min-w-[140px] px-3.5 py-[11px] border border-gris-moyen rounded text-[0.9rem] font-sans text-[#222] outline-none focus:border-navy transition-colors duration-200">
+          </div>
+          <input type="email" name="email" placeholder="Adresse email" class="w-full px-3.5 py-[11px] border border-gris-moyen rounded text-[0.9rem] font-sans text-[#222] outline-none focus:border-navy transition-colors duration-200 mb-3.5">
+          <textarea name="message" id="contactModalMessage" required class="w-full px-3.5 py-[11px] border border-gris-moyen rounded text-[0.9rem] font-sans text-[#222] outline-none focus:border-navy transition-colors duration-200 resize-y min-h-[100px] mb-4" placeholder="Votre message..."></textarea>
+
+          <button type="submit" id="contactModalSubmitBtn" class="w-full bg-navy text-white border-none py-3 rounded font-bold text-[0.95rem] cursor-pointer flex items-center justify-center gap-2 hover:bg-navy-clair transition-colors duration-200">
+            <i class="fa-solid fa-paper-plane" id="contactModalBtnIcon"></i>
+            <span id="contactModalBtnText">Envoyer la demande</span>
+            <svg id="contactModalBtnSpinner" class="hidden animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+          </button>
+        </form>
       </div>
     </div>
   </div>
@@ -720,7 +803,19 @@
 
       function renderVedettes(data) {
         var items = data.slice(0, 3);
-        if (items.length === 0) return;
+        if (items.length === 0) {
+          grid.innerHTML = '<div class="col-span-full text-center py-12 reveal active" data-reveal="up">' +
+            '<div class="inline-flex flex-col items-center gap-3">' +
+              '<div class="w-20 h-20 bg-white rounded-2xl flex items-center justify-center shadow-sm">' +
+                '<i class="fa-solid fa-building text-[#ccc] text-3xl"></i>' +
+              '</div>' +
+              '<p class="text-[#999] font-semibold text-[1.05rem]">Aucun bien disponible pour le moment</p>' +
+              '<p class="text-[#bbb] text-sm">Revenez bientôt, de nouvelles propriétés arrivent régulièrement.</p>' +
+              '<a href="biens.html" class="mt-2 bg-navy text-white no-underline px-6 py-2.5 rounded font-semibold text-[0.9rem] hover:bg-navy-clair transition-colors">Voir tous les biens</a>' +
+            '</div>' +
+          '</div>';
+          return;
+        }
         grid.innerHTML = items.map(function(b, i) {
           var delay = (i + 1) * 100;
           var badgeBg = b.badgeColor === 'gold' ? 'bg-gold text-navy-fonce' : 'bg-navy text-white';
@@ -748,28 +843,30 @@
               '<button onclick="openModal(' + b.id + ')" class="flex-1 bg-navy text-white py-2.5 font-semibold text-[0.88rem] rounded cursor-pointer border-none hover:bg-navy-clair transition-colors duration-200 flex items-center justify-center gap-1.5">' +
                 '<i class="fa-solid fa-eye"></i> Détails' +
               '</button>' +
-              '<a href="#contact" class="flex-1 block text-center border border-gris-moyen text-navy py-2.5 font-semibold text-[0.88rem] no-underline rounded hover:border-navy hover:bg-navy/5 transition-all duration-200">' +
+              '<button onclick="openContactModal(' + b.id + ')" class="flex-1 block text-center border border-gris-moyen text-navy py-2.5 font-semibold text-[0.88rem] no-underline rounded cursor-pointer hover:border-navy hover:bg-navy/5 transition-all duration-200">' +
                 'Visite' +
-              '</a>' +
+              '</button>' +
             '</div>' +
           '</div>';
         }).join('');
 
-        requestAnimationFrame(function() {
-          requestAnimationFrame(function() {
-            grid.querySelectorAll('.reveal').forEach(function(el) {
-              var rect = el.getBoundingClientRect();
-              if (rect.top < window.innerHeight - 80) {
-                el.classList.add('active');
-              }
-            });
+        if (window.observeReveal) {
+          window.observeReveal(grid.querySelectorAll('.reveal'));
+        } else {
+          // Filet de sécurité si script.js n'a pas (encore) initialisé l'observer
+          grid.querySelectorAll('.reveal').forEach(function(el) {
+            el.classList.add('active');
           });
-        });
+        }
       }
 
-      loadBiensData(function(data) {
-        renderVedettes(data);
-      });
+      function loadVedettes() {
+        loadBiensData(function(data) {
+          renderVedettes(data);
+        });
+      }
+      loadVedettes();
+      window._onBiensData = loadVedettes;
     })();
   </script>
 </body>

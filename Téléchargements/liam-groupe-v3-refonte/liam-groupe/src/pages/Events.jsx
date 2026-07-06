@@ -4,6 +4,7 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import EventCard from "../components/EventCard";
 import HeroSlider from "../components/HeroSlider";
+import ContactModal from "../components/ContactModal";
 import { useEvents } from "../hooks/useSiteData";
 import { imgHero, imgBlur, imgSrcSet, imgSizes } from "../data/siteData";
 import useScrollReveal from "../hooks/useScrollReveal";
@@ -12,6 +13,7 @@ export default function Events() {
   const { t } = useTranslation();
   const { data: events = [] } = useEvents();
   const [active, setActive] = useState("tous");
+  const [registerEvent, setRegisterEvent] = useState(null);
   const filtered = active === "tous" ? events : events.filter((e) => e.status === active);
   const sectionRef = useScrollReveal();
 
@@ -62,7 +64,7 @@ export default function Events() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7 stagger-children">
             {filtered.length > 0 ? filtered.map((e) => (
               <div key={e.slug} className="reveal">
-                <EventCard event={e} />
+                <EventCard event={e} onRegister={setRegisterEvent} />
               </div>
             )) : (
               <div className="col-span-full text-center py-16 text-gray-400">
@@ -73,6 +75,16 @@ export default function Events() {
           </div>
         </div>
       </section>
+
+      <ContactModal
+        open={!!registerEvent}
+        onClose={() => setRegisterEvent(null)}
+        title={t('events.registerModalTitle')}
+        description={registerEvent ? t('events.registerModalDescription', { title: registerEvent.title }) : ''}
+        initialSubject={t('home.contact.formSubjectEventOption')}
+        initialMessage={registerEvent ? t('events.registerModalMessage', { title: registerEvent.title, date: registerEvent.date }) : ''}
+        successMessageKey="events.registerSuccessText"
+      />
 
       <Footer />
     </div>

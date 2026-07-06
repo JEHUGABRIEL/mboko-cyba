@@ -52,16 +52,10 @@ export default function Navbar({ transparentOnTop = true }) {
   };
 
   return (
-    <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ease-out ${
-        isTransparent
-          ? "bg-transparent"
-          : "bg-white/80 backdrop-blur-lg shadow-[0_4px_30px_rgba(0,0,0,0.08)]"
-      }`}
-    >
+    <header className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-lg shadow-[0_4px_30px_rgba(0,0,0,0.08)] transition-all duration-500 ease-out">
       <nav className="max-w-7xl mx-auto px-6 lg:px-10 h-[88px] flex items-center justify-between">
         <Link to="/" className="font-heading font-extrabold text-2xl tracking-tight">
-          <span className={isTransparent ? "text-white" : "text-ink"}>{siteInfo.name}</span>
+          <span className="text-ink">{siteInfo.name}</span>
           <span className="text-brand-500">.</span>
         </Link>
 
@@ -74,13 +68,7 @@ export default function Navbar({ transparentOnTop = true }) {
                 onMouseEnter={openDomains}
                 onMouseLeave={scheduleCloseDomains}
               >
-                <button
-                  className={`flex items-center gap-1 font-medium transition-colors ${
-                    isTransparent
-                      ? "text-white/90 hover:text-white"
-                      : "text-gray-700 hover:text-ink"
-                  }`}
-                >
+                <button className="flex items-center gap-1 font-medium text-gray-700 hover:text-ink transition-colors">
                   {link.label}
                   <ChevronDown
                     className={`w-4 h-4 transition-transform ${domainsOpen ? "rotate-180" : ""}`}
@@ -108,11 +96,7 @@ export default function Navbar({ transparentOnTop = true }) {
                 onMouseEnter={() => prefetchRoute(link.to)}
                 className={({ isActive }) =>
                   `font-medium transition-colors ${
-                    isTransparent
-                      ? isActive
-                        ? "text-white"
-                        : "text-white/90 hover:text-white"
-                      : isActive
+                    isActive
                       ? "text-brand-600"
                       : "text-gray-700 hover:text-ink"
                   }`
@@ -122,18 +106,14 @@ export default function Navbar({ transparentOnTop = true }) {
               </NavLink>
             )
           )}
-        </div>
-
-        <div className="hidden lg:flex items-center gap-5">
+        </div>          <div className="hidden lg:flex items-center gap-5">
           <div
             className="relative"
             onMouseEnter={() => { if (langTimer.current) clearTimeout(langTimer.current); setLangOpen(true); }}
             onMouseLeave={() => { langTimer.current = setTimeout(() => setLangOpen(false), 150); }}
           >
             <button
-              className={`flex items-center gap-1.5 font-medium transition-colors ${
-                isTransparent ? "text-white/90 hover:text-white" : "text-gray-700 hover:text-ink"
-              }`}
+              className="flex items-center gap-1.5 font-medium text-gray-700 hover:text-ink transition-colors"
               onClick={() => setLangOpen((o) => !o)}
             >
               <span>{currentLang}</span>
@@ -156,17 +136,6 @@ export default function Navbar({ transparentOnTop = true }) {
               </div>
             )}
           </div>
-          <Link
-            to="/partenaires"
-            onMouseEnter={() => prefetchRoute("/partenaires")}
-            className={`px-6 py-2.5 rounded-full font-semibold transition-colors ${
-              isTransparent
-                ? "bg-brand-500 hover:bg-brand-600 text-white"
-                : "bg-brand-500 hover:bg-brand-600 text-white"
-            }`}
-          >
-            {t('nav.becomePartner')}
-          </Link>
         </div>
 
         <button
@@ -240,14 +209,7 @@ export default function Navbar({ transparentOnTop = true }) {
               </div>
             </div>
           </div>
-          <Link
-            to="/partenaires"
-            onMouseEnter={() => prefetchRoute("/partenaires")}
-            className="block text-center px-6 py-3 rounded-full font-semibold bg-brand-500 hover:bg-brand-600 text-white transition-colors"
-            onClick={() => setMobileOpen(false)}
-          >
-            {t('nav.becomePartner')}
-          </Link>
+
         </div>
       )}
     </header>

@@ -20,10 +20,12 @@ import EventCard from "../components/EventCard";
 import NewsCard from "../components/NewsCard";
 import TestimonialCarousel from "../components/TestimonialCarousel";
 import PartnersCarousel from "../components/PartnersCarousel";
+import StatsSection from "../components/StatsSection";
+import FAQSection from "../components/FAQSection";
 import { JoinCTA } from "../components/CTASection";
 import HeroSlider from "../components/HeroSlider";
 import { imgHero, imgBlur, imgSrcSet, imgSizes } from "../data/siteData";
-import { useDomains, useEvents, useNews, usePartners, useSiteInfo, useHomeHeroImages } from "../hooks/useSiteData";
+import { useDomains, useEvents, useNews, useSiteInfo, useHomeHeroImages } from "../hooks/useSiteData";
 import useScrollReveal from "../hooks/useScrollReveal";
 import useUnsavedChanges from "../hooks/useUnsavedChanges";
 
@@ -32,7 +34,6 @@ export default function Home() {
   const { data: domains = [] } = useDomains();
   const { data: events = [] } = useEvents();
   const { data: news = [] } = useNews();
-  const { data: partners = [] } = usePartners();
   const { data: siteInfo = {} } = useSiteInfo();
   const upcomingAndRecent = events.slice(0, 3);
   const domainsRef = useScrollReveal();
@@ -61,12 +62,34 @@ export default function Home() {
             imageBlur: imgBlur("home-hero"),
             imageSrcSet: imgSrcSet("home-hero", [480, 768, 1024, 1280, 1600], 900, 'fill'),
             sizes: imgSizes('full'),
+            cta: (
+              <div className="flex flex-wrap items-center gap-4">
+                <Link
+                  to="/domaines"
+                  className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full bg-brand-500 hover:bg-brand-600 text-white font-semibold transition-colors"
+                >
+                  {t('home.domains.eyebrow', 'Nos domaines')}
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+                <Link
+                  to="/evenements"
+                  className="inline-flex items-center gap-2 px-7 py-3.5 rounded-full border border-white/30 text-white hover:bg-white/10 font-semibold transition-colors backdrop-blur-sm"
+                >
+                  {t('hero.ctaEvents')}
+                </Link>
+              </div>
+            ),
             ...s,
           })) : [];
         })()}
-        heightClass="h-screen"
+        heightClass="min-h-[600px]"
         preloadSeed="home-hero"
+        showcaseMode
+        defaultBg={{ type: "gradient", value: "from-brand-800/60 via-ink/80 to-ink" }}
       />
+
+      {/* CHIFFRES CLES */}
+      <StatsSection />
 
       {/* DOMAINES */}
       <section className="py-24 px-6" ref={domainsRef}>
@@ -186,6 +209,9 @@ export default function Home() {
       </section>
 
       <JoinCTA />
+
+      {/* FAQ */}
+      <FAQSection />
 
       {/* CONTACT */}
       <section className="py-24 px-6" id="contact" ref={contactRef}>

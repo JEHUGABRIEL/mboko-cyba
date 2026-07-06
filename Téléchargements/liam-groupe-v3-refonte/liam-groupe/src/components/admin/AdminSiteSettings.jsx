@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, startTransition } from "react";
+import { useState, useEffect, useCallback, useMemo, startTransition } from "react";
 import { useTranslation } from "react-i18next";
 import { supabase } from "../../lib/supabase.js";
 import {
@@ -52,12 +52,12 @@ function safeParse(value, fallback) {
 export default function AdminSiteSettings() {
   const { t } = useTranslation();
 
-  const SETTING_LABELS = {
+  const SETTING_LABELS = useMemo(() => ({
     siteInfo: t("admin.settings.siteInfo"),
     navLinks: t("admin.settings.navLinks"),
     footerLinks: t("admin.settings.footerLinks"),
     homeHeroImages: t("admin.settings.homeHeroImages"),
-  };
+  }), [t]);
 
   const [settings, setSettings] = useState({});
   const [loading, setLoading] = useState(true);
@@ -66,7 +66,7 @@ export default function AdminSiteSettings() {
   const [dirty, setDirty] = useState({});
   const [toast, setToast] = useState(null);
 
-  const keys = Object.keys(SETTING_LABELS);
+  const keys = useMemo(() => Object.keys(SETTING_LABELS), [SETTING_LABELS]);
 
   const loadSettings = useCallback(async () => {
     setLoading(true);

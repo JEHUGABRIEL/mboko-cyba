@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Target, Compass, Flag, MapPin, Phone, Mail, Clock, Send } from "lucide-react";
-import { useTranslation, Trans } from "react-i18next";
+import { useTranslation } from "react-i18next";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import SectionHeading from "../components/SectionHeading";
@@ -60,16 +60,26 @@ export default function About() {
               <p className="text-gray-500 leading-relaxed mb-5">
                 {t('about.intro1')}
               </p>
-              <p className="text-gray-500 leading-relaxed mb-8">
-                <Trans i18nKey="about.intro2">
-                  Notre nom incarne trois valeurs fondamentales :{' '}
-                  <strong className="text-ink">Innovation</strong> dans nos
-                  approches, <strong className="text-ink">Ambition</strong> dans
-                  nos objectifs, et <strong className="text-ink">Mission</strong>{' '}
-                  dans notre engagement sans faille pour la jeunesse et les
-                  femmes centrafricaines.
-                </Trans>
+
+              <p className="text-xs font-semibold uppercase tracking-[0.16em] text-gray-400 mb-3">
+                {t('about.acronym.eyebrow')}
               </p>
+              <div className="grid grid-cols-2 gap-3 mb-8">
+                {(t('about.acronym.items', { returnObjects: true }) || []).map((item, i) => {
+                  const tileColors = ["bg-coral-500", "bg-violet-500", "bg-green-500", "bg-brand-500"];
+                  return (
+                    <div key={item.letter} className="flex items-start gap-3 p-3 rounded-xl border border-gray-100">
+                      <span className={`w-8 h-8 shrink-0 rounded-full ${tileColors[i % 4]} text-white flex items-center justify-center font-heading font-bold text-sm`}>
+                        {item.letter}
+                      </span>
+                      <div>
+                        <p className="font-heading font-bold text-sm text-ink">{item.word}</p>
+                        <p className="text-gray-500 text-xs leading-snug mt-0.5">{item.text}</p>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
 
               <div className="space-y-6 stagger-children">
                 <div className="flex gap-4 reveal">
@@ -148,32 +158,42 @@ export default function About() {
           <div className="reveal">
             <SectionHeading icon={MapPin} eyebrow={t('contact.eyebrow')} title={t('contact.title')} align="left" />
           </div>
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          <div className="grid grid-cols-1 gap-12">
             <div className="reveal">
-              <p className="text-gray-500 leading-relaxed mb-8 -mt-4 max-w-md">
+              <p className="text-gray-500 leading-relaxed mb-8 -mt-4">
                 {t('contact.intro')}
               </p>
-              <div className="space-y-7 stagger-children">
-                <div className="reveal"><ContactItem icon={MapPin} label={t('contact.address')} lines={info.address} /></div>
-                <div className="reveal"><ContactItem icon={Phone} label={t('contact.phone')} lines={info.phones} /></div>
-                <div className="reveal"><ContactItem icon={Mail} label={t('contact.email')} lines={info.emails} /></div>
-                <div className="reveal"><ContactItem icon={Clock} label={t('contact.hours')} lines={info.hours} /></div>
-              </div>
-
-              <div className="mt-10 bg-brand-50/60 rounded-2xl p-7">
-                <h3 className="font-heading font-bold mb-1">{t('contact.socialTitle')}</h3>
-                <p className="text-gray-500 mb-5">{t('contact.socialText')}</p>
-                <div className="flex items-center gap-3">
-                  {[FacebookIcon, InstagramIcon, XIcon, YoutubeIcon].map((Icon, i) => (
-                    <a
-                      key={i}
-                      href="#"
-                      aria-label="social"
-                      className="w-10 h-10 rounded-lg border border-gray-200 bg-white flex items-center justify-center hover:bg-gray-50 transition-colors"
-                    >
-                      <Icon className="w-4 h-4" />
-                    </a>
-                  ))}
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 stagger-children">
+                <div className="space-y-6">
+                  <div className="reveal"><ContactItem icon={MapPin} label={t('contact.address')} lines={info.address} /></div>
+                  <div className="reveal"><ContactItem icon={Clock} label={t('contact.hours')} lines={info.hours} /></div>
+                </div>
+                <div className="space-y-6">
+                  <div className="reveal"><ContactItem icon={Phone} label={t('contact.phone')} lines={info.phones} /></div>
+                  <div className="reveal"><ContactItem icon={Mail} label={t('contact.email')} lines={info.emails} /></div>
+                </div>
+                <div className="reveal bg-brand-50/60 rounded-2xl p-7">
+                  <h3 className="font-heading font-bold mb-1">{t('contact.socialTitle')}</h3>
+                  <p className="text-gray-500 mb-5">{t('contact.socialText')}</p>
+                  <div className="flex items-center gap-3">
+                    {[
+                      { Icon: FacebookIcon, href: siteInfo.social?.facebook },
+                      { Icon: InstagramIcon, href: siteInfo.social?.instagram },
+                      { Icon: XIcon, href: siteInfo.social?.x },
+                      { Icon: YoutubeIcon, href: siteInfo.social?.youtube },
+                    ].map(({ Icon, href }, i) => (
+                      <a
+                        key={i}
+                        href={href || '#'}
+                        target={href ? '_blank' : undefined}
+                        rel={href ? 'noopener noreferrer' : undefined}
+                        aria-label="social"
+                        className="w-10 h-10 rounded-lg border border-gray-200 bg-white flex items-center justify-center hover:bg-gray-50 transition-colors"
+                      >
+                        <Icon className="w-4 h-4" />
+                      </a>
+                    ))}
+                  </div>
                 </div>
               </div>
             </div>

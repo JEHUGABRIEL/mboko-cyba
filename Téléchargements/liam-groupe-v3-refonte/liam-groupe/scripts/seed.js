@@ -51,9 +51,10 @@ async function seed() {
 
   // Team
   for (const m of team) {
-    const { name, role, image, description } = m
+    const { name, role, image, description, social } = m
     await supabase.from('team').upsert({
       name, role, image, description,
+      social: social || {},
       order_index: team.indexOf(m),
     }, { onConflict: 'name' })
   }

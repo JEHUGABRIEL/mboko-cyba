@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback, startTransition } from "react";
 import { useNavigate } from "react-router-dom";
-import { Menu, ArrowLeft, LogOut, X } from "lucide-react";
+import { Menu, LogOut, X } from "lucide-react";
 import AdminLogin from "../components/admin/AdminLogin";
 import AdminSidebar from "../components/admin/AdminSidebar";
 import AdminDashboard from "../components/admin/AdminDashboard";
@@ -75,9 +75,6 @@ export default function Admin() {
     setMobileOpen(false);
   };
 
-  // Manage section as route param
-  const goToSite = () => navigate("/");
-
   return (
     <div className="flex min-h-screen bg-gray-50">
       {/* Sidebar */}
@@ -101,17 +98,12 @@ export default function Admin() {
           </button>
           <span className="font-heading font-bold text-lg">
             LIAM<span className="text-brand-500">.</span>
+            <span className="text-gray-400 text-xs font-medium ml-1.5">Admin</span>
           </span>
-          <button
-            onClick={goToSite}
-            className="p-2 rounded-lg hover:bg-gray-100 text-gray-400"
-            title="Retour au site"
-          >
-            <ArrowLeft className="w-5 h-5" />
-          </button>
+          <div className="w-9" />
         </header>
 
-        <main className="flex-1 overflow-y-auto p-6 lg:p-10">
+        <main className="flex-1 overflow-y-auto p-4 sm:p-6 lg:p-10">
           {section === "dashboard" && <AdminDashboard onNavigate={handleNavigate} />}
           {["domains", "events", "news", "team", "partners", "testimonials"].includes(section) && (
             <AdminContentManager table={section} />

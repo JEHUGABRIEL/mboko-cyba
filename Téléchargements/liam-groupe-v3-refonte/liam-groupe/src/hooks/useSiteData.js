@@ -30,7 +30,8 @@ async function fetchAll(table, fallback) {
     .from(table)
     .select('*')
     .order('order_index')
-  return error ? fallback : data
+  if (error || !data || data.length === 0) return fallback
+  return data
 }
 
 export function useSiteInfo() {

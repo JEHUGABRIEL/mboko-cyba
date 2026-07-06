@@ -220,8 +220,13 @@ var firebaseConfig = {
   messagingSenderId: "971306126898",
   appId: "1:971306126898:web:67bcf424798776373f362b"
 };
-firebase.initializeApp(firebaseConfig);
-var db = firebase.firestore();
+var db;
+try {
+  firebase.initializeApp(firebaseConfig);
+  db = firebase.firestore();
+} catch (e) {
+  console.error('Firebase init error:', e);
+}
 
 // ===== Biens Data — chargée depuis Firestore =====
 var biensDataFull = [];
@@ -249,28 +254,96 @@ function mapBienData(b) {
   };
 }
 
-function loadBiensData(callback) {
-  if (typeof db === 'undefined' || !db) {
-    console.error('Firebase non initialisé');
-    if (callback) callback([]);
+var CACHE_KEY = 'adjum_immo_biens_data';
+
+function loadBiensDataFromCache() {
+  try {
+    var raw = localStorage.getItem(CACHE_KEY);
+    if (!raw) return null;
+    var data = JSON.parse(raw);
+    if (!Array.isArray(data) || data.length === 0) return null;
+    return data;
+  } catch (e) {
+    return null;
+  }
+}
+
+function saveBiensDataToCache(data) {
+  try {
+    localStorage.setItem(CACHE_KEY, JSON.stringify(data));
+  } catch (e) {}
+}
+
+function showGridStatus(msg, isError) {
+  var grid = document.getElementById('biensGrid');
+  if (!grid) return;
+  var cls = isError ? 'text-red-500' : 'text-[#999]';
+  grid.innerHTML = '<div class="col-span-full text-center py-12"><p class="' + cls + ' font-semibold text-[0.95rem]">' + msg + '</p></div>';
+}
+
+function loadBiensData(callback, attempt) {
+  attempt = attempt || 0;
+
+  // Serve cached data immediately
+  var cached = loadBiensDataFromCache();
+  var cacheServed = false;
+  if (cached && callback) {
+    cacheServed = true;
+    biensDataFull = cached;
+    callback(cached);
+  }
+
+  if (!db) {
+    console.error('Firebase non disponible');
+    if (!cacheServed) {
+      showGridStatus('Base de données non disponible', true);
+    }
     return;
   }
+
+  if (attempt >= 5) {
+    if (!cacheServed) {
+      showGridStatus('Impossible de charger les biens après plusieurs tentatives.', true);
+    }
+    return;
+  }
+
+  var timedOut = false;
+  var timeoutTimer = setTimeout(function() {
+    timedOut = true;
+    if (!cacheServed) {
+      showGridStatus('Chargement en cours...', false);
+    }
+    loadBiensData(callback, attempt + 1);
+  }, 5000);
+
   db.collection('biens').orderBy('id', 'asc').get()
     .then(function(querySnapshot) {
+      clearTimeout(timeoutTimer);
+      if (timedOut) return;
       biensDataFull = [];
       querySnapshot.forEach(function(doc) {
         biensDataFull.push(mapBienData(doc.data()));
       });
-      if (callback) callback(biensDataFull);
+      if (biensDataFull.length > 0) saveBiensDataToCache(biensDataFull);
+      if (callback) {
+        if (biensDataFull.length > 0 || !cacheServed) {
+          callback(biensDataFull);
+        }
+      }
     })
     .catch(function(error) {
-      console.error('Erreur chargement Firestore:', error);
-      if (callback) callback([]);
+      clearTimeout(timeoutTimer);
+      if (timedOut) return;
+      console.error('Erreur Firestore (tentative ' + (attempt + 1) + '):', error);
+      if (!cacheServed && attempt === 0) {
+        showGridStatus('Chargement en cours...', false);
+      }
+      setTimeout(function() {
+        loadBiensData(callback, attempt + 1);
+      }, 1500);
     });
 }
-
-// Chargement immédiat
-loadBiensData();
 
 // ===== Modal =====
 var modalOverlay = document.getElementById('modalOverlay');
@@ -278,6 +351,8 @@ var modalOverlay = document.getElementById('modalOverlay');
 window.openModal = function(id) {
   var d = biensDataFull.find(function(b) { return b.id === id; });
   if (!d) return;
+  if (!modalOverlay) modalOverlay = document.getElementById('modalOverlay');
+  if (!modalOverlay) return;
 
   // Nettoyer tout cross-fade en cours
   if (window._crossfadeTimer) {
@@ -320,11 +395,11 @@ window.openModal = function(id) {
     modalImg.onerror = null;
   };
 
-  modalImg.src = d.gallery[0];
+  modalImg.src = d.gallery[0] || '';
   modalImg.alt = d.title;
 
   modalGallery.innerHTML = d.gallery.map(function(url, i) {
-    return '<img src="' + url.replace('w=800', 'w=120') + '" class="' + (i === 0 ? 'active' : '') + '" onclick="switchGallery(' + d.id + ', ' + i + ')" alt="Photo ' + (i + 1) + '">';
+    return '<img src="' + (url || '').replace('w=800', 'w=120') + '" class="' + (i === 0 ? 'active' : '') + '" onclick="switchGallery(' + d.id + ', ' + i + ')" alt="Photo ' + (i + 1) + '">';
   }).join('');
 
   // Set gallery counter
@@ -350,7 +425,10 @@ window.openModal = function(id) {
   document.getElementById('modalCols').innerHTML = colsHtml;
   document.getElementById('modalDesc').textContent = d.description;
   document.getElementById('modalFeatures').innerHTML = featuresHtml;
-  document.getElementById('modalContactBtn').href = 'index.html#contact';
+  document.getElementById('modalContactBtn').onclick = function(e) {
+    e.preventDefault();
+    openContactModal(d.id);
+  };
 
   // Set WhatsApp share link
   var whatsappMsg = encodeURIComponent(
@@ -385,7 +463,7 @@ window.openModal = function(id) {
         var similTagHtml = b.tag ? '<div class="tag-badge tag-badge--' + (b.tag === 'Nouveau' ? 'nouveau' : 'exclusivite') + '">' + b.tag + '</div>' : '';
         return '<div class="similar-card flex-shrink-0 w-[180px] rounded-lg overflow-hidden border border-gris-moyen bg-white cursor-pointer hover:shadow-[0_4px_12px_rgba(13,45,90,0.1)] hover:-translate-y-1 transition-all duration-200" onclick="openModal(' + b.id + ')">' +
           '<div class="relative h-[110px] overflow-hidden">' +
-            '<img src="' + b.gallery[0].replace('w=800', 'w=300') + '" alt="' + b.title + '" class="w-full h-full object-cover">' +
+            '<img src="' + (b.gallery[0] || '').replace('w=800', 'w=300') + '" alt="' + b.title + '" class="w-full h-full object-cover">' +
             '<div class="absolute top-1.5 left-1.5 ' + badgeBg + ' text-[0.65rem] font-bold px-2 py-0.5 rounded-sm uppercase">' + b.badge + '</div>' +
             similTagHtml +
           '</div>' +
@@ -473,12 +551,112 @@ if (modalOverlay) {
   });
 }
 
+// bfcache: when user navigates back, re-trigger data loading
+window.refreshBiensData = function() {
+  if (typeof window._onBiensData === 'function') {
+    window._onBiensData();
+  }
+};
+
+window.addEventListener('pageshow', function(e) {
+  if (e.persisted) {
+    window.refreshBiensData();
+  }
+});
+
 // Close on Escape key
 document.addEventListener('keydown', function(e) {
   if (e.key === 'Escape' && modalOverlay && modalOverlay.classList.contains('active')) {
     window.closeModal();
   }
+  if (e.key === 'Escape' && contactModalOverlay && contactModalOverlay.classList.contains('active')) {
+    window.closeContactModal();
+  }
 });
+
+// ===== Contact Modal (Visite) =====
+var contactModalOverlay = document.getElementById('contactModalOverlay');
+var contactModalForm = document.getElementById('contactModalForm');
+
+window.openContactModal = function(id) {
+  var d = biensDataFull.find(function(b) { return b.id === id; });
+  if (!d) return;
+  if (!contactModalOverlay) contactModalOverlay = document.getElementById('contactModalOverlay');
+  if (!contactModalOverlay) return;
+
+  document.getElementById('contactModalProperty').textContent = d.title + ' — ' + d.quartier + ', Bangui';
+  document.getElementById('contactModalSubject').value = 'Demande de visite - ' + d.title + ' (' + d.quartier + ')';
+  document.getElementById('contactModalMessage').value =
+    'Bonjour, je souhaite visiter le bien "' + d.title + '" situé à ' + d.quartier + ', Bangui.\n\n' +
+    'Merci de me contacter pour organiser une visite.\n\n' +
+    'Cordialement.';
+
+  contactModalOverlay.classList.add('active');
+  document.body.style.overflow = 'hidden';
+};
+
+window.closeContactModal = function() {
+  if (contactModalOverlay) {
+    contactModalOverlay.classList.remove('active');
+    document.body.style.overflow = '';
+  }
+};
+
+// Close on overlay click
+if (contactModalOverlay) {
+  contactModalOverlay.addEventListener('click', function(e) {
+    if (e.target === contactModalOverlay) {
+      window.closeContactModal();
+    }
+  });
+}
+
+// Contact form submission
+if (contactModalForm) {
+  contactModalForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    var submitBtn = document.getElementById('contactModalSubmitBtn');
+    var btnIcon = document.getElementById('contactModalBtnIcon');
+    var btnText = document.getElementById('contactModalBtnText');
+    var btnSpinner = document.getElementById('contactModalBtnSpinner');
+
+    submitBtn.disabled = true;
+    submitBtn.classList.add('opacity-70', 'cursor-not-allowed');
+    btnIcon.classList.add('hidden');
+    btnText.classList.add('hidden');
+    btnSpinner.classList.remove('hidden');
+
+    var formData = new FormData(contactModalForm);
+
+    fetch('https://api.web3forms.com/submit', {
+      method: 'POST',
+      body: formData
+    })
+    .then(function(res) { return res.json(); })
+    .then(function(data) {
+      if (data.success) {
+        window.closeContactModal();
+        window.location.replace('merci.html');
+      } else {
+        submitBtn.disabled = false;
+        submitBtn.classList.remove('opacity-70', 'cursor-not-allowed');
+        btnIcon.classList.remove('hidden');
+        btnText.classList.remove('hidden');
+        btnSpinner.classList.add('hidden');
+        alert('Une erreur est survenue. Veuillez réessayer.');
+      }
+    })
+    .catch(function() {
+      submitBtn.disabled = false;
+      submitBtn.classList.remove('opacity-70', 'cursor-not-allowed');
+      btnIcon.classList.remove('hidden');
+      btnText.classList.remove('hidden');
+      btnSpinner.classList.add('hidden');
+      alert('Une erreur de connexion est survenue. Veuillez réessayer.');
+    });
+  });
+}
 
 // ===== Modal Swipe to Close (mobile touch) =====
 (function() {
@@ -598,11 +776,13 @@ document.addEventListener('keydown', function(e) {
 })();
 
 // ===== Scroll Reveal (Intersection Observer) =====
+// L'observer est exposé sur window.revealObserver pour que tout code qui
+// injecte dynamiquement des éléments ".reveal" (ex: cartes "Biens en vedette"
+// chargées depuis Firestore) puisse les enregistrer via window.observeReveal(el).
+// Sans cela, les éléments ajoutés après ce script restaient bloqués à opacity:0
+// car jamais observés -> ils ne s'affichaient qu'après un rechargement de page
+// (quand le cache local permettait un rendu avant ce script).
 (function() {
-  var revealElements = document.querySelectorAll('.reveal');
-
-  if (!revealElements.length) return;
-
   var observer = new IntersectionObserver(function(entries) {
     entries.forEach(function(entry) {
       if (entry.isIntersecting) {
@@ -616,7 +796,30 @@ document.addEventListener('keydown', function(e) {
     threshold: 0.1
   });
 
-  revealElements.forEach(function(el) {
+  window.revealObserver = observer;
+
+  window.observeReveal = function(elements) {
+    if (!elements) return;
+    if (elements.length === undefined) elements = [elements];
+    Array.prototype.forEach.call(elements, function(el) {
+      // Si l'élément est déjà visible dans le viewport au moment de l'injection,
+      // on l'affiche immédiatement plutôt que d'attendre un futur scroll qui
+      // pourrait ne jamais survenir (ex: section déjà visible au chargement).
+      var rect = el.getBoundingClientRect();
+      if (rect.top < window.innerHeight && rect.bottom > 0) {
+        // Léger délai pour laisser la transition CSS s'appliquer proprement
+        requestAnimationFrame(function() {
+          requestAnimationFrame(function() {
+            el.classList.add('active');
+          });
+        });
+      } else {
+        observer.observe(el);
+      }
+    });
+  };
+
+  document.querySelectorAll('.reveal').forEach(function(el) {
     observer.observe(el);
   });
 })();

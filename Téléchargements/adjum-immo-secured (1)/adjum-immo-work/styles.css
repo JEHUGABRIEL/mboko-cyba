@@ -461,6 +461,23 @@ html {
   display: none;
 }
 
+/* ===== Skeleton Loading Cards ===== */
+.skeleton-card {
+  pointer-events: none;
+}
+
+.skeleton-img,
+.skeleton-line {
+  background: linear-gradient(90deg, #E8E8E4 25%, #F5F5F2 50%, #E8E8E4 75%);
+  background-size: 200% 100%;
+  animation: skeletonShimmer 1.5s ease-in-out infinite;
+  border-radius: 6px;
+}
+
+.skeleton-img {
+  border-radius: 0;
+}
+
 /* ===== Page Loader / Spinner ===== */
 #pageLoader {
   position: fixed;
@@ -560,4 +577,9 @@ html {
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+/* ===== Contact Modal (Visite) ===== */
+.contact-modal-content {
+  max-width: 500px;
 }

@@ -57,6 +57,7 @@ CREATE TABLE team (
   role TEXT,
   description TEXT,
   image TEXT,
+  social JSONB DEFAULT '{}',
   order_index INTEGER DEFAULT 0,
   created_at TIMESTAMPTZ DEFAULT now()
 );
