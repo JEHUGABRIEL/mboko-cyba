@@ -61,6 +61,10 @@
       },
       {
         "description": "Des formations pratiques et professionnalisantes pour offrir aux jeunes centrafricains les clés de leur insertion et de leur réussite.",
+        "bg": {
+          "type": "gradient",
+          "value": "from-ink-900 via-brand-800/40 to-ink"
+        },
         "eyebrow": "Formation · Insertion · Avenir",
         "title": "Former les jeunes",
         "titleAccent": "pour construire demain"
@@ -87,24 +91,40 @@
       },
       {
         "description": "Autonomiser les femmes centrafricaines par la formation au leadership, l'accompagnement entrepreneurial et la mise en réseau pour des projets durables.",
+        "bg": {
+          "type": "pattern",
+          "value": "waves"
+        },
         "eyebrow": "Leadership · Autonomisation · Réussite",
         "title": "L'entrepreneuriat au féminin",
         "titleAccent": "pour une Centrafrique qui entreprend"
       },
       {
         "description": "Assurer la visibilité des actions de LIAM Groupe et promouvoir la culture centrafricaine à travers une stratégie de communication moderne et des productions audiovisuelles.",
+        "bg": {
+          "type": "gradient",
+          "value": "from-ink-900 via-violet-950/50 to-ink"
+        },
         "eyebrow": "Médias · Visibilité · Rayonnement",
         "title": "Donner de la visibilité",
         "titleAccent": "aux talents centrafricains"
       },
       {
         "description": "Des événements d'envergure qui rassemblent et célèbrent la culture centrafricaine : galas, concours, festivals au cœur de Bangui et dans les préfectures.",
+        "bg": {
+          "type": "pattern",
+          "value": "crosshatch"
+        },
         "eyebrow": "Culture · Galas · Rassemblement",
         "title": "Célébrer la richesse",
         "titleAccent": "culturelle centrafricaine"
       },
       {
         "description": "Offrir aux jeunes centrafricains des formations pratiques et professionnalisantes pour favoriser leur insertion sur le marché du travail et bâtir un avenir meilleur.",
+        "bg": {
+          "type": "gradient",
+          "value": "from-ink-900 via-brand-700/40 to-ink-900"
+        },
         "eyebrow": "Éducation · Formation · Avenir",
         "title": "Investir dans l'éducation",
         "titleAccent": "des jeunes centrafricains"

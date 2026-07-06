@@ -58,6 +58,7 @@ export default function Domain() {
       <HeroSlider
         slides={domainSlides}
         heightClass="h-[560px]"
+        defaultBg={{ type: "gradient", value: "from-ink-900 via-ink to-ink-900" }}
       />
 
       {/* PROGRAMMES */}

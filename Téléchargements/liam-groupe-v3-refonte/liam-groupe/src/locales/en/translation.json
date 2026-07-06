@@ -61,6 +61,10 @@
       },
       {
         "description": "Practical, job-oriented training programs to give Central African youth the keys to employment and success.",
+        "bg": {
+          "type": "gradient",
+          "value": "from-ink-900 via-brand-800/40 to-ink"
+        },
         "eyebrow": "Training · Employment · Future",
         "title": "Training youth",
         "titleAccent": "to build tomorrow"
@@ -87,24 +91,40 @@
       },
       {
         "description": "Empowering Central African women through leadership training, entrepreneurial support, and networking for sustainable projects.",
+        "bg": {
+          "type": "pattern",
+          "value": "waves"
+        },
         "eyebrow": "Leadership · Empowerment · Success",
         "title": "Women's entrepreneurship",
         "titleAccent": "for a thriving Central Africa"
       },
       {
         "description": "Ensuring visibility for LIAM Groupe's actions and promoting Central African culture through a modern communication strategy and audiovisual production.",
+        "bg": {
+          "type": "gradient",
+          "value": "from-ink-900 via-violet-950/50 to-ink"
+        },
         "eyebrow": "Media · Visibility · Reach",
         "title": "Giving visibility",
         "titleAccent": "to Central African talent"
       },
       {
         "description": "Large-scale events that bring people together and celebrate Central African culture: galas, pageants, festivals in the heart of Bangui and beyond.",
+        "bg": {
+          "type": "pattern",
+          "value": "crosshatch"
+        },
         "eyebrow": "Culture · Galas · Gathering",
         "title": "Celebrating the richness",
         "titleAccent": "of Central African culture"
       },
       {
         "description": "Providing Central African youth with practical, job-oriented training programs to foster their integration into the job market and build a brighter future.",
+        "bg": {
+          "type": "gradient",
+          "value": "from-ink-900 via-brand-700/40 to-ink-900"
+        },
         "eyebrow": "Education · Training · Future",
         "title": "Investing in education",
         "titleAccent": "for Central African youth"
