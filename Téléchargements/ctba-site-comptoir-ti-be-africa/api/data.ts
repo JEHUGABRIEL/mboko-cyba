@@ -1,0 +1,235 @@
+import type { VercelRequest, VercelResponse } from '@vercel/node';
+import { neon } from '@neondatabase/serverless';
+
+// Allowed table names for dynamic queries
+const ALLOWED_TABLES = ['products', 'projects', 'testimonials', 'services'] as const;
+type AllowedTable = typeof ALLOWED_TABLES[number];
+
+export default async function handler(req: VercelRequest, res: VercelResponse) {
+  // CORS headers
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, x-admin-key');
+
+  if (req.method === 'OPTIONS') {
+    res.status(200).end();
+    return;
+  }
+
+  // L'authentification n'est requise que pour les écritures (POST/PUT/DELETE).
+  // Les lectures publiques (GET) sont autorisées sans clé admin.
+  if (req.method !== 'GET') {
+    const adminKey = req.headers['x-admin-key'] as string;
+    const expectedKey = process.env.ADMIN_PASSWORD;
+    if (!expectedKey || adminKey !== expectedKey) {
+      res.status(401).json({ error: 'Non autorisé' });
+      return;
+    }
+  }
+
+  try {
+    const sql = neon(process.env.DATABASE_URL!);
+    const { action, entity, id, data } = req.body || {};
+    const entities = ['products', 'projects', 'testimonials', 'services'] as const;
+
+    // GET — fetch all data
+    if (req.method === 'GET' && !action) {
+      const [products, projects, testimonials, services, pageContent, siteSettings] = await Promise.all([
+        sql`SELECT * FROM products ORDER BY id ASC`,
+        sql`SELECT * FROM projects ORDER BY id ASC`,
+        sql`SELECT * FROM testimonials ORDER BY id ASC`,
+        sql`SELECT * FROM services ORDER BY id ASC`,
+        sql`SELECT * FROM page_content ORDER BY key ASC`,
+        sql`SELECT * FROM site_settings ORDER BY key ASC`,
+      ]);
+
+      // Convert JSONB rows back to objects
+      const pc: Record<string, any> = {};
+      for (const row of pageContent) pc[row.key] = row.value;
+      const ss: Record<string, any> = {};
+      for (const row of siteSettings) ss[row.key] = row.value;
+
+      return res.json({
+        products: products.map(mapProduct),
+        projects: projects.map(mapProject),
+        testimonials: testimonials.map(mapTestimonial),
+        services: services.map(mapService),
+        pageContent: pc as any,
+        settings: ss as any,
+      });
+    }
+
+    // POST — create
+    if (action === 'create' && entity && entities.includes(entity as any)) {
+      const result = await createEntity(sql, entity, data);
+      return res.json({ success: true, data: result });
+    }
+
+    // PUT — update
+    if (action === 'update' && entity && id && entities.includes(entity as any)) {
+      await updateEntity(sql, entity, id, data);
+      return res.json({ success: true });
+    }
+
+    // DELETE — delete
+    if (action === 'delete' && entity && id && entities.includes(entity as any)) {
+      await sql`DELETE FROM ${sql(entity)} WHERE id = ${id}`;
+      return res.json({ success: true });
+    }
+
+    // PUT — update page_content or settings (JSONB)
+    if (action === 'update-page-content' && data) {
+      for (const [key, value] of Object.entries(data as Record<string, any>)) {
+        await sql`INSERT INTO page_content (key, value) VALUES (${key}, ${JSON.stringify(value)})
+                  ON CONFLICT (key) DO UPDATE SET value = ${JSON.stringify(value)}`;
+      }
+      return res.json({ success: true });
+    }
+
+    if (action === 'update-settings' && data) {
+      for (const [key, value] of Object.entries(data as Record<string, any>)) {
+        await sql`INSERT INTO site_settings (key, value) VALUES (${key}, ${JSON.stringify(value)})
+                  ON CONFLICT (key) DO UPDATE SET value = ${JSON.stringify(value)}`;
+      }
+      return res.json({ success: true });
+    }
+
+    // GET — fetch contact messages
+    if (action === 'get-contact-messages') {
+      const messages = await sql`
+        SELECT * FROM contact_messages ORDER BY created_at DESC
+      `;
+      return res.json({ messages: messages.map(mapContactMessage) });
+    }
+
+    res.status(400).json({ error: 'Action invalide' });
+  } catch (err: any) {
+    console.error('API error:', err);
+    res.status(500).json({ error: err.message || 'Erreur interne' });
+  }
+}
+
+// Helper: map raw DB row → client Product
+function mapProduct(row: any) {
+  return {
+    id: row.id,
+    name: row.name,
+    category: row.category,
+    price: row.price,
+    image: row.image || '',
+    images: row.images || [],
+    inStock: row.in_stock ?? true,
+    description: row.description || '',
+    featured: row.featured ?? false,
+  };
+}
+
+function mapProject(row: any) {
+  return {
+    id: row.id,
+    title: row.title,
+    category: row.category,
+    description: row.description || '',
+    image: row.image || '',
+    images: row.images || [],
+    date: row.date || '',
+    serviceId: row.service_id || undefined,
+  };
+}
+
+function mapTestimonial(row: any) {
+  return {
+    id: row.id,
+    name: row.name,
+    role: row.role || '',
+    content: row.content || '',
+    rating: row.rating ?? 5,
+    image: row.image || undefined,
+  };
+}
+
+function mapService(row: any) {
+  return {
+    id: row.id,
+    iconName: row.icon_name || 'HardHat',
+    title: row.title,
+    description: row.description || '',
+    features: row.features || [],
+  };
+}
+
+function mapContactMessage(row: any) {
+  return {
+    id: row.id,
+    firstName: row.first_name,
+    lastName: row.last_name || '',
+    email: row.email,
+    phone: row.phone || '',
+    subject: row.subject || '',
+    message: row.message,
+    createdAt: row.created_at,
+  };
+}
+
+async function createEntity(sql: any, entity: string, data: any) {
+  if (entity === 'products') {
+    const r = await sql`
+      INSERT INTO products (id, name, category, price, image, images, in_stock, description, featured)
+      VALUES (${data.id}, ${data.name}, ${data.category || ''}, ${data.price}, ${data.image || ''},
+              ${data.images || []}, ${data.inStock ?? true}, ${data.description || ''}, ${data.featured ?? false})
+      RETURNING *`;
+    return mapProduct(r[0]);
+  }
+  if (entity === 'projects') {
+    const r = await sql`
+      INSERT INTO projects (id, title, category, description, image, images, date, service_id)
+      VALUES (${data.id}, ${data.title}, ${data.category || ''}, ${data.description || ''},
+              ${data.image || ''}, ${data.images || []}, ${data.date || ''}, ${data.serviceId || null})
+      RETURNING *`;
+    return mapProject(r[0]);
+  }
+  if (entity === 'testimonials') {
+    const r = await sql`
+      INSERT INTO testimonials (id, name, role, content, rating, image)
+      VALUES (${data.id}, ${data.name}, ${data.role || ''}, ${data.content || ''}, ${data.rating ?? 5}, ${data.image || null})
+      RETURNING *`;
+    return mapTestimonial(r[0]);
+  }
+  if (entity === 'services') {
+    const r = await sql`
+      INSERT INTO services (id, icon_name, title, description, features)
+      VALUES (${data.id}, ${data.iconName || 'HardHat'}, ${data.title}, ${data.description || ''}, ${data.features || []})
+      RETURNING *`;
+    return mapService(r[0]);
+  }
+}
+
+async function updateEntity(sql: any, entity: string, id: string, data: any) {
+  if (entity === 'products') {
+    await sql`
+      UPDATE products SET name = ${data.name}, category = ${data.category || ''}, price = ${data.price},
+        image = ${data.image || ''}, images = ${data.images || []}, in_stock = ${data.inStock ?? true},
+        description = ${data.description || ''}, featured = ${data.featured ?? false}
+      WHERE id = ${id}`;
+  }
+  if (entity === 'projects') {
+    await sql`
+      UPDATE projects SET title = ${data.title}, category = ${data.category || ''},
+        description = ${data.description || ''}, image = ${data.image || ''},
+        images = ${data.images || []}, date = ${data.date || ''}, service_id = ${data.serviceId || null}
+      WHERE id = ${id}`;
+  }
+  if (entity === 'testimonials') {
+    await sql`
+      UPDATE testimonials SET name = ${data.name}, role = ${data.role || ''},
+        content = ${data.content || ''}, rating = ${data.rating ?? 5},
+        image = ${data.image || null}
+      WHERE id = ${id}`;
+  }
+  if (entity === 'services') {
+    await sql`
+      UPDATE services SET icon_name = ${data.iconName || 'HardHat'}, title = ${data.title},
+        description = ${data.description || ''}, features = ${data.features || []}
+      WHERE id = ${id}`;
+  }
+}
