@@ -689,6 +689,7 @@
       "toggleStatus": "Basculer le statut",
       "statusChanged": "Statut mis à jour : {{status}}",
       "error": "Erreur",
+      "deleted": "Élément supprimé",
       "newItem": "Nouveau",
       "fieldLabels": {
         "slug": "Slug",

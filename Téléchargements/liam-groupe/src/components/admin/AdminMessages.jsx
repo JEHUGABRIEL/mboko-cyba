@@ -19,6 +19,7 @@ export default function AdminMessages() {
   const [page, setPage] = useState(0);
   const [selected, setSelected] = useState(null);
   const [deleting, setDeleting] = useState(null);
+  const [toast, setToast] = useState(null);
   const pageSize = 10;
 
   const load = useCallback(async () => {
@@ -43,6 +44,14 @@ export default function AdminMessages() {
   // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => { setPage(0); }, [search, filter]);
 
+  // Toast auto-dismiss
+  useEffect(() => {
+    if (toast) {
+      const t = setTimeout(() => setToast(null), 4000);
+      return () => clearTimeout(t);
+    }
+  }, [toast]);
+
   const toggleRead = async (msg) => {
     const { error } = await supabase
       .from("messages")
@@ -61,6 +70,7 @@ export default function AdminMessages() {
     if (!error) {
       setDeleting(null);
       setSelected(null);
+      setToast({ message: t("admin.contentManager.deleted") + " ✅", type: "success" });
       load();
     }
   };
@@ -371,6 +381,19 @@ export default function AdminMessages() {
               </div>
             </div>
           </div>
+        </div>
+      )}
+
+      {/* Toast notification */}
+      {toast && (
+        <div
+          className={`fixed bottom-6 right-6 z-50 px-5 py-3 rounded-xl shadow-xl text-sm font-medium animate-fade-up ${
+            toast.type === "error"
+              ? "bg-red-500 text-white"
+              : "bg-green-600 text-white"
+          }`}
+        >
+          {toast.message}
         </div>
       )}
 

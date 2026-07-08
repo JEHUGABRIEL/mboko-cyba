@@ -18,6 +18,7 @@ export default function AdminRegistrations() {
   const [deleting, setDeleting] = useState(null);
   const [relatedMessages, setRelatedMessages] = useState([]);
   const [loadingMessages, setLoadingMessages] = useState(false);
+  const [toast, setToast] = useState(null);
   const pageSize = 10;
 
   const load = useCallback(async () => {
@@ -42,6 +43,14 @@ export default function AdminRegistrations() {
   // Reset page on filter/search change
   // eslint-disable-next-line react-hooks/set-state-in-effect
   useEffect(() => { setPage(0); }, [search, statusFilter]);
+
+  // Toast auto-dismiss
+  useEffect(() => {
+    if (toast) {
+      const t = setTimeout(() => setToast(null), 4000);
+      return () => clearTimeout(t);
+    }
+  }, [toast]);
 
   // Charge les messages liés (même email) quand on sélectionne une inscription
   useEffect(() => {
@@ -78,6 +87,7 @@ export default function AdminRegistrations() {
     if (!error) {
       setDeleting(null);
       setSelected(null);
+      setToast({ message: t("admin.contentManager.deleted") + " ✅", type: "success" });
       load();
     }
   };
@@ -457,6 +467,19 @@ export default function AdminRegistrations() {
               </div>
             </div>
           </div>
+        </div>
+      )}
+
+      {/* Toast notification */}
+      {toast && (
+        <div
+          className={`fixed bottom-6 right-6 z-50 px-5 py-3 rounded-xl shadow-xl text-sm font-medium animate-fade-up ${
+            toast.type === "error"
+              ? "bg-red-500 text-white"
+              : "bg-green-600 text-white"
+          }`}
+        >
+          {toast.message}
         </div>
       )}
 

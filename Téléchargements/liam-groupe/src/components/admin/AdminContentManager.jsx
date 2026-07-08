@@ -285,7 +285,7 @@ export default function AdminContentManager({ table }) {
     const { error } = await supabase.from(table).delete().eq("id", id);
     if (!error) {
       setDeleting(null);
-      setToast({ message: t("admin.contentManager.delete") + " ✅", type: "success" });
+      setToast({ message: t("admin.contentManager.deleted") + " ✅", type: "success" });
       load();
     } else {
       console.error("AdminContentManager — Erreur suppression :", error);

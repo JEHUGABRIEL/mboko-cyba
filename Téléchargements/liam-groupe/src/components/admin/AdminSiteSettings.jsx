@@ -798,7 +798,7 @@ export default function AdminSiteSettings({ section: currentSection }) {
               <button
                 onClick={() => {
                   deleteConfirm.action();
-                  showToast("Élément supprimé ✅");
+                  showToast(t("admin.contentManager.deleted") + " ✅");
                   setDeleteConfirm(null);
                 }}
                 className="flex-1 px-5 py-2.5 rounded-xl bg-gradient-to-r from-red-500 to-red-600 text-white text-sm font-semibold shadow-lg shadow-red-500/25 transition-all"

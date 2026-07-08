@@ -688,6 +688,7 @@
       "toggleStatus": "Toggle status",
       "statusChanged": "Status updated: {{status}}",
       "error": "Error",
+      "deleted": "Item deleted",
       "newItem": "New",
       "fieldLabels": {
         "slug": "Slug",
