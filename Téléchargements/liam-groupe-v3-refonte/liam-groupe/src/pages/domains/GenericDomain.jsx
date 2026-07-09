@@ -1,5 +1,6 @@
-import { useState, useMemo } from "react";
-import { Layers, Image as ImageIcon, Calendar } from "lucide-react";
+import { useState, useMemo, useEffect } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { Layers, Image as ImageIcon, Calendar, ChevronLeft, ChevronRight } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
@@ -19,6 +20,8 @@ import GalleryLightbox from "../../components/GalleryLightbox";
 export default function GenericDomain({ domain, events }) {
   const { t } = useTranslation();
   const [lightboxIndex, setLightboxIndex] = useState(null);
+  const [programIdx, setProgramIdx] = useState(0);
+  const [programPaused, setProgramPaused] = useState(false);
   const programsRef = useScrollReveal();
   const weekRef = useScrollReveal();
   const galleryRef = useScrollReveal();
@@ -50,6 +53,24 @@ export default function GenericDomain({ domain, events }) {
     }));
   }, [domain, t]);
 
+  // Auto-play carousel programmes (6s)
+  useEffect(() => {
+    if (domain.programs.length <= 1 || programPaused) return;
+    const id = setInterval(() => {
+      setProgramIdx((prev) => (prev + 1) % domain.programs.length);
+    }, 6000);
+    return () => clearInterval(id);
+  }, [domain.programs.length, programPaused]);
+
+  const currentProgram = domain.programs?.[programIdx];
+
+  // Images de fond pour le carousel : uniquement la galerie (différente du hero)
+  const programBgImages = useMemo(() => {
+    return domain.gallery.length > 0
+      ? domain.gallery
+      : [domain.heroImage];
+  }, [domain]);
+
   const domainEvents = events.filter(
     (e) => e.category?.toLowerCase() === domain.name?.toLowerCase()
   );
@@ -64,20 +85,95 @@ export default function GenericDomain({ domain, events }) {
         defaultBg={{ type: "gradient", value: "from-ink-900 via-ink to-ink-900" }}
       />
 
-      {/* PROGRAMMES */}
+      {/* PROGRAMMES — Carousel */}
       <section className="py-24 px-6 bg-gray-50" ref={programsRef}>
         <div className="max-w-6xl mx-auto">
-          <div className="reveal"><SectionHeading icon={Layers} eyebrow={t('domain.programs.eyebrow')} title={t('domain.programs.title')} /></div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-7 stagger-children">
-            {domain.programs.map((p, idx) => (
-              <div key={p.title} className="bg-white rounded-2xl border border-gray-100 shadow-card p-7 reveal hover:lift transition-all duration-300">
-                <span className="w-12 h-12 rounded-full bg-brand-50 text-brand-600 flex items-center justify-center mb-5">
-                  <DomainIcon icon={domain.icon} className="w-6 h-6" />
-                </span>
-                <h3 className="font-heading font-bold text-lg mb-2">{t(`domains.data.${domain.slug}.programs.${idx}.title`, p.title)}</h3>
-                <p className="text-gray-500 leading-relaxed">{t(`domains.data.${domain.slug}.programs.${idx}.description`, p.description)}</p>
+          <div className="mb-14 text-center reveal">
+            <SectionHeading icon={Layers} eyebrow={t('domain.programs.eyebrow')} title={t('domain.programs.title')} />
+          </div>
+
+          <div
+            className="relative h-[440px] md:h-[500px] rounded-2xl overflow-hidden shadow-xl reveal group"
+            onMouseEnter={() => setProgramPaused(true)}
+            onMouseLeave={() => setProgramPaused(false)}
+          >
+            <AnimatePresence mode="wait">
+              {currentProgram && (
+                <motion.div
+                  key={programIdx}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.5, ease: "easeInOut" }}
+                  className="absolute inset-0"
+                >
+                  {/* Image de fond */}
+                  <img
+                    src={programBgImages[programIdx % programBgImages.length]}
+                    alt={currentProgram.title}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  />
+
+                  {/* Overlay dégradé */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-ink/90 via-ink/50 to-ink/10" />
+
+                  {/* Texte */}
+                  <div className="absolute bottom-0 left-0 right-0 p-8 md:p-12 z-10">
+                    <p className="text-brand-400 text-xs font-bold tracking-[0.25em] uppercase">
+                      Programme {String(programIdx + 1).padStart(2, "0")}
+                    </p>
+                    <h3 className="text-white font-heading font-bold text-3xl md:text-4xl lg:text-5xl mt-2 leading-tight">
+                      {t(`domains.data.${domain.slug}.programs.${programIdx}.title`, currentProgram.title)}
+                    </h3>
+                    <p className="text-white/70 mt-4 max-w-xl leading-relaxed line-clamp-2">
+                      {t(`domains.data.${domain.slug}.programs.${programIdx}.description`, currentProgram.description)}
+                    </p>
+                    <div className="inline-flex items-center gap-2 mt-6 px-7 py-3.5 bg-white text-ink font-semibold rounded-full pointer-events-none opacity-90">
+                      <DomainIcon icon={domain.icon} className="w-4 h-4" />
+                      {t('domain.programs.eyebrow')}
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
+            {/* Flèches */}
+            {domain.programs.length > 1 && (
+              <>
+                <button
+                  onClick={() => setProgramIdx((prev) => (prev - 1 + domain.programs.length) % domain.programs.length)}
+                  className="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center text-white hover:bg-white/20 transition-all opacity-0 group-hover:opacity-100"
+                  aria-label="Programme précédent"
+                >
+                  <ChevronLeft className="w-5 h-5" />
+                </button>
+                <button
+                  onClick={() => setProgramIdx((prev) => (prev + 1) % domain.programs.length)}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-white/10 backdrop-blur-sm border border-white/20 flex items-center justify-center text-white hover:bg-white/20 transition-all opacity-0 group-hover:opacity-100"
+                  aria-label="Programme suivant"
+                >
+                  <ChevronRight className="w-5 h-5" />
+                </button>
+              </>
+            )}
+
+            {/* Dots */}
+            {domain.programs.length > 1 && (
+              <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2">
+                {domain.programs.map((_, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setProgramIdx(i)}
+                    className={`w-2 h-2 rounded-full transition-all ${
+                      i === programIdx
+                        ? "bg-white w-6"
+                        : "bg-white/40 hover:bg-white/60"
+                    }`}
+                    aria-label={`Aller au programme ${i + 1}`}
+                  />
+                ))}
               </div>
-            ))}
+            )}
           </div>
         </div>
       </section>
