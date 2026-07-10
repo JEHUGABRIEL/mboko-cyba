@@ -1,5 +1,7 @@
 import { useState, useEffect, useCallback, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Mouse } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 
 /**
@@ -224,6 +226,7 @@ export default function HeroSlider({
   defaultBg,
   showcaseMode = false,
 }) {
+  const { t } = useTranslation();
   const [current, setCurrent] = useState(0);
   const [direction, setDirection] = useState(1);
   const [paused, setPaused] = useState(false);
@@ -301,8 +304,8 @@ export default function HeroSlider({
         <div className="absolute top-0 left-0 right-0 h-[84px] bg-gradient-to-b from-ink/60 via-transparent to-transparent z-[1]" />
 
         {/* Contenu — texte uniquement */}          <div className="relative z-10 h-full flex items-center pt-[120px] pb-16 md:pb-20">
-          <div className="w-full max-w-4xl mx-auto px-6 text-center">
-            <AnimatePresence mode="wait" custom={direction}>
+          <div className="relative w-full max-w-4xl mx-auto px-6 text-center grid">
+            <AnimatePresence custom={direction}>
               <motion.div
                 key={`text-${current}`}
                 custom={direction}
@@ -315,6 +318,7 @@ export default function HeroSlider({
                   ease: animEase,
                   delay: 0.08,
                 }}
+                className="col-start-1 row-start-1"
               >
                 {slide.eyebrow && (                      <p className="text-white/90 font-semibold tracking-[0.2em] text-xs uppercase mt-6 mb-6">
                         {slide.eyebrow}
@@ -358,7 +362,7 @@ export default function HeroSlider({
       )}
 
       {/* Slides animés */}
-      <AnimatePresence mode="wait" custom={direction}>
+      <AnimatePresence custom={direction}>
         <motion.div
           key={current}
           custom={direction}
@@ -392,7 +396,7 @@ export default function HeroSlider({
             }`}
             fetchPriority="high"
             decoding="async"
-            imageSrcSet={slide.imageSrcSet || undefined}
+            srcSet={slide.imageSrcSet || undefined}
             sizes={slide.sizes || undefined}
             onLoad={() => setImagesLoaded((prev) => ({ ...prev, [current]: true }))}
             onError={() => setImagesLoaded((prev) => ({ ...prev, [current]: false }))}
@@ -407,8 +411,8 @@ export default function HeroSlider({
 
       {/* Texte hero */}
       <div className="absolute bottom-0 left-0 right-0 z-10 px-6 pb-20 md:pb-24">
-        <div className="max-w-7xl mx-auto">
-          <AnimatePresence mode="wait" custom={direction}>
+        <div className="relative max-w-7xl mx-auto grid">
+          <AnimatePresence custom={direction}>
             <motion.div
               key={`text-${current}`}
               custom={direction}
@@ -421,6 +425,7 @@ export default function HeroSlider({
                 ease: animEase,
                 delay: 0.08,
               }}
+              className="col-start-1 row-start-1"
             >
               {slide.eyebrow && (
                 <p className="text-white/90 font-semibold tracking-[0.2em] text-xs uppercase mt-6 mb-6">
@@ -446,6 +451,30 @@ export default function HeroSlider({
         </div>
       </div>
 
+      {/* Indicateur de défilement */}
+      <motion.button
+        aria-label="Défiler vers le bas"
+        onClick={(e) => {
+          const hero = e.currentTarget.closest('.group.relative');
+          if (hero) {
+            const next = hero.nextElementSibling;
+            if (next) next.scrollIntoView({ behavior: "smooth" });
+          }
+        }}
+        className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-1 text-white/50 hover:text-white/80 transition-colors cursor-pointer"
+        animate={{ y: [0, 8, 0] }}
+        transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+      >
+        <span className="text-xs font-semibold tracking-widest uppercase">{t('hero.scrollDown')}</span>
+        <span className="relative">
+          <Mouse className="w-5 h-5" />
+          <motion.span
+            className="absolute left-1/2 -translate-x-1/2 top-[3px] w-[3px] h-[5px] bg-current rounded-full"
+            animate={{ y: [0, 5, 0], opacity: [1, 0.3, 1] }}
+            transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+          />
+        </span>
+      </motion.button>
     </section>
   );
 }

@@ -10,7 +10,7 @@ export const img = (seed, w = 800, h = 600, fit = 'fill', quality = 'auto') =>
 export const imgBlur = (seed) =>
   `${BASE_URL}/f_auto,q_10,w_200,h_112,c_fill,e_blur:500,dpr_auto/v1/liam-groupe/${seed}`
 
-export const imgHero = (seed) => img(seed, 1600, 900, 'fill', 'eco')
+export const imgHero = (seed) => img(seed, 1600, 900, 'fill', 'auto')
 
 export const imgSrcSet = (seed, widths = [480, 768, 1024, 1280, 1600], h = 600, fit = 'fill') =>
   widths
@@ -34,7 +34,7 @@ export const siteInfo = {
     "A multidisciplinary organization developing cultural, sports, entrepreneurial, and culinary projects with strong social impact in the Central African Republic.",
   address: ["Avenue des Martyrs, Immeuble Salle King", "Bangui, Central African Republic"],
   phones: ["+236 76 00 00 00"],
-  emails: ["contact@liamgroupe.org", "partenariat@liamgroupe.org"],
+  emails: ["liamgroupe236@gmail.com"],
   hours: ["Monday — Friday: 8:00 AM — 5:00 PM", "Saturday: 9:00 AM — 1:00 PM"],
   foundingYear: 2015,
   social: {
@@ -47,7 +47,7 @@ export const siteInfo = {
   contactPage: {
     address: ["Sector 3, Rue des Martyrs", "Bangui, Central African Republic"],
     phones: ["+236 76 00 00 00"],
-    emails: ["contact@liamgroupe.cf", "partenariats@liamgroupe.cf"],
+    emails: ["liamgroupe236@gmail.com"],
     hours: ["Monday — Friday: 8:00 AM — 5:00 PM", "Saturday: 9:00 AM — 12:00 PM"],
   },
 };
@@ -64,17 +64,32 @@ export const domains = [
   {
     slug: "g-fitness",
     name: "G-Fitness",
-    category: "SPORTS & WELLNESS",
-    icon: "heart",
+    category: "SPORTS & FITNESS",
+    icon: "dumbbell",
     shortDescription:
-      "Promoting health and well-being through sports, with programs tailored for women and youth in Bangui. Basketball tournaments…",
+      "A modern fitness gym in the heart of Bangui: group classes, personal coaching and strength training, open to everyone, with dedicated programs for women and youth. Full facility, certified coaches…",
     heroImage: img("gfitness-hero", 1920, 700),
     cardImage: img("gfitness-hero", 800, 500),
     programs: [
       {
+        title: "Strength & Cardio Training",
+        description:
+          "Fully equipped floor (free weights, guided machines, treadmills, bikes) with coach supervision.",
+      },
+      {
+        title: "Group Classes",
+        description:
+          "Zumba, step, strength training and yoga, several sessions a week for all levels.",
+      },
+      {
+        title: "Personal Coaching",
+        description:
+          "Individual programs (weight loss, muscle gain, fitness recovery) with nutritional follow-up.",
+      },
+      {
         title: "Women's Basketball Tournament",
         description:
-          "Inter-district competition bringing together 16 women's teams in Bangui.",
+          "Inter-district competition bringing together 16 women's teams in Bangui, run by our coaches.",
       },
       {
         title: "G-Fitness Junior",
@@ -87,35 +102,117 @@ export const domains = [
           "Workshops raising awareness about healthy lifestyles and balanced nutrition.",
       },
     ],
-    gallery: [img("gfitness-gallery-1", 700, 500), img("gfitness-gallery-2", 700, 500)],
+    trainers: [
+      {
+        name: "Coach Sandra Mbeki",
+        specialty: "Strength training & Zumba",
+        image: img("gfitness-trainer-1", 400, 400),
+      },
+      {
+        name: "Coach Aristide Ngoma",
+        specialty: "Strength training & conditioning",
+        image: img("gfitness-trainer-2", 400, 400),
+      },
+      {
+        name: "Coach Divine Yakité",
+        specialty: "Yoga & wellness",
+        image: img("gfitness-trainer-3", 400, 400),
+      },
+    ],
+    schedule: [
+      { day: "Monday", classes: [{ time: "6:30 AM", name: "Cardio Training" }, { time: "6:00 PM", name: "Zumba" }] },
+      { day: "Tuesday", classes: [{ time: "7:00 AM", name: "Guided Strength" }, { time: "6:30 PM", name: "Strength Training" }] },
+      { day: "Wednesday", classes: [{ time: "6:30 AM", name: "Cardio Training" }, { time: "5:30 PM", name: "Yoga" }] },
+      { day: "Thursday", classes: [{ time: "7:00 AM", name: "Guided Strength" }, { time: "6:00 PM", name: "Zumba" }] },
+      { day: "Friday", classes: [{ time: "6:30 AM", name: "Cardio Training" }, { time: "6:30 PM", name: "Strength Training" }] },
+      { day: "Saturday", classes: [{ time: "9:00 AM", name: "Family Session (Junior)" }, { time: "10:30 AM", name: "Yoga" }] },
+    ],
+    pricing: [
+      { plan: "Single session", price: "2,000 FCFA", features: ["Access to the strength floor", "1 group class of your choice"] },
+      { plan: "Monthly membership", price: "15,000 FCFA", featured: true, features: ["Unlimited access to the floor", "All group classes", "1 free fitness assessment"] },
+      { plan: "Quarterly membership", price: "40,000 FCFA", features: ["All monthly benefits", "Personal coaching follow-up", "12% preferential rate"] },
+    ],
+    gallery: [
+      img("gfitness-gallery-1", 700, 500),
+      img("gfitness-gallery-2", 700, 500),
+      img("gfitness-gallery-3", 700, 500),
+      img("gfitness-gallery-4", 700, 500),
+    ],
   },
   {
     slug: "ogab",
     name: "O'GAB",
-    category: "COMMUNITY GASTRONOMY",
+    category: "RESTAURANT & GASTRONOMY",
     icon: "utensils",
     shortDescription:
-      "Showcasing Central African culinary heritage while creating economic opportunities for women. Event catering, work…",
+      "LIAM Groupe's community restaurant in Bangui: authentic, generous Central African cuisine prepared by women trained in our culinary workshops, in a warm setting open for lunch and dinner.",
     heroImage: img("ogab-hero", 1920, 700),
     cardImage: img("ogab-hero", 800, 500),
     programs: [
+      {
+        title: "Community Restaurant",
+        description:
+          "Open daily, Central African and international cuisine at accessible prices, prepared and served by women trained in our workshops.",
+      },
+      {
+        title: "Event Catering",
+        description:
+          "Catering service for weddings, seminars and receptions, showcasing local products.",
+      },
       {
         title: "Cooking Workshops",
         description:
           "Training in traditional and modern cuisine for women entrepreneurs.",
       },
+    ],
+    restaurantInfo: {
+      address: "Avenue des Martyrs, Immeuble Salle King, Bangui",
+      hours: [
+        { days: "Monday — Saturday", time: "11:30 AM — 10:00 PM" },
+        { days: "Sunday", time: "12:00 PM — 4:00 PM" },
+      ],
+      phone: "+236 76 00 00 00",
+    },
+    menu: [
       {
-        title: "Event Catering",
-        description:
-          "Catering service for events, showcasing local products.",
+        category: "Starters",
+        items: [
+          { name: "Cassava fritters", description: "Served with homemade pili-pili sauce", price: "1,500 FCFA" },
+          { name: "Okra salad", description: "Fresh okra, tomato, onion, lime", price: "1,500 FCFA" },
+          { name: "Beef skewers", description: "Marinated with local spices", price: "2,000 FCFA" },
+        ],
       },
       {
-        title: "Community Restaurant",
-        description:
-          "An establishment offering affordable cuisine while employing trained women.",
+        category: "Main Courses",
+        items: [
+          { name: "Ngunza (cassava leaves)", description: "Simmered with beef, white rice", price: "3,500 FCFA" },
+          { name: "Chicken Moambé", description: "Palm nut sauce, plantain", price: "4,000 FCFA" },
+          { name: "Grilled fish", description: "Grilled capitaine, attiéké, tomato sauce", price: "4,500 FCFA" },
+          { name: "Saka-Saka", description: "Pounded cassava leaves, peanut, rice", price: "3,000 FCFA" },
+        ],
+      },
+      {
+        category: "Desserts",
+        items: [
+          { name: "Sweet fritters", description: "Served warm with local honey", price: "1,000 FCFA" },
+          { name: "Seasonal fruit salad", description: "Pineapple, mango, papaya", price: "1,500 FCFA" },
+        ],
+      },
+      {
+        category: "Drinks",
+        items: [
+          { name: "Bissap juice", description: "Homemade, lightly sweetened", price: "1,000 FCFA" },
+          { name: "Ginger juice", description: "Homemade", price: "1,000 FCFA" },
+          { name: "Mineral water", description: "50cl", price: "500 FCFA" },
+        ],
       },
     ],
-    gallery: [img("ogab-gallery-1", 700, 500), img("ogab-gallery-2", 700, 500)],
+    gallery: [
+      img("ogab-gallery-1", 700, 500),
+      img("ogab-gallery-2", 700, 500),
+      img("ogab-gallery-3", 700, 500),
+      img("ogab-gallery-4", 700, 500),
+    ],
   },
   {
     slug: "entrepreneuriat",
@@ -207,14 +304,10 @@ export const domains = [
     category: "CULTURE & GALAS",
     icon: "calendar",
     shortDescription:
-      "Organizing large-scale events that bring people together and celebrate Central African culture. Miss Centrafrique, charity gal…",
+      "Organizing large-scale events that bring people together and celebrate Central African culture. Charity galas, festivals…",
     heroImage: img("evenementiel-hero", 1920, 700),
     cardImage: img("evenementiel-hero", 800, 500),
     programs: [
-      {
-        title: "Miss Central African Republic",
-        description: "National beauty and culture pageant celebrating the diversity of the CAR.",
-      },
       {
         title: "Charity Gala",
         description:
@@ -225,8 +318,44 @@ export const domains = [
         description:
           "Artistic events showcasing music, dance, and local arts.",
       },
+      {
+        title: "Heritage Night",
+        description:
+          "An evening dedicated to celebrating Central African cultural and craft heritage.",
+      },
     ],
     gallery: [img("evenementiel-gallery-1", 700, 500), img("evenementiel-gallery-2", 700, 500)],
+  },
+  {
+    slug: "miss-centrafrique",
+    name: "Miss Centrafrique",
+    category: "EVENT & CULTURE",
+    icon: "crown",
+    shortDescription:
+      "The national beauty and culture pageant, organized every year by LIAM Groupe to celebrate the diversity and talent of Central African women across the country.",
+    heroImage: img("miss-centrafrique-hero", 1920, 700),
+    cardImage: img("miss-centrafrique-hero", 800, 500),
+    programs: [
+      {
+        title: "Annual Miss Centrafrique Edition",
+        description:
+          "National pageant bringing together candidates from the 16 prefectures for the grand finale in Bangui.",
+      },
+      {
+        title: "Regional Casting",
+        description:
+          "Selection tour across the country's main cities to scout candidates.",
+      },
+      {
+        title: "Winners' Social Program",
+        description:
+          "For one year, the winners lead awareness campaigns alongside LIAM's programs (education, health, women's entrepreneurship).",
+      },
+    ],
+    gallery: [
+      img("miss-centrafrique-gallery-1", 700, 500),
+      img("miss-centrafrique-gallery-2", 700, 500),
+    ],
   },
 ];
 
@@ -305,11 +434,22 @@ export const events = [
     title: "Miss Central African Republic 2025",
     date: "October 15, 2025",
     location: "Salle King, Bangui",
-    category: "Events",
+    category: "Miss Centrafrique",
     status: "passe",
     image: img("event-miss", 800, 600),
     description:
       "Beauty and culture pageant celebrating the diversity and cultural richness of the Central African Republic. Over 5,000…",
+  },
+  {
+    slug: "casting-regional-miss-centrafrique-2026",
+    title: "Regional Casting — Miss Centrafrique 2026",
+    date: "September 5, 2026",
+    location: "Bouar, Berbérati, Bangassou (regional tour)",
+    category: "Miss Centrafrique",
+    status: "a_venir",
+    image: img("event-miss", 800, 600),
+    description:
+      "Selection tour across the country's main cities to scout candidates for the 2026 edition. Registration open to women aged 18 to 26…",
   },
 ];
 
@@ -402,6 +542,21 @@ export const news = [
       "Eleven years after founding LIAM Groupe, founder Marie-Claire Ngbokoli reflects on the journey: « We started as a small group of determined women in Bangui, and today our programs reach thousands of beneficiaries across the country. »",
       "Asked about challenges, she mentions the lack of structural funding for Central African NGOs and the need to diversify partnerships, particularly with the local private sector. « Every partner who joins us means one more project launched for a woman or young person in this country. »",
       "For the years ahead, she announces a clear ambition: to expand LIAM Groupe's programs to all prefectures of the Central African Republic, building on local networks trained since 2015.",
+    ],
+  },
+  {
+    slug: "lancement-castings-miss-centrafrique-2026",
+    tag: "Miss Centrafrique",
+    date: "July 20, 2026",
+    title: "Casting calls open for Miss Centrafrique 2026",
+    excerpt:
+      "LIAM Groupe launches the regional selection tour for the 12th edition of the pageant, with stops in three new cities this year.",
+    image: img("event-miss", 800, 600),
+    author: "LIAM Groupe Communications Team",
+    content: [
+      "LIAM Groupe announces the opening of registrations for the 12th edition of Miss Centrafrique. Candidates aged 18 to 26 can attend regional castings in Bouar, Berbérati and Bangassou ahead of the grand finale in Bangui.",
+      "Beyond the beauty pageant, the program places strong emphasis on culture and social engagement: candidates will take part in leadership and public speaking workshops led by LIAM Groupe's Entrepreneurship & Leadership team.",
+      "Like her predecessors, the 2026 winner will join LIAM Groupe's awareness campaigns throughout her one-year term.",
     ],
   },
 ];

@@ -136,9 +136,15 @@
       }
     ],
     "ctaEvents": "Voir nos événements",
-    "seeMore": "Voir plus"
+    "seeMore": "Voir plus",
+    "scrollDown": "Scroller"
   },
   "home": {
+    "featured": {
+      "eyebrow": "Nos domaines phares",
+      "title": "Découvrez nos projets emblématiques",
+      "description": "Des initiatives qui transforment la Centrafrique, du sport à la gastronomie en passant par la culture."
+    },
     "domains": {
       "eyebrow": "Nos actions",
       "title": "Nos 6 domaines d'intervention",
@@ -344,6 +350,8 @@
     "formFirstNamePlaceholder": "Votre prénom",
     "formLastName": "Nom",
     "formLastNamePlaceholder": "Votre nom",
+    "formPhone": "Téléphone",
+    "formPhonePlaceholder": "+236 XX XX XX XX",
     "formEmail": "Email",
     "formEmailPlaceholder": "votre@email.com",
     "formSubject": "Sujet",
@@ -367,6 +375,8 @@
     "blockerLeave": "Quitter"
   },
   "domains": {
+    "programsLabel": "Nos actions :",
+    "cta": "Vous souhaitez en savoir plus ou soutenir ce programme ? Contactez-nous !",
     "data": {
       "g-fitness": {
         "name": "G-Fitness",
@@ -602,6 +612,7 @@
       "rateLimit": "Trop de tentatives. Réessayez dans {{seconds}} secondes.",
       "attemptsLeft": "Email ou mot de passe incorrect. Il vous reste {{count}} tentative.",
       "attemptsLeft_other": "Email ou mot de passe incorrect. Il vous reste {{count}} tentatives.",
+      "notAuthorized": "Ce compte n'a pas les droits administrateur.",
       "connectionError": "Erreur de connexion :",
       "backToSite": "Retour au site"
     },

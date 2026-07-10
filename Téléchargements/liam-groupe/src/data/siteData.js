@@ -27,7 +27,7 @@ export const imgBlur = (seed) =>
 /**
  * Version optimisée pour les images hero — plus légère et éco.
  */
-export const imgHero = (seed) => img(seed, 1600, 900, 'fill', 'eco')
+export const imgHero = (seed) => img(seed, 1600, 900, 'fill', 'auto')
 
 /**
  * Génère les URLs srcSet pour le chargement responsive d'images.
@@ -65,7 +65,7 @@ export const siteInfo = {
     "Structure pluridisciplinaire développant des projets culturels, sportifs, entrepreneuriaux et gastronomiques à fort impact social en République Centrafricaine.",
   address: ["Avenue des Martyrs, Immeuble Salle King", "Bangui, République Centrafricaine"],
   phones: ["+236 76 00 00 00"],
-  emails: ["contact@liamgroupe.org", "partenariat@liamgroupe.org"],
+  emails: ["liamgroupe236@gmail.com"],
   hours: ["Lundi — Vendredi : 8h00 — 17h00", "Samedi : 9h00 — 13h00"],
   foundingYear: 2015,
   social: {
@@ -78,7 +78,7 @@ export const siteInfo = {
   contactPage: {
     address: ["Secteur 3, Rue des Martyrs", "Bangui, République Centrafricaine"],
     phones: ["+236 76 00 00 00"],
-    emails: ["contact@liamgroupe.cf", "partenariats@liamgroupe.cf"],
+    emails: ["liamgroupe236@gmail.com"],
     hours: ["Lundi — Vendredi : 8h00 — 17h00", "Samedi : 9h00 — 12h00"],
   },
 };
@@ -95,17 +95,32 @@ export const domains = [
   {
     slug: "g-fitness",
     name: "G-Fitness",
-    category: "SPORT & BIEN-ÊTRE",
-    icon: "heart",
+    category: "SPORT & FITNESS",
+    icon: "dumbbell",
     shortDescription:
-      "Promouvoir la santé et le bien-être par le sport, avec des programmes adaptés aux femmes et aux jeunes de Bangui. Tournois de basketball…",
+      "Une salle de fitness moderne au cœur de Bangui : cours collectifs, coaching personnalisé et musculation, ouverte à tous, avec des programmes dédiés aux femmes et aux jeunes. Espace complet, coachs certifiés…",
     heroImage: img("gfitness-hero", 1920, 700),
     cardImage: img("gfitness-hero", 800, 500),
     programs: [
       {
+        title: "Musculation & Cardio",
+        description:
+          "Plateau équipé (haltères, machines guidées, tapis, vélos) en accès libre avec suivi par nos coachs.",
+      },
+      {
+        title: "Cours collectifs",
+        description:
+          "Zumba, step, renforcement musculaire et yoga, plusieurs séances par semaine pour tous les niveaux.",
+      },
+      {
+        title: "Coaching personnalisé",
+        description:
+          "Programmes individuels (perte de poids, prise de masse, remise en forme) avec suivi nutritionnel.",
+      },
+      {
         title: "Tournoi Féminin de Basketball",
         description:
-          "Compétition inter-quartiers rassemblant 16 équipes féminines à Bangui.",
+          "Compétition inter-quartiers rassemblant 16 équipes féminines à Bangui, portée par nos coachs.",
       },
       {
         title: "G-Fitness Junior",
@@ -118,35 +133,135 @@ export const domains = [
           "Ateliers de sensibilisation à l'hygiène de vie et à la nutrition équilibrée.",
       },
     ],
-    gallery: [img("gfitness-gallery-1", 700, 500), img("gfitness-gallery-2", 700, 500)],
+    trainers: [
+      {
+        name: "Coach Sandra Mbeki",
+        specialty: "Renforcement musculaire & Zumba",
+        image: img("gfitness-trainer-1", 400, 400),
+        social: {
+          facebook: "https://facebook.com/sandra.mbeki",
+          instagram: "https://instagram.com/sandra_mbeki",
+          x: "https://x.com/sandra_mbeki",
+        },
+      },
+      {
+        name: "Coach Aristide Ngoma",
+        specialty: "Musculation & préparation physique",
+        image: img("gfitness-trainer-2", 400, 400),
+        social: {
+          facebook: "https://facebook.com/aristide.ngoma",
+          instagram: "https://instagram.com/aristide_ngoma",
+          x: "https://x.com/aristide_ngoma",
+        },
+      },
+      {
+        name: "Coach Divine Yakité",
+        specialty: "Yoga & bien-être",
+        image: img("gfitness-trainer-3", 400, 400),
+        social: {
+          facebook: "https://facebook.com/divine.yakite",
+          instagram: "https://instagram.com/divine_yakite",
+          x: "https://x.com/divine_yakite",
+        },
+      },
+    ],
+    schedule: [
+      { day: "Lundi", classes: [{ time: "6h30", name: "Cardio Training" }, { time: "18h00", name: "Zumba" }] },
+      { day: "Mardi", classes: [{ time: "7h00", name: "Musculation guidée" }, { time: "18h30", name: "Renforcement musculaire" }] },
+      { day: "Mercredi", classes: [{ time: "6h30", name: "Cardio Training" }, { time: "17h30", name: "Yoga" }] },
+      { day: "Jeudi", classes: [{ time: "7h00", name: "Musculation guidée" }, { time: "18h00", name: "Zumba" }] },
+      { day: "Vendredi", classes: [{ time: "6h30", name: "Cardio Training" }, { time: "18h30", name: "Renforcement musculaire" }] },
+      { day: "Samedi", classes: [{ time: "9h00", name: "Session famille (Junior)" }, { time: "10h30", name: "Yoga" }] },
+    ],
+    pricing: [
+      { plan: "Séance à l'unité", price: "2 000 FCFA", features: ["Accès plateau musculation", "1 cours collectif au choix"] },
+      { plan: "Abonnement mensuel", price: "15 000 FCFA", featured: true, features: ["Accès illimité au plateau", "Tous les cours collectifs", "1 bilan forme offert"] },
+      { plan: "Abonnement trimestriel", price: "40 000 FCFA", features: ["Tous les avantages du mensuel", "Suivi coaching personnalisé", "Tarif préférentiel -12%"] },
+    ],
+    gallery: [
+      img("gfitness-gallery-1", 700, 500),
+      img("gfitness-gallery-2", 700, 500),
+      img("gfitness-gallery-3", 700, 500),
+      img("gfitness-gallery-4", 700, 500),
+    ],
   },
   {
     slug: "ogab",
     name: "O'GAB",
-    category: "GASTRONOMIE SOLIDAIRE",
+    category: "RESTAURANT & GASTRONOMIE",
     icon: "utensils",
     shortDescription:
-      "Valoriser la richesse culinaire centrafricaine tout en créant des opportunités économiques pour les femmes. Restauration événementielle, atelie…",
-    heroImage: img("ogab-hero", 1920, 700),
-    cardImage: img("ogab-hero", 800, 500),
+      "Le restaurant solidaire de LIAM Groupe à Bangui : une cuisine centrafricaine authentique et généreuse, préparée par des femmes formées dans nos ateliers culinaires, dans un cadre chaleureux ouvert midi et soir.",
+    heroImage: "/images/ogab/669011058_1446562997267831_5481903344405057979_n.jpg",
+    cardImage: "/images/ogab/494352701_1237214721443725_24564428699301841_n.jpg",
     programs: [
+      {
+        title: "Restaurant solidaire",
+        description:
+          "Salle ouverte tous les jours, cuisine centrafricaine et internationale accessible, préparée et servie par des femmes formées dans nos ateliers.",
+      },
+      {
+        title: "Restauration événementielle",
+        description:
+          "Service traiteur pour mariages, séminaires et réceptions, valorisant les produits locaux.",
+      },
       {
         title: "Ateliers culinaires",
         description:
           "Formation en cuisine traditionnelle et moderne pour les femmes entrepreneures.",
       },
+    ],
+    restaurantInfo: {
+      address: "Avenue des Martyrs, Immeuble Salle King, Bangui",
+      hours: [
+        { days: "Lundi — Samedi", time: "11h30 — 22h00" },
+        { days: "Dimanche", time: "12h00 — 16h00" },
+      ],
+      phone: "+236 76 00 00 00",
+    },
+    menu: [
       {
-        title: "Restauration événementielle",
-        description:
-          "Service de traiteur pour les événements, valorisant les produits locaux.",
+        category: "Entrées",
+        items: [
+          { name: "Beignets de manioc", description: "Servis avec une sauce pili-pili maison", price: "1 500 FCFA", image: "/images/ogab/494352701_1237214721443725_24564428699301841_n.jpg" },
+          { name: "Salade de gombo", description: "Gombo frais, tomate, oignon, citron vert", price: "1 500 FCFA", image: "/images/ogab/687170483_1462911208966343_5179896927689300392_n.jpg" },
+          { name: "Brochettes de bœuf", description: "Marinade aux épices locales", price: "2 000 FCFA", image: "/images/ogab/610818203_1427397272425468_5499767758296222743_n.jpg" },
+        ],
       },
       {
-        title: "Restaurant solidaire",
-        description:
-          "Établissement proposant une cuisine accessible tout en employant des femmes formées.",
+        category: "Plats",
+        items: [
+          { name: "Ngunza (feuilles de manioc)", description: "Mijoté à la viande de bœuf, riz blanc", price: "3 500 FCFA", image: "/images/ogab/669011058_1446562997267831_5481903344405057979_n.jpg" },
+          { name: "Poulet Moambé", description: "Sauce à la noix de palme, banane plantain", price: "4 000 FCFA", image: "/images/ogab/685703856_1462100469047417_2065620475939012998_n.jpg" },
+          { name: "Poisson braisé", description: "Capitaine grillé, attiéké, sauce tomate", price: "4 500 FCFA", image: "/images/ogab/514060818_1217276156863184_4307662795398036341_n.jpg" },
+          { name: "Saka-Saka", description: "Feuilles de manioc pilées, arachide, riz", price: "3 000 FCFA", image: "/images/ogab/550532545_1283500053574127_3960370833048881420_n.jpg" },
+        ],
+      },
+      {
+        category: "Desserts",
+        items: [
+          { name: "Beignets sucrés", description: "Servis chauds avec miel local", price: "1 000 FCFA", image: "/images/ogab/494352701_1237214721443725_24564428699301841_n.jpg" },
+          { name: "Salade de fruits de saison", description: "Ananas, mangue, papaye", price: "1 500 FCFA", image: "/images/ogab/550532545_1283500053574127_3960370833048881420_n.jpg" },
+        ],
+      },
+      {
+        category: "Boissons",
+        items: [
+          { name: "Jus de bissap", description: "Fait maison, peu sucré", price: "1 000 FCFA", image: "/images/ogab/687170483_1462911208966343_5179896927689300392_n.jpg" },
+          { name: "Jus de gingembre", description: "Fait maison", price: "1 000 FCFA", image: "/images/ogab/514060818_1217276156863184_4307662795398036341_n.jpg" },
+          { name: "Eau minérale", description: "50cl", price: "500 FCFA", image: "/images/ogab/610818203_1427397272425468_5499767758296222743_n.jpg" },
+        ],
       },
     ],
-    gallery: [img("ogab-gallery-1", 700, 500), img("ogab-gallery-2", 700, 500)],
+    gallery: [
+      "/images/ogab/494352701_1237214721443725_24564428699301841_n.jpg",
+      "/images/ogab/687170483_1462911208966343_5179896927689300392_n.jpg",
+      "/images/ogab/610818203_1427397272425468_5499767758296222743_n.jpg",
+      "/images/ogab/685703856_1462100469047417_2065620475939012998_n.jpg",
+      "/images/ogab/514060818_1217276156863184_4307662795398036341_n.jpg",
+      "/images/ogab/550532545_1283500053574127_3960370833048881420_n.jpg",
+      "/images/ogab/669011058_1446562997267831_5481903344405057979_n.jpg",
+    ],
   },
   {
     slug: "entrepreneuriat",
@@ -238,14 +353,10 @@ export const domains = [
     category: "CULTURE & GALAS",
     icon: "calendar",
     shortDescription:
-      "Organiser des événements d'envergure qui rassemblent, inspirent et célèbrent la culture centrafricaine. Miss Centrafrique, galas de…",
+      "Organiser des événements d'envergure qui rassemblent, inspirent et célèbrent la culture centrafricaine. Galas de charité, festivals…",
     heroImage: img("evenementiel-hero", 1920, 700),
     cardImage: img("evenementiel-hero", 800, 500),
     programs: [
-      {
-        title: "Miss Centrafrique",
-        description: "Concours national de beauté et de culture célébrant la diversité de la RCA.",
-      },
       {
         title: "Gala de charité",
         description:
@@ -256,8 +367,51 @@ export const domains = [
         description:
           "Manifestations artistiques mettant en valeur la musique, la danse et les arts locaux.",
       },
+      {
+        title: "Nuit du Patrimoine",
+        description:
+          "Soirée dédiée à la valorisation du patrimoine culturel et artisanal centrafricain.",
+      },
     ],
     gallery: [img("evenementiel-gallery-1", 700, 500), img("evenementiel-gallery-2", 700, 500)],
+  },
+  {
+    slug: "miss-centrafrique",
+    name: "Miss Centrafrique",
+    category: "ÉVÉNEMENT & CULTURE",
+    icon: "crown",
+    shortDescription:
+      "Le grand concours national de beauté et de culture, organisé chaque année par LIAM Groupe pour célébrer la diversité et le talent des femmes centrafricaines à travers tout le pays.",
+    heroImage: "/images/miss_centrafrique/660293914_122214852962493986_3925101421778963041_n.jpg",
+    cardImage: "/images/miss_centrafrique/660293914_122214852962493986_3925101421778963041_n.jpg",
+    programs: [
+      {
+        title: "Édition annuelle Miss Centrafrique",
+        description:
+          "Concours national réunissant des candidates des 16 préfectures pour la grande finale à Bangui.",
+      },
+      {
+        title: "Casting régional",
+        description:
+          "Tournée de sélection dans les principales villes du pays pour repérer les candidates.",
+      },
+      {
+        title: "Programme social des lauréates",
+        description:
+          "Les lauréates portent pendant un an des actions de sensibilisation aux côtés des programmes LIAM (éducation, santé, entrepreneuriat féminin).",
+      },
+    ],
+    gallery: [
+      "/images/miss_centrafrique/602360568_122201092124493986_1040350237599525467_n.jpg",
+      "/images/miss_centrafrique/602369447_122201092304493986_1654277192015430010_n.jpg",
+      "/images/miss_centrafrique/602942164_122201091986493986_7876967984288534926_n.jpg",
+      "/images/miss_centrafrique/602970718_122201092028493986_1341360414517098757_n.jpg",
+      "/images/miss_centrafrique/603877467_122201091788493986_6848310215721556803_n.jpg",
+      "/images/miss_centrafrique/604842510_122201091902493986_5059305910630420651_n.jpg",
+      "/images/miss_centrafrique/605839126_122201092082493986_7051333952073355898_n.jpg",
+      "/images/miss_centrafrique/652260934_122213049812493986_1741650240073091187_n.jpg",
+      "/images/miss_centrafrique/657846609_122214853046493986_902888607739175824_n.jpg",
+    ],
   },
 ];
 
@@ -338,11 +492,22 @@ export const events = [
     title: "Miss Centrafrique 2025",
     date: "15 Octobre 2025",
     location: "Salle King, Bangui",
-    category: "Événementiel",
+    category: "Miss Centrafrique",
     status: "passe",
-    image: img("event-miss", 800, 600),
+    image: "/images/miss_centrafrique/652260934_122213049812493986_1741650240073091187_n.jpg",
     description:
       "Concours de beauté et de culture célébrant la diversité et la richesse culturelle de la République Centrafricaine. Plus de 5000…",
+  },
+  {
+    slug: "casting-regional-miss-centrafrique-2026",
+    title: "Casting Régional — Miss Centrafrique 2026",
+    date: "5 Septembre 2026",
+    location: "Bouar, Berbérati, Bangassou (tournée régionale)",
+    category: "Miss Centrafrique",
+    status: "a_venir",
+    image: "/images/miss_centrafrique/657846609_122214853046493986_902888607739175824_n.jpg",
+    description:
+      "Tournée de sélection dans les principales villes du pays pour repérer les candidates de l'édition 2026. Inscriptions ouvertes aux femmes de 18 à 26 ans…",
   },
 ];
 
@@ -435,6 +600,21 @@ export const news = [
       "Onze ans après la création de LIAM Groupe, sa fondatrice Marie-Claire Ngbokoli revient sur le chemin parcouru : « Nous sommes partis d'un petit groupe de femmes déterminées à Bangui, et aujourd'hui nos programmes touchent des milliers de bénéficiaires à travers le pays. »",
       "Interrogée sur les défis, elle évoque le manque de financement structurel des ONG centrafricaines et la nécessité de diversifier les partenariats, notamment avec le secteur privé local. « Chaque partenaire qui nous rejoint, c'est un projet de plus qui voit le jour pour une femme ou un jeune de ce pays. »",
       "Pour les années à venir, elle annonce une ambition claire : étendre les programmes de LIAM Groupe à l'ensemble des préfectures de la République Centrafricaine, en s'appuyant sur les relais locaux formés depuis 2015.",
+    ],
+  },
+  {
+    slug: "lancement-castings-miss-centrafrique-2026",
+    tag: "Miss Centrafrique",
+    date: "20 Juillet 2026",
+    title: "Ouverture des castings pour Miss Centrafrique 2026",
+    excerpt:
+      "LIAM Groupe lance la tournée régionale de sélection pour la 12ème édition du concours, avec une étape dans trois nouvelles villes cette année.",
+    image: img("event-miss", 800, 600),
+    author: "Équipe Communication LIAM Groupe",
+    content: [
+      "LIAM Groupe annonce l'ouverture des inscriptions pour la 12ème édition de Miss Centrafrique. Les candidates de 18 à 26 ans peuvent se présenter aux castings régionaux organisés à Bouar, Berbérati et Bangassou avant la grande finale prévue à Bangui.",
+      "Au-delà du concours de beauté, le programme met l'accent sur la culture et l'engagement social : les candidates suivront des ateliers de leadership et de prise de parole en public animés par l'équipe Entrepreneuriat & Leadership de LIAM Groupe.",
+      "La lauréate 2026 rejoindra, comme ses devancières, les actions de sensibilisation portées par LIAM Groupe tout au long de son mandat d'un an.",
     ],
   },
 ];

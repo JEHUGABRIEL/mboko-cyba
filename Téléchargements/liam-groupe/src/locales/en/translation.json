@@ -136,9 +136,15 @@
       }
     ],
     "ctaEvents": "See our events",
-    "seeMore": "See more"
+    "seeMore": "See more",
+    "scrollDown": "Scroll"
   },
   "home": {
+    "featured": {
+      "eyebrow": "Our flagship domains",
+      "title": "Discover our emblematic projects",
+      "description": "Initiatives transforming Central Africa, from sports to gastronomy and culture."
+    },
     "domains": {
       "eyebrow": "Our actions",
       "title": "Our 6 areas of intervention",
@@ -344,6 +350,8 @@
     "formFirstNamePlaceholder": "Your first name",
     "formLastName": "Last name",
     "formLastNamePlaceholder": "Your last name",
+    "formPhone": "Phone",
+    "formPhonePlaceholder": "+236 XX XX XX XX",
     "formEmail": "Email",
     "formEmailPlaceholder": "your@email.com",
     "formSubject": "Subject",
@@ -367,6 +375,8 @@
     "blockerLeave": "Leave"
   },
   "domains": {
+    "programsLabel": "Our actions:",
+    "cta": "Would you like to know more or support this program? Contact us!",
     "data": {
       "g-fitness": {
         "name": "G-Fitness",
@@ -602,6 +612,7 @@
       "rateLimit": "Too many attempts. Try again in {{seconds}} seconds.",
       "attemptsLeft_one": "Invalid email or password. {{count}} attempt remaining.",
       "attemptsLeft_other": "Invalid email or password. {{count}} attempts remaining.",
+      "notAuthorized": "This account does not have administrator rights.",
       "connectionError": "Connection error:",
       "backToSite": "Back to site"
     },

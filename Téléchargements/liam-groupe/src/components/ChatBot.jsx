@@ -322,7 +322,7 @@ export default function ChatBot() {
 
   const rawNumber = siteInfo?.social?.whatsapp || siteInfo?.phones?.[0] || "";
   const whatsappNumber = String(rawNumber).replace(/\D/g, "");
-  const contactEmail = siteInfo?.emails?.[0] || "contact@liamgroupe.org";
+  const contactEmail = siteInfo?.emails?.[0] || "liamgroupe236@gmail.com";
 
   // Empêche le scroll du body quand le chatbot est ouvert
   useEffect(() => {
@@ -791,6 +791,8 @@ export default function ChatBot() {
                 placeholder={t("chatbot.inputPlaceholder")}
                 className="flex-1 border border-gray-200 rounded-xl px-3 sm:px-3.5 py-2 sm:py-2.5 text-xs sm:text-sm outline-none focus:border-brand-400 transition-colors"
                 autoComplete="off"
+                autoCorrect={i18n.language?.startsWith("en") ? "on" : "off"}
+                spellCheck="false"
               />
               <button
                 type="submit"
