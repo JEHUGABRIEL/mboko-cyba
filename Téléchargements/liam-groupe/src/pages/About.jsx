@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Target, Compass, Flag, MapPin, Phone, Mail, Clock, Send } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import Navbar from "../components/Navbar";
@@ -24,6 +25,17 @@ export default function About() {
   const mapRef = useScrollReveal();
   const [contactDirty, setContactDirty] = useState(false);
   const { blocker } = useUnsavedChanges(contactDirty);
+  const [missionImageIdx, setMissionImageIdx] = useState(0);
+  const [missionPaused, setMissionPaused] = useState(false);
+
+  // Auto-play images de la section Mission
+  useEffect(() => {
+    if (missionPaused) return;
+    const id = setInterval(() => {
+      setMissionImageIdx((prev) => (prev + 1) % 2);
+    }, 4000);
+    return () => clearInterval(id);
+  }, [missionPaused]);
 
   return (
     <div className="font-body">
@@ -109,25 +121,33 @@ export default function About() {
               </div>
             </div>
 
-            <div className="grid grid-cols-2 gap-4 reveal">
-              <img
-                src={img("apropos-1", 600, 700)}
-                alt={t('about.images.alt1')}
-                width={600}
-                height={700}
-                className="rounded-2xl object-cover w-full h-[340px] mt-8"
-                loading="lazy"
-                decoding="async"
-              />
-              <img
-                src={img("apropos-2", 600, 700)}
-                alt={t('about.images.alt2')}
-                width={600}
-                height={700}
-                className="rounded-2xl object-cover w-full h-[340px]"
-                loading="lazy"
-                decoding="async"
-              />
+            <div
+              className="reveal relative overflow-hidden rounded-2xl h-[360px] md:h-[420px] group"
+              onMouseEnter={() => setMissionPaused(true)}
+              onMouseLeave={() => setMissionPaused(false)}
+            >
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={missionImageIdx}
+                  initial={{ opacity: 0, x: 40 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -40 }}
+                  transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
+                  className="absolute inset-0"
+                >
+                  <img
+                    src={img(missionImageIdx === 0 ? "apropos-1" : "apropos-2", 600, 700)}
+                    alt={missionImageIdx === 0 ? t('about.images.alt1') : t('about.images.alt2')}
+                    width={600}
+                    height={700}
+                    className="object-cover w-full h-full"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/10 to-transparent" />
+                </motion.div>
+              </AnimatePresence>
+
             </div>
           </div>
         </div>
