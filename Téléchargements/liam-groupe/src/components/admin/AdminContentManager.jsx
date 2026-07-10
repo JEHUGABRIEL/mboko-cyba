@@ -17,12 +17,15 @@ function getTableConfig(t) {
   const tn = (key) => t("admin.contentManager.tableNames." + key);
   const ph = (key) => t("admin.contentManager." + key + "Placeholder");
 
+  const langField = { key: "lang", label: fl("lang"), type: "select", options: ["fr", "en"], required: true };
+
   return {
     domains: {
       name: tn("domains"),
       labelKey: "name",
       orderField: "order_index",
       fields: [
+        langField,
         { key: "slug", label: fl("slug"), type: "text", required: true, placeholder: ph("slug") },
         { key: "name", label: fl("name"), type: "text", required: true },
         { key: "category", label: fl("category"), type: "text" },
@@ -38,6 +41,7 @@ function getTableConfig(t) {
       labelKey: "title",
       orderField: "order_index",
       fields: [
+        langField,
         { key: "slug", label: fl("slug"), type: "text", required: true },
         { key: "title", label: fl("title"), type: "text", required: true },
         { key: "description", label: fl("description"), type: "textarea" },
@@ -55,6 +59,7 @@ function getTableConfig(t) {
       labelKey: "title",
       orderField: "order_index",
       fields: [
+        langField,
         { key: "slug", label: fl("slug"), type: "text", required: true },
         { key: "title", label: fl("title"), type: "text", required: true },
         { key: "excerpt", label: fl("excerpt"), type: "textarea" },
@@ -69,6 +74,7 @@ function getTableConfig(t) {
       labelKey: "name",
       orderField: "order_index",
       fields: [
+        langField,
         { key: "name", label: fl("name"), type: "text", required: true },
         { key: "role", label: fl("role"), type: "text" },
         { key: "description", label: fl("description"), type: "textarea" },
@@ -81,6 +87,7 @@ function getTableConfig(t) {
       labelKey: "name",
       orderField: "order_index",
       fields: [
+        langField,
         { key: "name", label: fl("name"), type: "text", required: true },
         { key: "subtitle", label: fl("subtitle"), type: "text" },
         { key: "description", label: fl("description"), type: "textarea" },
@@ -97,6 +104,7 @@ function getTableConfig(t) {
       labelKey: "name",
       orderField: "order_index",
       fields: [
+        langField,
         { key: "name", label: fl("name"), type: "text", required: true },
         { key: "role", label: fl("role"), type: "text" },
         { key: "quote", label: fl("quote"), type: "textarea", required: true },
@@ -107,13 +115,12 @@ function getTableConfig(t) {
 }
 
 // ─── Column display config ─────────────────────────────────────────────────
-const TABLE_COLS = {
-  domains: ["slug", "name", "category"],
-  events: ["title", "date", "end_date", "status", "category", "gallery"],
-  news: ["title", "date", "tag", "gallery"],
-  team: ["name", "role"],
-  partners: ["name", "category"],
-  testimonials: ["name", "role"],
+const TABLE_COLS = {    domains: ["lang", "slug", "name", "category"],
+  events: ["lang", "title", "date", "end_date", "status", "category", "gallery"],
+  news: ["lang", "title", "date", "tag", "gallery"],
+  team: ["lang", "name", "role"],
+  partners: ["lang", "name", "category"],
+  testimonials: ["lang", "name", "role"],
 };
 
 // ─── Component ──────────────────────────────────────────────────────────────

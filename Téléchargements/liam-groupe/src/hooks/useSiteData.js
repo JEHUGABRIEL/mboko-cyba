@@ -44,11 +44,13 @@ async function fetchSetting(key, fallback) {
   return error ? fallback : data.value
 }
 
-async function fetchAll(table, fallback) {
-  const { data, error } = await supabase
+async function fetchAll(table, fallback, lang) {
+  const query = supabase
     .from(table)
     .select('*')
     .order('order_index')
+  if (lang) query.eq('lang', lang)
+  const { data, error } = await query
   if (error || !data || data.length === 0) return fallback
   return data
 }
@@ -89,7 +91,7 @@ export function useDomains() {
   const { data: fallback, lang } = useFallback(fallbackDomainsFr, fallbackDomainsEn)
   return useQuery({
     queryKey: ['domains', lang],
-    queryFn: () => fetchAll('domains', fallback),
+    queryFn: () => fetchAll('domains', fallback, lang),
     staleTime: STALE_TIME,
   })
 }
@@ -103,6 +105,7 @@ export function useDomain(slug) {
         .from('domains')
         .select('*')
         .eq('slug', slug)
+        .eq('lang', lang)
         .single()
       if (error) return fallback.find((d) => d.slug === slug) || null
       // Fusion : on complète les données Supabase avec le fallback local
@@ -141,7 +144,7 @@ export function useEvents() {
   return useQuery({
     queryKey: ['events', lang],
     queryFn: async () => {
-      const data = await fetchAll('events', fallback);
+      const data = await fetchAll('events', fallback, lang);
       if (!Array.isArray(data)) return data;
       // Corrige automatiquement le statut des événements dont la date est passée
       return data.map((evt) => {
@@ -161,7 +164,7 @@ export function useNews() {
   const { data: fallback, lang } = useFallback(fallbackNewsFr, fallbackNewsEn)
   return useQuery({
     queryKey: ['news', lang],
-    queryFn: () => fetchAll('news', fallback),
+    queryFn: () => fetchAll('news', fallback, lang),
     staleTime: STALE_TIME,
   })
 }
@@ -170,7 +173,7 @@ export function useTeam() {
   const { data: fallback, lang } = useFallback(fallbackTeamFr, fallbackTeamEn)
   return useQuery({
     queryKey: ['team', lang],
-    queryFn: () => fetchAll('team', fallback),
+    queryFn: () => fetchAll('team', fallback, lang),
     staleTime: STALE_TIME,
   })
 }
@@ -179,7 +182,7 @@ export function usePartners() {
   const { data: fallback, lang } = useFallback(fallbackPartnersFr, fallbackPartnersEn)
   return useQuery({
     queryKey: ['partners', lang],
-    queryFn: () => fetchAll('partners', fallback),
+    queryFn: () => fetchAll('partners', fallback, lang),
     staleTime: STALE_TIME,
   })
 }
@@ -188,7 +191,7 @@ export function useTestimonials() {
   const { data: fallback, lang } = useFallback(fallbackTestimonialsFr, fallbackTestimonialsEn)
   return useQuery({
     queryKey: ['testimonials', lang],
-    queryFn: () => fetchAll('testimonials', fallback),
+    queryFn: () => fetchAll('testimonials', fallback, lang),
     staleTime: STALE_TIME,
   })
 }

@@ -731,7 +731,8 @@
         "color": "Couleur",
         "collaboration": "Collaboration",
         "website": "Site web",
-        "quote": "Citation"
+        "quote": "Citation",
+        "lang": "Langue"
       },
       "tableNames": {
         "domains": "Domaines",

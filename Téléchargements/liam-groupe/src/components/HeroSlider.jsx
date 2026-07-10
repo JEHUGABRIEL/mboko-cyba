@@ -225,6 +225,7 @@ export default function HeroSlider({
   defaultZoom,
   defaultBg,
   showcaseMode = false,
+  hideScrollIndicator = false,
 }) {
   const { t } = useTranslation();
   const [current, setCurrent] = useState(0);
@@ -451,30 +452,31 @@ export default function HeroSlider({
         </div>
       </div>
 
-      {/* Indicateur de défilement */}
-      <motion.button
-        aria-label="Défiler vers le bas"
-        onClick={(e) => {
-          const hero = e.currentTarget.closest('.group.relative');
-          if (hero) {
-            const next = hero.nextElementSibling;
-            if (next) next.scrollIntoView({ behavior: "smooth" });
-          }
-        }}
-        className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-1 text-white/50 hover:text-white/80 transition-colors cursor-pointer"
-        animate={{ y: [0, 8, 0] }}
-        transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-      >
-        <span className="text-xs font-semibold tracking-widest uppercase">{t('hero.scrollDown')}</span>
-        <span className="relative">
-          <Mouse className="w-5 h-5" />
-          <motion.span
-            className="absolute left-1/2 -translate-x-1/2 top-[3px] w-[3px] h-[5px] bg-current rounded-full"
-            animate={{ y: [0, 5, 0], opacity: [1, 0.3, 1] }}
-            transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
-          />
-        </span>
-      </motion.button>
+      {!hideScrollIndicator && (
+        <motion.button
+          aria-label="Défiler vers le bas"
+          onClick={(e) => {
+            const hero = e.currentTarget.closest('.group.relative');
+            if (hero) {
+              const next = hero.nextElementSibling;
+              if (next) next.scrollIntoView({ behavior: "smooth" });
+            }
+          }}
+          className="absolute bottom-6 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-1 text-white/50 hover:text-white/80 transition-colors cursor-pointer"
+          animate={{ y: [0, 8, 0] }}
+          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+        >
+          <span className="text-xs font-semibold tracking-widest uppercase">{t('hero.scrollDown')}</span>
+          <span className="relative">
+            <Mouse className="w-5 h-5" />
+            <motion.span
+              className="absolute left-1/2 -translate-x-1/2 top-[3px] w-[3px] h-[5px] bg-current rounded-full"
+              animate={{ y: [0, 5, 0], opacity: [1, 0.3, 1] }}
+              transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+            />
+          </span>
+        </motion.button>
+      )}
     </section>
   );
 }

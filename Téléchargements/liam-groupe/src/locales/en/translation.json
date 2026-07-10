@@ -730,7 +730,8 @@
         "color": "Color",
         "collaboration": "Collaboration",
         "website": "Website",
-        "quote": "Quote"
+        "quote": "Quote",
+        "lang": "Language"
       },
       "tableNames": {
         "domains": "Domains",

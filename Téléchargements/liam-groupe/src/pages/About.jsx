@@ -56,6 +56,7 @@ export default function About() {
         })()}
         preloadSeed="apropos-hero"
         defaultBg={{ type: "gradient", value: "from-ink-900 via-ink to-ink-900" }}
+        hideScrollIndicator
       />
 
       {/* MISSION */}

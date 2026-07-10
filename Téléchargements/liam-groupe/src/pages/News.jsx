@@ -31,6 +31,7 @@ export default function News_() {
         })()}
         preloadSeed="actualites-hero"
         defaultBg={{ type: "gradient", value: "from-ink-900 via-ink to-ink-900" }}
+        hideScrollIndicator
       />
 
       <section className="py-24 px-6" ref={sectionRef}>
