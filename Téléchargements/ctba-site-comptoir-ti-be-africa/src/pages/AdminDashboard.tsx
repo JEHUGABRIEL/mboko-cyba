@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useSiteData, type Product, type Project, type Testimonial, type PageContent } from '../context/SiteContext';
+import { useSiteData, type Product, type Project, type Testimonial } from '../context/SiteContext';
 import {
   Settings,
   Package,
@@ -99,6 +99,16 @@ const SUBTAB_LABELS: Record<string, string> = {
   hero: 'Textes Hero',
 };
 
+function getErrorMessage(error: unknown, fallback: string): string {
+  if (error instanceof Error) {
+    return error.message;
+  }
+  if (typeof error === 'string') {
+    return error;
+  }
+  return fallback;
+}
+
 export function AdminDashboard() {
   const {
     products,
@@ -185,16 +195,20 @@ export function AdminDashboard() {
     showToast('Déconnexion réussie');
   };
 
-  const handleProductFormSave = (product: Product) => {
-    if (editingProduct) {
-      updateProduct(product.id, product);
-      showToast('Produit modifié avec succès');
-    } else {
-      addProduct(product);
-      showToast('Produit ajouté avec succès');
+  const handleProductFormSave = async (product: Product) => {
+    try {
+      if (editingProduct) {
+        await updateProduct(product.id, product);
+        showToast('Produit modifié avec succès');
+      } else {
+        await addProduct(product);
+        showToast('Produit ajouté avec succès');
+      }
+      setShowProductForm(false);
+      setEditingProduct(null);
+    } catch (err: unknown) {
+      showToast(getErrorMessage(err, 'Impossible de synchroniser le produit avec la base de données'), 'error');
     }
-    setShowProductForm(false);
-    setEditingProduct(null);
   };
 
   const handleProductFormClose = () => {
@@ -202,24 +216,33 @@ export function AdminDashboard() {
     setEditingProduct(null);
   };
 
-  const handleDeleteProduct = () => {
-    if (confirmAction?.type === 'delete-product' && confirmAction.id) {
-      deleteProduct(confirmAction.id);
-      showToast('Produit supprimé avec succès');
+  const handleDeleteProduct = async () => {
+    try {
+      if (confirmAction?.type === 'delete-product' && confirmAction.id) {
+        await deleteProduct(confirmAction.id);
+        showToast('Produit supprimé avec succès');
+      }
+    } catch (err: unknown) {
+      showToast(getErrorMessage(err, 'Impossible de supprimer le produit côté serveur'), 'error');
+    } finally {
+      setConfirmAction(null);
     }
-    setConfirmAction(null);
   };
 
-  const handleProjectFormSave = (project: Project) => {
-    if (editingProject) {
-      updateProject(project.id, project);
-      showToast('Réalisation modifiée avec succès');
-    } else {
-      addProject(project);
-      showToast('Réalisation ajoutée avec succès');
+  const handleProjectFormSave = async (project: Project) => {
+    try {
+      if (editingProject) {
+        await updateProject(project.id, project);
+        showToast('Réalisation modifiée avec succès');
+      } else {
+        await addProject(project);
+        showToast('Réalisation ajoutée avec succès');
+      }
+      setShowProjectForm(false);
+      setEditingProject(null);
+    } catch (err: unknown) {
+      showToast(getErrorMessage(err, 'Impossible de synchroniser la réalisation avec la base de données'), 'error');
     }
-    setShowProjectForm(false);
-    setEditingProject(null);
   };
 
   const handleProjectFormClose = () => {
@@ -227,24 +250,33 @@ export function AdminDashboard() {
     setEditingProject(null);
   };
 
-  const handleDeleteProject = () => {
-    if (confirmAction?.type === 'delete-project' && confirmAction.id) {
-      deleteProject(confirmAction.id);
-      showToast('Réalisation supprimée avec succès');
+  const handleDeleteProject = async () => {
+    try {
+      if (confirmAction?.type === 'delete-project' && confirmAction.id) {
+        await deleteProject(confirmAction.id);
+        showToast('Réalisation supprimée avec succès');
+      }
+    } catch (err: unknown) {
+      showToast(getErrorMessage(err, 'Impossible de supprimer la réalisation côté serveur'), 'error');
+    } finally {
+      setConfirmAction(null);
     }
-    setConfirmAction(null);
   };
 
-  const handleTestimonialFormSave = (testimonial: Testimonial) => {
-    if (editingTestimonial) {
-      updateTestimonial(testimonial.id, testimonial);
-      showToast('Témoignage modifié avec succès');
-    } else {
-      addTestimonial(testimonial);
-      showToast('Témoignage ajouté avec succès');
+  const handleTestimonialFormSave = async (testimonial: Testimonial) => {
+    try {
+      if (editingTestimonial) {
+        await updateTestimonial(testimonial.id, testimonial);
+        showToast('Témoignage modifié avec succès');
+      } else {
+        await addTestimonial(testimonial);
+        showToast('Témoignage ajouté avec succès');
+      }
+      setShowTestimonialForm(false);
+      setEditingTestimonial(null);
+    } catch (err: unknown) {
+      showToast(getErrorMessage(err, 'Impossible de synchroniser le témoignage avec la base de données'), 'error');
     }
-    setShowTestimonialForm(false);
-    setEditingTestimonial(null);
   };
 
   const handleTestimonialFormClose = () => {
@@ -252,22 +284,35 @@ export function AdminDashboard() {
     setEditingTestimonial(null);
   };
 
-  const handleDeleteTestimonial = () => {
-    if (confirmAction?.type === 'delete-testimonial' && confirmAction.id) {
-      deleteTestimonial(confirmAction.id);
-      showToast('Témoignage supprimé avec succès');
+  const handleDeleteTestimonial = async () => {
+    try {
+      if (confirmAction?.type === 'delete-testimonial' && confirmAction.id) {
+        await deleteTestimonial(confirmAction.id);
+        showToast('Témoignage supprimé avec succès');
+      }
+    } catch (err: unknown) {
+      showToast(getErrorMessage(err, 'Impossible de supprimer le témoignage côté serveur'), 'error');
+    } finally {
+      setConfirmAction(null);
     }
-    setConfirmAction(null);
   };
 
-  const handleSettingsSave = (updated: Partial<typeof settings>) => {
-    updateSettings(updated);
-    showToast('Paramètres enregistrés avec succès');
+  const handleSettingsSave = async (updated: Partial<typeof settings>) => {
+    try {
+      await updateSettings(updated);
+      showToast('Paramètres enregistrés avec succès');
+    } catch (err: unknown) {
+      showToast(getErrorMessage(err, 'Impossible de synchroniser les paramètres avec la base de données'), 'error');
+    }
   };
 
-  const handlePageContentSave = (content: typeof pageContent) => {
-    updatePageContent(content);
-    showToast('Contenu des pages enregistré avec succès');
+  const handlePageContentSave = async (content: typeof pageContent) => {
+    try {
+      await updatePageContent(content);
+      showToast('Contenu des pages enregistré avec succès');
+    } catch (err: unknown) {
+      showToast(getErrorMessage(err, 'Impossible de synchroniser le contenu des pages avec la base de données'), 'error');
+    }
   };
 
   const handleTabChange = (id: string) => {

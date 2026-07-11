@@ -12,7 +12,7 @@ type ProjectModalProps = {
 export function ProjectModal({ project, isOpen, onClose }: ProjectModalProps) {
   if (!project) return null;
 
-  const images = project.images ?? [project.image];
+  const images = project.images?.length ? project.images : [project.image].filter(Boolean);
 
   return (
     <AnimatePresence>

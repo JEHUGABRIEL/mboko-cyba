@@ -43,6 +43,7 @@ async function migrate() {
     category TEXT NOT NULL DEFAULT '',
     description TEXT DEFAULT '',
     image TEXT DEFAULT '',
+    images TEXT[] DEFAULT '{}',
     date TEXT DEFAULT '',
     service_id TEXT DEFAULT ''
   )`;
@@ -78,6 +79,9 @@ async function migrate() {
     value JSONB NOT NULL DEFAULT '{}'
   )`;
   console.log('  ✅ site_settings\n');
+
+  await sql`ALTER TABLE IF EXISTS projects ADD COLUMN IF NOT EXISTS images TEXT[] DEFAULT '{}'`;
+  await sql`ALTER TABLE IF EXISTS testimonials ADD COLUMN IF NOT EXISTS image TEXT DEFAULT ''`;
 
   // ── Seed data ──
   const [productCount] = await sql`SELECT COUNT(*)::int as count FROM products`;
@@ -149,25 +153,37 @@ async function migrate() {
        true, 'Réservoir de stockage d''eau en polyéthylène haute densité.', false)`;
     console.log('  ✅ all 8 products seeded');
 
-    await sql`INSERT INTO projects (id, title, category, description, image, date, service_id) VALUES
+    await sql`INSERT INTO projects (id, title, category, description, image, images, date, service_id) VALUES
       ('1', 'Construction Complexe Commercial R+5', 'Bâtiment',
        'Réalisation complète d''un complexe commercial moderne au centre-ville de Bangui, avec bureaux et espaces de vente.',
        'https://res.cloudinary.com/dwmrzp61c/image/upload/f_auto,q_auto/defaults/immeuble-moderne',
+       ARRAY['https://res.cloudinary.com/dwmrzp61c/image/upload/f_auto,q_auto/defaults/immeuble-moderne',
+             'https://res.cloudinary.com/dwmrzp61c/image/upload/f_auto,q_auto/defaults/batiment-hero',
+             'https://res.cloudinary.com/dwmrzp61c/image/upload/f_auto,q_auto/defaults/construction-moderne'],
        '2024', 'construction-btp')`;
-    await sql`INSERT INTO projects (id, title, category, description, image, date, service_id) VALUES
+    await sql`INSERT INTO projects (id, title, category, description, image, images, date, service_id) VALUES
       ('2', 'Rénovation Siège Administratif', 'Rénovation',
        'Rénovation complète et modernisation d''un bâtiment administratif avec mise aux normes et extension.',
        'https://res.cloudinary.com/dwmrzp61c/image/upload/f_auto,q_auto/defaults/immeuble-moderne',
+       ARRAY['https://res.cloudinary.com/dwmrzp61c/image/upload/f_auto,q_auto/defaults/immeuble-moderne',
+             'https://res.cloudinary.com/dwmrzp61c/image/upload/f_auto,q_auto/defaults/construction-moderne',
+             'https://res.cloudinary.com/dwmrzp61c/image/upload/f_auto,q_auto/defaults/batiment-hero'],
        '2024', 'construction-btp')`;
-    await sql`INSERT INTO projects (id, title, category, description, image, date, service_id) VALUES
+    await sql`INSERT INTO projects (id, title, category, description, image, images, date, service_id) VALUES
       ('3', 'Aménagement Rue Principale', 'Travaux Publics',
        'Aménagement et bitumage de la voirie urbaine avec système de drainage et trottoirs.',
        'https://res.cloudinary.com/dwmrzp61c/image/upload/f_auto,q_auto/defaults/travaux-route',
+       ARRAY['https://res.cloudinary.com/dwmrzp61c/image/upload/f_auto,q_auto/defaults/travaux-route',
+             'https://res.cloudinary.com/dwmrzp61c/image/upload/f_auto,q_auto/defaults/chantier-terrassement',
+             'https://res.cloudinary.com/dwmrzp61c/image/upload/f_auto,q_auto/defaults/construction-moderne'],
        '2023', 'construction-btp')`;
-    await sql`INSERT INTO projects (id, title, category, description, image, date, service_id) VALUES
+    await sql`INSERT INTO projects (id, title, category, description, image, images, date, service_id) VALUES
       ('4', 'Forage et Adduction d''Eau Potable', 'Hydraulique',
        'Étude hydrogéologique, forage et installation d''une pompe solaire avec château d''eau pour desservir une communauté rurale.',
        'https://res.cloudinary.com/dwmrzp61c/image/upload/f_auto,q_auto/defaults/pompe-eau',
+       ARRAY['https://res.cloudinary.com/dwmrzp61c/image/upload/f_auto,q_auto/defaults/pompe-eau',
+             'https://res.cloudinary.com/dwmrzp61c/image/upload/f_auto,q_auto/defaults/reservoir-eau',
+             'https://res.cloudinary.com/dwmrzp61c/image/upload/f_auto,q_auto/defaults/travaux-route'],
        '2024', 'forages-hydraulique')`;
     console.log('  ✅ all projects seeded');
 

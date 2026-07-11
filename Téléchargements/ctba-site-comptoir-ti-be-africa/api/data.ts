@@ -5,6 +5,29 @@ import { neon } from '@neondatabase/serverless';
 const ALLOWED_TABLES = ['products', 'projects', 'testimonials', 'services'] as const;
 type AllowedTable = typeof ALLOWED_TABLES[number];
 
+let schemaEnsurePromise: Promise<void> | null = null;
+
+async function ensureSchema(sql: any) {
+  if (!schemaEnsurePromise) {
+    // Keep older databases compatible with the admin forms and public gallery.
+    schemaEnsurePromise = (async () => {
+      await sql`
+        ALTER TABLE IF EXISTS projects
+        ADD COLUMN IF NOT EXISTS images TEXT[] DEFAULT '{}'
+      `;
+      await sql`
+        ALTER TABLE IF EXISTS testimonials
+        ADD COLUMN IF NOT EXISTS image TEXT DEFAULT ''
+      `;
+    })().catch((err) => {
+      schemaEnsurePromise = null;
+      throw err;
+    });
+  }
+
+  await schemaEnsurePromise;
+}
+
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   // CORS headers
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -21,14 +44,25 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'GET') {
     const adminKey = req.headers['x-admin-key'] as string;
     const expectedKey = process.env.ADMIN_PASSWORD;
-    if (!expectedKey || adminKey !== expectedKey) {
+    if (!expectedKey) {
+      res.status(500).json({ error: 'ADMIN_PASSWORD non configuré sur le serveur' });
+      return;
+    }
+    if (adminKey !== expectedKey) {
       res.status(401).json({ error: 'Non autorisé' });
       return;
     }
   }
 
   try {
-    const sql = neon(process.env.DATABASE_URL!);
+    const databaseUrl = process.env.DATABASE_URL;
+    if (!databaseUrl) {
+      res.status(500).json({ error: 'DATABASE_URL non configurée sur le serveur' });
+      return;
+    }
+
+    const sql = neon(databaseUrl);
+    await ensureSchema(sql);
     const { action, entity, id, data } = req.body || {};
     const entities = ['products', 'projects', 'testimonials', 'services'] as const;
 

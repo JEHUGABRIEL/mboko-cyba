@@ -1,10 +1,12 @@
-let showToastFn: ((msg: string) => void) | null = null;
+export type ToastKind = 'success' | 'error';
 
-export function showToast(message: string) {
-  if (showToastFn) showToastFn(message);
+let showToastFn: ((toast: { message: string; kind: ToastKind }) => void) | null = null;
+
+export function showToast(message: string, kind: ToastKind = 'success') {
+  if (showToastFn) showToastFn({ message, kind });
 }
 
-export function setToastHandler(fn: (msg: string) => void) {
+export function setToastHandler(fn: (toast: { message: string; kind: ToastKind }) => void) {
   showToastFn = fn;
 }
 

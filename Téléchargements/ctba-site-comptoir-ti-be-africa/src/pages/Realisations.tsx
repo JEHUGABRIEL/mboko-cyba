@@ -35,7 +35,7 @@ export function Realisations() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
           {projects.map((project, index) => {
-            const imageCount = (project.images?.length ?? 1);
+            const imageCount = project.images?.length || 1;
             return (
               <motion.div
                 key={project.id}

@@ -7,13 +7,23 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   // aujourd'hui idempotentes (IF NOT EXISTS / seed uniquement si vide).
   const adminKey = req.headers['x-admin-key'] as string;
   const expectedKey = process.env.ADMIN_PASSWORD;
-  if (!expectedKey || adminKey !== expectedKey) {
+  if (!expectedKey) {
+    res.status(500).json({ error: 'ADMIN_PASSWORD non configuré sur le serveur' });
+    return;
+  }
+  if (adminKey !== expectedKey) {
     res.status(401).json({ error: 'Non autorisé' });
     return;
   }
 
   try {
-    const sql = neon(process.env.DATABASE_URL!);
+    const databaseUrl = process.env.DATABASE_URL;
+    if (!databaseUrl) {
+      res.status(500).json({ error: 'DATABASE_URL non configurée sur le serveur' });
+      return;
+    }
+
+    const sql = neon(databaseUrl);
 
     // ── Create tables ──
     await sql`
@@ -49,7 +59,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         name TEXT NOT NULL,
         role TEXT DEFAULT '',
         content TEXT DEFAULT '',
-        rating INTEGER DEFAULT 5
+        rating INTEGER DEFAULT 5,
+        image TEXT DEFAULT ''
       )
     `;
 
@@ -75,6 +86,16 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         key TEXT PRIMARY KEY,
         value JSONB NOT NULL DEFAULT '{}'
       )
+    `;
+
+    // Upgrade older databases created with the previous schema.
+    await sql`
+      ALTER TABLE IF EXISTS projects
+      ADD COLUMN IF NOT EXISTS images TEXT[] DEFAULT '{}'
+    `;
+    await sql`
+      ALTER TABLE IF EXISTS testimonials
+      ADD COLUMN IF NOT EXISTS image TEXT DEFAULT ''
     `;
 
     // ── Seed default data (only if tables are empty) ──

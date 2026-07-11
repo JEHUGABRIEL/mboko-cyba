@@ -1,4 +1,4 @@
-import { useEffect, useState, createContext, useContext, type ReactNode } from 'react';
+import { useEffect, useState, useCallback, createContext, useContext, type ReactNode } from 'react';
 import { fetchAllData, createEntity, updateEntity, deleteEntity, updatePageContent as apiUpdatePageContent, updateSettings as apiUpdateSettings } from '../lib/api-client';
 export type Product = {
   id: string;
@@ -83,19 +83,19 @@ type SiteContextType = {
   services: Service[];
   settings: SiteSettings;
   pageContent: PageContent;
-  updatePageContent: (content: Partial<PageContent>) => void;
-  addProduct: (product: Product) => void;
-  updateProduct: (id: string, product: Partial<Product>) => void;
-  deleteProduct: (id: string) => void;
+  updatePageContent: (content: Partial<PageContent>) => Promise<void>;
+  addProduct: (product: Product) => Promise<void>;
+  updateProduct: (id: string, product: Partial<Product>) => Promise<void>;
+  deleteProduct: (id: string) => Promise<void>;
   reorderProducts: (orderedIds: string[]) => void;
-  addProject: (project: Project) => void;
-  updateProject: (id: string, project: Partial<Project>) => void;
-  deleteProject: (id: string) => void;
+  addProject: (project: Project) => Promise<void>;
+  updateProject: (id: string, project: Partial<Project>) => Promise<void>;
+  deleteProject: (id: string) => Promise<void>;
   reorderProjects: (orderedIds: string[]) => void;
-  addTestimonial: (testimonial: Testimonial) => void;
-  updateTestimonial: (id: string, testimonial: Partial<Testimonial>) => void;
-  deleteTestimonial: (id: string) => void;
-  updateSettings: (settings: Partial<SiteSettings>) => void;
+  addTestimonial: (testimonial: Testimonial) => Promise<void>;
+  updateTestimonial: (id: string, testimonial: Partial<Testimonial>) => Promise<void>;
+  deleteTestimonial: (id: string) => Promise<void>;
+  updateSettings: (settings: Partial<SiteSettings>) => Promise<void>;
 };
 const defaultProducts: Product[] = [
 {
@@ -524,6 +524,25 @@ const defaultSettings: SiteSettings = {
 };
 const SiteContext = createContext<SiteContextType | undefined>(undefined);
 
+const SITE_STORAGE_KEYS = [
+  'ctba_products',
+  'ctba_projects',
+  'ctba_testimonials',
+  'ctba_services',
+  'ctba_settings',
+  'ctba_page_content',
+] as const;
+const SITE_STORAGE_KEY_SET = new Set<string>(SITE_STORAGE_KEYS);
+
+type SiteSnapshot = {
+  products: Product[];
+  projects: Project[];
+  testimonials: Testimonial[];
+  services: Service[];
+  settings: SiteSettings;
+  pageContent: PageContent;
+};
+
 /** Merge fetched settings with defaults (in case some keys aren't in Neon yet) */
 function mergeSettings(fetched: Partial<SiteSettings>): SiteSettings {
   return {
@@ -541,12 +560,42 @@ function mergePageContent(fetched: Partial<PageContent>): PageContent {
   };
 }
 
-function loadFromLocalStorage() {
-  const stored = (key: string, fallback: any) => {
+function getErrorMessage(error: unknown): string {
+  if (error instanceof Error) {
+    return error.message;
+  }
+  if (typeof error === 'string') {
+    return error;
+  }
+  return 'Erreur inconnue';
+}
+
+function mergeCollections<T extends { id: string }>(remote: T[], local: T[]) {
+  const remoteIds = new Set(remote.map((item) => item.id));
+  const hasLocalOnlyItems = local.some((item) => !remoteIds.has(item.id));
+
+  if (!hasLocalOnlyItems) {
+    return remote;
+  }
+
+  const merged = new Map<string, T>();
+  for (const item of remote) {
+    merged.set(item.id, item);
+  }
+  for (const item of local) {
+    merged.set(item.id, item);
+  }
+  return Array.from(merged.values());
+}
+
+function readLocalStorageSnapshot(): SiteSnapshot {
+  const stored = <T,>(key: string, fallback: T): T => {
     try {
       const v = localStorage.getItem(key);
-      return v ? JSON.parse(v) : fallback;
-    } catch { return fallback; }
+      return v ? JSON.parse(v) as T : fallback;
+    } catch {
+      return fallback;
+    }
   };
   return {
     products: stored('ctba_products', defaultProducts) as Product[],
@@ -558,10 +607,7 @@ function loadFromLocalStorage() {
   };
 }
 
-function saveToLocalStorage(data: {
-  products?: Product[]; projects?: Project[]; testimonials?: Testimonial[];
-  services?: Service[]; settings?: SiteSettings; pageContent?: PageContent;
-}) {
+function saveToLocalStorage(data: Partial<SiteSnapshot>) {
   if (data.products) localStorage.setItem('ctba_products', JSON.stringify(data.products));
   if (data.projects) localStorage.setItem('ctba_projects', JSON.stringify(data.projects));
   if (data.testimonials) localStorage.setItem('ctba_testimonials', JSON.stringify(data.testimonials));
@@ -575,14 +621,17 @@ function localThenNeon<T>(
   setter: React.Dispatch<React.SetStateAction<T[]>>,
   updater: (prev: T[]) => T[],
   cacheKey: string,
-  neonCall: () => Promise<any>,
+  neonCall: () => Promise<unknown>,
 ) {
   setter((prev) => {
     const next = updater(prev);
     localStorage.setItem(cacheKey, JSON.stringify(next));
     return next;
   });
-  neonCall().catch((err: any) => console.warn('Neon sync failed:', err.message));
+  return neonCall().catch((err: unknown) => {
+    console.warn('Neon sync failed:', getErrorMessage(err));
+    throw err;
+  });
 }
 
 /** Generic delete helper */
@@ -590,18 +639,21 @@ function localDeleteThenNeon<T>(
   setter: React.Dispatch<React.SetStateAction<T[]>>,
   id: string,
   cacheKey: string,
-  neonCall: () => Promise<any>,
+  neonCall: () => Promise<unknown>,
 ) {
   setter((prev) => {
-    const next = prev.filter((item: any) => item.id !== id);
+    const next = prev.filter((item) => item.id !== id);
     localStorage.setItem(cacheKey, JSON.stringify(next));
     return next;
   });
-  neonCall().catch((err: any) => console.warn('Neon sync failed:', err.message));
+  return neonCall().catch((err: unknown) => {
+    console.warn('Neon sync failed:', getErrorMessage(err));
+    throw err;
+  });
 }
 
 export function SiteProvider({ children }: {children: ReactNode;}) {
-  const cached = loadFromLocalStorage();
+  const cached = readLocalStorageSnapshot();
   const [products, setProducts] = useState<Product[]>(cached.products);
   const [projects, setProjects] = useState<Project[]>(cached.projects);
   const [testimonials, setTestimonials] = useState<Testimonial[]>(cached.testimonials);
@@ -609,48 +661,75 @@ export function SiteProvider({ children }: {children: ReactNode;}) {
   const [settings, setSettings] = useState<SiteSettings>(cached.settings);
   const [pageContent, setPageContent] = useState<PageContent>(cached.pageContent);
 
+  const syncFromLocalStorage = useCallback(() => {
+    const snapshot = readLocalStorageSnapshot();
+    setProducts(snapshot.products);
+    setProjects(snapshot.projects);
+    setTestimonials(snapshot.testimonials);
+    setServices(snapshot.services);
+    setSettings(snapshot.settings);
+    setPageContent(snapshot.pageContent);
+  }, []);
+
+  useEffect(() => {
+    const handleStorage = (event: StorageEvent) => {
+      if (event.storageArea !== localStorage) return;
+      if (event.key !== null && !SITE_STORAGE_KEY_SET.has(event.key)) {
+        return;
+      }
+      syncFromLocalStorage();
+    };
+
+    window.addEventListener('storage', handleStorage);
+    return () => window.removeEventListener('storage', handleStorage);
+  }, [syncFromLocalStorage]);
+
   // On mount: try Neon API, then fall back to localStorage (already loaded)
   useEffect(() => {
     fetchAllData()
       .then((data) => {
-        if (data.products) {
-          setProducts(data.products);
-          setProjects(data.projects);
-          setTestimonials(data.testimonials);
-          setServices(data.services);
-          const mergedSettings = mergeSettings(data.settings || {});
-          const mergedPC = mergePageContent(data.pageContent || {});
-          setSettings(mergedSettings);
-          setPageContent(mergedPC);
-          saveToLocalStorage({
-            products: data.products,
-            projects: data.projects,
-            testimonials: data.testimonials,
-            services: data.services,
-            settings: mergedSettings,
-            pageContent: mergedPC,
-          });
-        }
+        const localSnapshot = readLocalStorageSnapshot();
+        const mergedProducts = mergeCollections(data.products || [], localSnapshot.products);
+        const mergedProjects = mergeCollections(data.projects || [], localSnapshot.projects);
+        const mergedTestimonials = mergeCollections(data.testimonials || [], localSnapshot.testimonials);
+        const mergedServices = mergeCollections(data.services || [], localSnapshot.services);
+        const mergedSettings = mergeSettings(data.settings || {});
+        const mergedPC = mergePageContent(data.pageContent || {});
+
+        setProducts(mergedProducts);
+        setProjects(mergedProjects);
+        setTestimonials(mergedTestimonials);
+        setServices(mergedServices);
+        setSettings(mergedSettings);
+        setPageContent(mergedPC);
+        saveToLocalStorage({
+          products: mergedProducts,
+          projects: mergedProjects,
+          testimonials: mergedTestimonials,
+          services: mergedServices,
+          settings: mergedSettings,
+          pageContent: mergedPC,
+        });
       })
       .catch((err) => {
-        console.warn('Neon unavailable, using localStorage fallback:', err.message);
+        console.warn('Neon unavailable, using localStorage fallback:', getErrorMessage(err));
       });
   }, []);
 
   // ── CRUD operations (simplified: local first, then Neon) ──
 
   const addProduct = (product: Product) => {
-    localThenNeon(setProducts, (prev) => [...prev, product], 'ctba_products',
+    return localThenNeon(setProducts, (prev) => [...prev, product], 'ctba_products',
       () => createEntity('products', product));
   };
 
   const updateProduct = (id: string, updated: Partial<Product>) => {
-    localThenNeon(setProducts, (prev) => prev.map((p) => p.id === id ? { ...p, ...updated } : p), 'ctba_products',
+    return localThenNeon(setProducts, (prev) => prev.map((p) => p.id === id ? { ...p, ...updated } : p), 'ctba_products',
       () => updateEntity('products', id, { ...updated, id }));
   };
 
   const deleteProduct = (id: string) => {
-    localDeleteThenNeon(setProducts, id, 'ctba_products',
+    return localDeleteThenNeon(setProducts, id, 'ctba_products',
       () => deleteEntity('products', id));
   };
 
@@ -663,17 +742,17 @@ export function SiteProvider({ children }: {children: ReactNode;}) {
   };
 
   const addProject = (project: Project) => {
-    localThenNeon(setProjects, (prev) => [...prev, project], 'ctba_projects',
+    return localThenNeon(setProjects, (prev) => [...prev, project], 'ctba_projects',
       () => createEntity('projects', project));
   };
 
   const updateProject = (id: string, updated: Partial<Project>) => {
-    localThenNeon(setProjects, (prev) => prev.map((p) => p.id === id ? { ...p, ...updated } : p), 'ctba_projects',
+    return localThenNeon(setProjects, (prev) => prev.map((p) => p.id === id ? { ...p, ...updated } : p), 'ctba_projects',
       () => updateEntity('projects', id, { ...updated, id }));
   };
 
   const deleteProject = (id: string) => {
-    localDeleteThenNeon(setProjects, id, 'ctba_projects',
+    return localDeleteThenNeon(setProjects, id, 'ctba_projects',
       () => deleteEntity('projects', id));
   };
 
@@ -686,17 +765,17 @@ export function SiteProvider({ children }: {children: ReactNode;}) {
   };
 
   const addTestimonial = (testimonial: Testimonial) => {
-    localThenNeon(setTestimonials, (prev) => [...prev, testimonial], 'ctba_testimonials',
+    return localThenNeon(setTestimonials, (prev) => [...prev, testimonial], 'ctba_testimonials',
       () => createEntity('testimonials', testimonial));
   };
 
   const updateTestimonial = (id: string, updated: Partial<Testimonial>) => {
-    localThenNeon(setTestimonials, (prev) => prev.map((t) => t.id === id ? { ...t, ...updated } : t), 'ctba_testimonials',
+    return localThenNeon(setTestimonials, (prev) => prev.map((t) => t.id === id ? { ...t, ...updated } : t), 'ctba_testimonials',
       () => updateEntity('testimonials', id, { ...updated, id }));
   };
 
   const deleteTestimonial = (id: string) => {
-    localDeleteThenNeon(setTestimonials, id, 'ctba_testimonials',
+    return localDeleteThenNeon(setTestimonials, id, 'ctba_testimonials',
       () => deleteEntity('testimonials', id));
   };
 
@@ -706,7 +785,10 @@ export function SiteProvider({ children }: {children: ReactNode;}) {
       localStorage.setItem('ctba_settings', JSON.stringify(next));
       return next;
     });
-    apiUpdateSettings(updated).catch((err) => console.warn('Neon sync failed:', err.message));
+    return apiUpdateSettings(updated).catch((err) => {
+      console.warn('Neon sync failed:', err.message);
+      throw err;
+    });
   };
 
   const updatePageContent = (updated: Partial<PageContent>) => {
@@ -715,7 +797,10 @@ export function SiteProvider({ children }: {children: ReactNode;}) {
       localStorage.setItem('ctba_page_content', JSON.stringify(next));
       return next;
     });
-    apiUpdatePageContent(updated).catch((err) => console.warn('Neon sync failed:', err.message));
+    return apiUpdatePageContent(updated).catch((err) => {
+      console.warn('Neon sync failed:', err.message);
+      throw err;
+    });
   };
 
   return (
